@@ -25,6 +25,8 @@ namespace RaceGameTest
 
         private Car player1Car;
         private Car player2Car;
+        private Map map;
+        public List<Objects.GameObject> gameObjects = new List<Objects.GameObject>();
         public Game()
         {
             //60 frames per second = 16.6666667(1000/60)
@@ -52,28 +54,57 @@ namespace RaceGameTest
         }
         public void DrawObjects()
         {
+
+            /*The Map */
+            map = new Map();
+            map.Draw("_Images\\MapTest.bmp", "_Images\\MapTest.bmp");
+            DrawObject(map);
+            gameObjects.Add(map);
             /* Player one Car */
             player1Car = new Car();
+            player1Car.position = new PointF(300, 400);
             player1Car.Draw("_Images\\car.jpg");
             DrawObject(player1Car);
-
+            gameObjects.Add(player1Car);
             /* Player Two Car */
             player2Car = new Car();
             player2Car.Draw("_Images\\car.jpg");
             DrawObject(player2Car);
+            gameObjects.Add(player2Car);
+            //map.Draw()
 
 
         }
-        public void DrawObject(Objects.GameObject objectToDraw)
+        private void MapColCheck(Car car)
         {
-            OnDrawObjectHandler handler = OnDrawGameObject;
-            if (OnDrawGameObject != null)
-                handler(this, objectToDraw);
+            if (car != null)
+            {
+                Color color = map.GetPixelAt((int)car.position.X, (int)car.position.Y);
+                if(color == ColorCol.road)
+                {
+                    //Do things
+                }
+                else if( color == ColorCol.collision)
+                {
+                    //Do things
+                }
+            }
         }
         private void Update()
         {
             PlayerOneCarMovement();
             PlayerTwoCarMovement();
+            if (player1Car != null)
+            {
+                if (player1Car.OnBoxCollision(player2Car))
+                {
+                    
+                    //Console.WriteLine("To Do");
+                    PointF forward = player1Car.MoveForward();
+                    PointF newPosition = new PointF(player1Car.position.X + (forward.X * 20) , player1Car.position.Y + (forward.Y * 20)) ;
+                    OnUpdatePosition(player1Car, newPosition);
+                }
+            }
         }
         private void PlayerOneCarMovement()
         {
@@ -124,6 +155,12 @@ namespace RaceGameTest
             {
                 OnUpdateRotation(player2Car, player2Car.angle + (player2Car.rotationSpeed * deltaTime));
             }
+        }
+        public void DrawObject(Objects.GameObject objectToDraw)
+        {
+            OnDrawObjectHandler handler = OnDrawGameObject;
+            if (OnDrawGameObject != null)
+                handler(this, objectToDraw);
         }
         private void gameTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
