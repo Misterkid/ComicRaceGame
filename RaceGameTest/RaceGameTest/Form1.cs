@@ -15,7 +15,7 @@ namespace RaceGameTest
         private Game game = new Game();
         private Graphics graphics;
         //private Object[] gameObjects;
-        private List<Objects.GameObject> gameObjects = new List<Objects.GameObject>();
+       // private List<Objects.GameObject> gameObjects = new List<Objects.GameObject>();
         public Form1()
         {
             InitializeComponent();
@@ -35,6 +35,7 @@ namespace RaceGameTest
             Invoke((MethodInvoker)(() =>
             {
                 gameObject.angle = angle;
+                gameObject.Update();
                 Invalidate();
             }));
         }
@@ -44,28 +45,38 @@ namespace RaceGameTest
             Invoke((MethodInvoker)(() =>
             {
                 gameObject.position = newPosition;
+                gameObject.Update();
                 Invalidate();
                 //gameObject.pictureBox.Location = newPosition;
             }));
         }
         protected override void OnPaint(PaintEventArgs e)
         {
-            for(int i = 0; i < gameObjects.Count; i++)
+            for(int i = 0; i < game.gameObjects.Count; i++)
             {
                 //now rotate the image
-                float dx = (float)gameObjects[i].position.X + gameObjects[i].image.Width / 2;
-                float dy = (float)gameObjects[i].position.Y + gameObjects[i].image.Height / 2;
+                float dx = (float)game.gameObjects[i].position.X + game.gameObjects[i].image.Width * 0.5f;// / 2;
+                float dy = (float)game.gameObjects[i].position.Y + game.gameObjects[i].image.Height * 0.5f;// / 2;
                 e.Graphics.TranslateTransform(dx, dy);
-                e.Graphics.RotateTransform(gameObjects[i].angle);
+                e.Graphics.RotateTransform(game.gameObjects[i].angle);
                 e.Graphics.TranslateTransform(-dx, -dy);
                 //Draw image en update position.
-                e.Graphics.DrawImage(gameObjects[i].image, gameObjects[i].position);
+                e.Graphics.DrawImage(game.gameObjects[i].image, game.gameObjects[i].position);
                 e.Graphics.ResetTransform();
+
+                //Test
+                e.Graphics.DrawRectangle(new Pen(Color.DarkRed), game.gameObjects[i].boxRect.X, game.gameObjects[i].boxRect.Y, game.gameObjects[i].boxRect.Width, game.gameObjects[i].boxRect.Height);
+                e.Graphics.ResetTransform();
+                /*
+                e.Graphics.DrawRectangle(new Pen(Color.DarkRed),gameObjects[i].GetCollisionDots().X, gameObjects[i].GetCollisionDots().Y, 10, 10);
+                e.Graphics.ResetTransform();
+                 */ 
             }
         }
         void game_OnDrawGameObject(object sender, Objects.GameObject arg)
         {
-            gameObjects.Add(arg);
+            //gameObjects.Add(arg);
+            arg.Update();
             Invalidate();
         }
         private void Form1_KeyDown(object sender, KeyEventArgs e)
