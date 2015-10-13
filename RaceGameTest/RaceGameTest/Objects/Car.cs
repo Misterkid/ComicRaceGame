@@ -51,8 +51,19 @@ namespace RaceGameTest.Objects
         }
         public override void Update()
         {
+
+            // game.gameObjects[i].position.X + game.gameObjects[i].center.X - 5,game.gameObjects[i].position.Y + game.gameObjects[i].center.Y - 5, 10, 10);
             //ToDo add rotation in drawing the rectangle.... :(
-            boxRect = new RectangleF(position.X, position.Y, image.Width, image.Width);
+
+
+            PointF corner1;
+            PointF corner2;
+            PointF corner3;
+            PointF corner4;
+            
+            //boxRect = new RectangleF(position.X + center.X - (image.Width / 2), position.Y + center.Y - (image.Width / 2), image.Width, image.Width);
+            
+            //boxRect = new RectangleF(position.X + (image.Width/2), position.Y +( image.Height/2), image.Width, image.Width);
             base.Update();
         }
     }

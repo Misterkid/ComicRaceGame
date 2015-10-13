@@ -37,13 +37,24 @@ namespace RaceGameTest
         
         public Color GetPixelAt(int x,int y)
         {
-            return colBitmap.GetPixel(x, y);
+            if (x > 0 && y > 0 && x < colBitmap.Width && y < colBitmap.Height)
+                return colBitmap.GetPixel(x, y);
+            else
+                return Color.White;
         }
     }
     //yucky xD
     public class ColorCol
     {
         public static Color road = Color.FromArgb(255, 0, 0, 0);
-        public static Color collision = Color.FromArgb(255, 255, 0, 0);
+        public static Color collision = Color.FromArgb(255, 0, 0, 255);
+        public static Color slow = Color.FromArgb(255, 230, 230, 0);
+        public static Color pitstop = Color.FromArgb(255, 255, 100, 0);
+        public static Color start = Color.FromArgb(255, 0, 255, 0);
+        public static Color finnish = Color.FromArgb(255, 0, 200, 0);
+        public static Color checkp1 = Color.FromArgb(255, 255, 0, 0);
+        public static Color checkp2 = Color.FromArgb(255, 240, 0, 0);
+        public static Color checkp3 = Color.FromArgb(255, 220, 0, 0);
+        public static Color checkp4 = Color.FromArgb(255, 200, 0, 0);
     }
 }
