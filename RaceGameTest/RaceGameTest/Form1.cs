@@ -32,23 +32,23 @@ namespace RaceGameTest
         void game_OnUpdateRotation(Objects.GameObject gameObject, float angle)
         {
            // throw new NotImplementedException();
-            Invoke((MethodInvoker)(() =>
-            {
+           // Invoke((MethodInvoker)(() =>
+            //{
                 gameObject.angle = angle;
                 gameObject.Update();
                 Invalidate();
-            }));
+            //}));
         }
 
         void game_OnUpdatePosition(Objects.GameObject gameObject, PointF newPosition)
         {
-            Invoke((MethodInvoker)(() =>
-            {
+            //Invoke((MethodInvoker)(() =>
+           // {
                 gameObject.position = newPosition;
                 gameObject.Update();
                 Invalidate();
                 //gameObject.pictureBox.Location = newPosition;
-            }));
+            //}));
         }
         protected override void OnPaint(PaintEventArgs e)
         {
@@ -63,12 +63,17 @@ namespace RaceGameTest
                 //Draw image en update position.
                 e.Graphics.DrawImage(game.gameObjects[i].image, game.gameObjects[i].position);
                 e.Graphics.ResetTransform();
+                
                 //Test
                 e.Graphics.DrawRectangle(new Pen(Color.DarkRed), game.gameObjects[i].boxRect.X, game.gameObjects[i].boxRect.Y, game.gameObjects[i].boxRect.Width, game.gameObjects[i].boxRect.Height);
                 e.Graphics.ResetTransform();
                 //Center
                 e.Graphics.DrawEllipse(new Pen(Color.Turquoise),  game.gameObjects[i].position.X + game.gameObjects[i].center.X - 5,game.gameObjects[i].position.Y + game.gameObjects[i].center.Y - 5, 10, 10);
                 e.Graphics.ResetTransform();
+                //Mat Test
+                e.Graphics.DrawEllipse(new Pen(Color.Black), game.gameObjects[i].position.X + game.gameObjects[i].MatTest().X, game.gameObjects[i].position.Y + game.gameObjects[i].MatTest().Y, 10, 10);
+                e.Graphics.ResetTransform();
+                
                 /*
                 e.Graphics.DrawRectangle(new Pen(Color.DarkRed),gameObjects[i].GetCollisionDots().X, gameObjects[i].GetCollisionDots().Y, 10, 10);
                 e.Graphics.ResetTransform();

@@ -56,19 +56,16 @@ namespace RaceGameTest
         {
 
             /*The Map */
-            map = new Map();
-            map.Draw("_Images\\MapTest.bmp", "_Images\\MapTest.bmp");
+            map = new Map("_Images\\Circuit2.bmp", "_Images\\Circuit2.bmp");
             DrawObject(map);
             gameObjects.Add(map);
             /* Player one Car */
-            player1Car = new Car();
+            player1Car = new Car("_Images\\JeffersonGTA2.png");
             player1Car.position = new PointF(300, 400);
-            player1Car.Draw("_Images\\JeffersonGTA2.png");
             DrawObject(player1Car);
             gameObjects.Add(player1Car);
             /* Player Two Car */
-            player2Car = new Car();
-            player2Car.Draw("_Images\\JeffersonGTA2.png");
+            player2Car = new Car("_Images\\JeffersonGTA2.png");
             DrawObject(player2Car);
             gameObjects.Add(player2Car);
             //map.Draw()
@@ -80,6 +77,7 @@ namespace RaceGameTest
             if (car != null)
             {
                 Color color = map.GetPixelAt((int)car.position.X + (int)car.center.X, (int)car.position.Y + (int)car.center.Y);
+                // Can't put color in a switch for some reason!
                 if(color == ColorCol.road)
                 {
                     //Do things
@@ -88,11 +86,40 @@ namespace RaceGameTest
                 else if( color == ColorCol.collision)
                 {
                     //Do things
+                    car.speed = 0;
                 }
                 else if (color == ColorCol.slow)
                 {
                     //Do things
                     car.speed = 100;
+                }
+                else if (color == ColorCol.pitstop)
+                {
+                    //Do things
+                }
+                else if (color == ColorCol.start)
+                {
+                    //Do things
+                }
+                else if (color == ColorCol.finnish)
+                {
+                    //Do things
+                }
+                else if (color == ColorCol.checkp1)
+                {
+                    //Do things
+                }
+                else if (color == ColorCol.checkp2)
+                {
+                    //Do things
+                }
+                else if (color == ColorCol.checkp3)
+                {
+                    //Do things
+                }
+                else if (color == ColorCol.checkp4)
+                {
+                    //Do things
                 }
             }
         }

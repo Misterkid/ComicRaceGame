@@ -22,17 +22,17 @@ namespace RaceGameTest.Objects
         public bool isReverse = false;//Is reverse
         public float velocity = 0;//CurrentVelocity
         public int motorForce = 27000;//Motor force! Horse power
-
-        public Car()
+        
+        public Car(string path):base(path)
         {
-
+           
         }
         //-MoveForward = backwards... Duh
         public PointF MoveForward()
         {
-            float raidance = (float) (angle * Math.PI / 180);
-            float deltaX = (float)Math.Sin(raidance) * speed;
-            float deltaY = (float)-Math.Cos(raidance) * speed;
+            float rad = (float)(angle * Math.PI / 180);
+            float deltaX = (float)Math.Sin(rad) * speed;
+            float deltaY = (float)-Math.Cos(rad) * speed;
             return new PointF(deltaX, deltaY);
             
         }
@@ -51,19 +51,25 @@ namespace RaceGameTest.Objects
         }
         public override void Update()
         {
-
             // game.gameObjects[i].position.X + game.gameObjects[i].center.X - 5,game.gameObjects[i].position.Y + game.gameObjects[i].center.Y - 5, 10, 10);
             //ToDo add rotation in drawing the rectangle.... :(
 
             boxRect = new RectangleF(position.X, position.Y, image.Width, image.Height);
-            PointF TopLeft = new PointF(boxRect.Left,boxRect.Top);
-            PointF TopRight = new PointF(boxRect.Right, boxRect.Top);
-            PointF BotLeft = new PointF(boxRect.Left, boxRect.Bottom);
-            PointF BotRight = new PointF(boxRect.Right, boxRect.Bottom);
-            
-            //boxRect = new RectangleF(position.X + center.X - (image.Width / 2), position.Y + center.Y - (image.Width / 2), image.Width, image.Width);
-            
-            //boxRect = new RectangleF(position.X + (image.Width/2), position.Y +( image.Height/2), image.Width, image.Width);
+            PointF topLeft = new PointF(center.X - (image.Width/2),center.Y - (image.Height/2));
+
+            PointF topRight = new PointF(boxRect.Right, boxRect.Top);
+            PointF botLeft = new PointF(boxRect.Left, boxRect.Bottom);
+            PointF botRight = new PointF(boxRect.Right, boxRect.Bottom);
+
+            float rad = (float) (angle * Math.PI / 180);
+
+            //x' = x \cos \theta - y \sin \theta\,,
+           // y' = x \sin \theta + y \cos \theta\,.
+            //center
+            float x = topLeft.X * (float)Math.Cos(rad) - topLeft.Y * (float)Math.Sin(rad);
+            float y = topLeft.X * (float)Math.Sin(rad) + topLeft.Y * (float)Math.Cos(rad);
+            boxRect = new RectangleF(position.X + x, position.Y + y,image.Width,image.Height);
+
             base.Update();
         }
     }

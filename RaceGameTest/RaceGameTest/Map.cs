@@ -11,10 +11,14 @@ namespace RaceGameTest
     class Map : GameObject
     {
         private Bitmap colBitmap;
-        public Map()
+        public Map(string pathToVisibleMap, string pathToColMap):base(pathToVisibleMap)
         {
-
+            //image = Image.FromFile(pathToVisibleMap);
+            //center = new PointF(image.Width / 2, image.Height / 2);
+            //Image.FromFile(pathToColMap).
+            colBitmap = new Bitmap(pathToColMap);//Bitmap.FromFile(pathToColMap);
         }
+        /*
         public void Draw(string pathToVisibleMap,string pathToColMap)
         {
             image = Image.FromFile(pathToVisibleMap);
@@ -23,8 +27,8 @@ namespace RaceGameTest
             colBitmap = new Bitmap(pathToColMap);//Bitmap.FromFile(pathToColMap);
             //rect = new RectangleF(position.X, position.Y, image.Width, image.Height);
             //rect.Location = position;
-
-        }
+            
+        }*/
         /*
         public bool CheckPixel(int x,int y, Color color)
         {
@@ -37,10 +41,13 @@ namespace RaceGameTest
         
         public Color GetPixelAt(int x,int y)
         {
+
+            //Console.WriteLine(image.Size);
             if (x > 0 && y > 0 && x < colBitmap.Width && y < colBitmap.Height)
                 return colBitmap.GetPixel(x, y);
             else
                 return Color.White;
+
         }
     }
     //yucky xD
