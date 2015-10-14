@@ -29,6 +29,7 @@ namespace RaceGameTest.Objects
             PointF botLeft = new PointF(center.X - (float)(image.Width / 2), center.Y + (float)(image.Height / 2));
             PointF botRight = new PointF(center.X + (float)(image.Width / 2), center.Y + (float)(image.Height / 2));
             fourPoints = new FourPoints(topLeft, topRight, botLeft, botRight);
+            rotatedFourPoints = new FourPoints(RotatePoint(fourPoints.topLeft), RotatePoint(fourPoints.topRight), RotatePoint(fourPoints.botLeft), RotatePoint(fourPoints.botRight));
         }
         public PointF RotatePoint(PointF point)
         {

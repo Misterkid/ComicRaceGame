@@ -88,16 +88,16 @@ namespace RaceGameTest
                 float centerXWorld = game.gameObjects[i].position.X + game.gameObjects[i].center.X;
                 float centerYWorld = game.gameObjects[i].position.Y + game.gameObjects[i].center.Y;
 
-                e.Graphics.DrawEllipse(new Pen(Color.Yellow), centerXWorld + game.gameObjects[i].RotatePoint(game.gameObjects[i].fourPoints.topLeft).X, centerYWorld + game.gameObjects[i].RotatePoint(game.gameObjects[i].fourPoints.topLeft).Y, 2, 2);
+                e.Graphics.DrawEllipse(new Pen(Color.Yellow), centerXWorld + game.gameObjects[i].rotatedFourPoints.topLeft.X, centerYWorld + game.gameObjects[i].rotatedFourPoints.topLeft.Y, 2, 2);
                 e.Graphics.ResetTransform();
 
-                e.Graphics.DrawEllipse(new Pen(Color.Yellow), centerXWorld + game.gameObjects[i].RotatePoint(game.gameObjects[i].fourPoints.topRight).X, centerYWorld + game.gameObjects[i].RotatePoint(game.gameObjects[i].fourPoints.topRight).Y, 2, 2);
+                e.Graphics.DrawEllipse(new Pen(Color.Yellow), centerXWorld + game.gameObjects[i].rotatedFourPoints.topRight.X, centerYWorld + game.gameObjects[i].rotatedFourPoints.topRight.Y, 2, 2);
                 e.Graphics.ResetTransform();
 
-                e.Graphics.DrawEllipse(new Pen(Color.Yellow), centerXWorld + game.gameObjects[i].RotatePoint(game.gameObjects[i].fourPoints.botLeft).X, centerYWorld + game.gameObjects[i].RotatePoint(game.gameObjects[i].fourPoints.botLeft).Y, 2, 2);
+                e.Graphics.DrawEllipse(new Pen(Color.Yellow), centerXWorld + game.gameObjects[i].rotatedFourPoints.botLeft.X, centerYWorld + game.gameObjects[i].rotatedFourPoints.botLeft.Y, 2, 2);
                 e.Graphics.ResetTransform();
 
-                e.Graphics.DrawEllipse(new Pen(Color.Yellow), centerXWorld + game.gameObjects[i].RotatePoint(game.gameObjects[i].fourPoints.botRight).X, centerYWorld + game.gameObjects[i].RotatePoint(game.gameObjects[i].fourPoints.botRight).Y, 2, 2);
+                e.Graphics.DrawEllipse(new Pen(Color.Yellow), centerXWorld + game.gameObjects[i].rotatedFourPoints.botRight.X, centerYWorld + game.gameObjects[i].rotatedFourPoints.botRight.Y, 2, 2);
                 e.Graphics.ResetTransform();
                 
                 /*
