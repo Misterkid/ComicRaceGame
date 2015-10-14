@@ -12,31 +12,42 @@ namespace RaceGameTest
         {
 
         }
-        public static int F_motorCalculated(bool Reverse, int F_motor, int Fuel, bool Forward)
+        public static int F_motorCalculated(bool Reverse, int F_motor, int MaxF_motor, int Fuel, bool Forward)
         {
-            if (Reverse == true && Fuel > 0)
+            if (Reverse && Fuel > 0 && MaxF_motor / 6 > F_motor)
             {
-                int F_MotorReturn = F_motor / 6;
-                return F_MotorReturn;
+                //int F_MotorReturn = F_motor / 6;
+                F_motor += 50;
+                return F_motor;
             }
-            if (Reverse == true && Fuel <= 0)
+            if (Reverse && Fuel <= 0 && MaxF_motor / 18 > F_motor)
             {
-                int F_MotorReturn = F_motor / (6 * 20);
-                return F_MotorReturn;
+                //int F_MotorReturn = F_motor / (6 * 20);
+                //return F_MotorReturn;
+                F_motor += 25;
+                return F_motor;
             }
-            if (Fuel == 0 || Fuel < 0 && Forward)
+            if (Fuel <= 0 && Forward && MaxF_motor / 3 > F_motor)
             {
-                int F_MotorReturn = Convert.ToInt32(F_motor * 0.05f);
-                return F_MotorReturn;
+                //int F_MotorReturn = Convert.ToInt32(F_motor * 0.05f);
+                //return F_MotorReturn;
+           
+                F_motor += 100;
+                return F_motor;
             }
-            if (Forward)
+            if (Forward && MaxF_motor > F_motor)
             {
-
+                F_motor += 125;
+                return F_motor;
+            }
+            if (!Forward && !Reverse && F_motor >= 0)
+            {
+                F_motor = 0;
                 return F_motor;
             }
             else
             {
-                F_motor = 0;
+               // F_motor = 0;
                 return F_motor;
             }
         }
@@ -49,7 +60,7 @@ namespace RaceGameTest
                 return ReturnFuel;
 
             }
-            else if (Pitsstop == true && Fuel < MaxFuel)
+            else if (Pitsstop && Fuel < MaxFuel)
             {
 
                 int FuelUsage = 10;
@@ -86,7 +97,7 @@ namespace RaceGameTest
             }
             else
             {
-                float F_rolCalculated = RolResistance * MassaAutoCalculated * Gravity * 0.001f;
+                float F_rolCalculated = RolResistance * MassaAutoCalculated * Gravity * 0.0001f;
                 return F_rolCalculated;
             }
 
@@ -111,31 +122,39 @@ namespace RaceGameTest
             if (Reverse && !Forward && Speed <= 0)
             {
                 
-                float AccelerateCalc = ((F_motorCalculated - F_rol - F_air) / MassaAutoCalculated);
-                Speed -= AccelerateCalc;
+                float AccelerateCalc = ((-F_motorCalculated + F_rol + F_air) / MassaAutoCalculated);
+                Speed += AccelerateCalc;
                 return Speed;
                  
             }
-            if (Reverse && Speed >= 0 && !Forward)
+            if (!Reverse && Forward && Speed <= 0)
+            {
+
+                float AccelerateCalc = ((F_motorCalculated + F_rol + F_air) / MassaAutoCalculated);
+                Speed += AccelerateCalc;
+                return Speed;
+
+            }
+            if (Reverse && !Forward && Speed >= 0)
             {
                 float AccelerateCalc = ((-F_motorCalculated - F_rol - F_air) / MassaAutoCalculated);
                 Speed += AccelerateCalc;
                 return Speed;
             }
             
-            if (Speed <= 0 && !Reverse && !Forward)
+            if (!Reverse && !Forward && Speed <= 0)
             {
-                float AccelerateCalc = (F_motorCalculated - F_rol - F_air) / MassaAutoCalculated;
-                Speed -= AccelerateCalc;
+                float AccelerateCalc = (F_motorCalculated + F_rol + F_air) / MassaAutoCalculated;
+                Speed += AccelerateCalc;
                 return Speed;
             }
                 
-            if (Speed > 0 && !Break && !Reverse && Forward)
+          /*  if (Speed >= 0 && !Break && !Reverse && Forward)
             {
                 float AccelerateCalc = (F_motorCalculated - F_rol - F_air) / MassaAutoCalculated;
                 Speed += AccelerateCalc;
                 return Speed;
-            }
+            } */
             else
             {
                 float AccelerateCalc = (F_motorCalculated - F_rol - F_air) / MassaAutoCalculated;
@@ -147,20 +166,20 @@ namespace RaceGameTest
 
         public static float Rotation(float Velocity, int Massa)
         {
-            if (Velocity == 0)
+            if (Math.Abs(Velocity) <= 10)
             {
                 float RotationCalculated = 0;
                 return RotationCalculated;
             }
-            /* if (Velocity > 0 && Velocity < 45)
+            /*if (Velocity > 0 && Velocity < 45)
              {
                  float RotationCalculated = 60;
                  return RotationCalculated;
-             }*/
+             } */
             else
             {
-                int Steering = 500000;
-                float RotationCalculated = Steering / (Massa + (Convert.ToSingle(Math.Pow(Math.Abs(Velocity), 1.5)))); //0.85
+                int Steering = 200000;
+                float RotationCalculated = Steering / (Massa + (Convert.ToSingle(Math.Pow(Math.Abs(Velocity), 0.85)))); //0.85
                 return RotationCalculated;
             }
         }

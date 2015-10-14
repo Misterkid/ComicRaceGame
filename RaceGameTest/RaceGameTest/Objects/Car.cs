@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using System.Threading;
 
 namespace RaceGameTest.Objects
 {
@@ -14,8 +15,8 @@ namespace RaceGameTest.Objects
 
        // public int maxSpeed;
         public int mass = 1500;//Mass in KG
-        public int maxFuel = 1000;//Liters
-        public int fuel = 1000;
+        public int maxFuel = 1000;//Liters * 10
+        public int fuel = 1000; // Liters * 10
         public float surface = 1.9f;//m2
         public float CoEfficient = 0.32f;//Air resitance onzin
         //public bool isReverse = false;//Is reverse
@@ -23,7 +24,8 @@ namespace RaceGameTest.Objects
        // public bool isBreaking = false;//Is breaking
         public float velocity = 0;//CurrentVelocity
         public int currentMotorForce = 0;
-        public int motorForce = 27000;//Motor force! Horse power
+        public int motorForce = 0;//Motor force! Horse power *need eddy het is in freaking WATT
+        public int maxmotorForce = 27000; //Motor force! Horse power
         public bool isGoingForward = false;
         public bool isGoingBackwards = false;
 
@@ -72,14 +74,17 @@ namespace RaceGameTest.Objects
             VelocCalc1 = Velocity(VelocCalc1, MassaCalc1, F_MotorCalc1, F_RolCalc1, F_AirCalc1, Reverse1, Break1, Forward1);
             float Rotation1 = Rotation(VelocCalc1, MassaCalc1);
             */
-            int F_MotorCalc1 = CarPhysics.F_motorCalculated(isGoingBackwards, motorForce, fuel, isGoingForward);
-            fuel = CarPhysics.FuelCalculated(true, F_MotorCalc1, fuel, maxFuel);
+            //int F_MotorCalc1 = CarPhysics.F_motorCalculated(isGoingBackwards, motorForce, maxmotorForce, fuel, isGoingForward);
+            motorForce = CarPhysics.F_motorCalculated(isGoingBackwards, motorForce, maxmotorForce, fuel, isGoingForward);
+            fuel = CarPhysics.FuelCalculated(true, motorForce/*F_MotorCalc1*/, fuel, maxFuel);
             int trueMass = CarPhysics.MassaAutoCalculated(fuel, mass);
             float airForce = CarPhysics.F_Air(CoEfficient, 1.19f, velocity, surface);
             float rolForce = CarPhysics.Frol(200, trueMass, 10, isBreak, velocity);
-            velocity = CarPhysics.Velocity(velocity, trueMass, F_MotorCalc1, rolForce, airForce, isGoingBackwards, isBreak, isGoingForward);
-            //Console.WriteLine(velocity);
-            //Console.WriteLine()
+            velocity = CarPhysics.Velocity(velocity, trueMass, motorForce /*F_MotorCalc1*/, rolForce, airForce, isGoingBackwards, isBreak, isGoingForward);
+            //Console.WriteLine("{0}, {1}, {2}", motorForce, rolForce, airForce);
+            //Thread.Sleep(1000);
+
+            Console.WriteLine(velocity);
             //speed = speed + (int)velocity;
             /*
             if (isRotating)
