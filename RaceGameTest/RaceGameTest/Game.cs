@@ -46,17 +46,19 @@ namespace RaceGameTest
             input.RegisterKey(Keys.Down);
             input.RegisterKey(Keys.Left);
             input.RegisterKey(Keys.Right);
+            input.RegisterKey(Keys.NumPad0);
             //Player Two
             input.RegisterKey(Keys.W);
             input.RegisterKey(Keys.S);
             input.RegisterKey(Keys.A);
             input.RegisterKey(Keys.D);
+            input.RegisterKey(Keys.LShiftKey);
         }
         public void DrawObjects()
         {
 
             /*The Map */
-            map = new Map("_Images\\Circuit2.bmp", "_Images\\Circuit2.bmp");
+            map = new Map("_Images\\Circuit3.bmp", "_Images\\Circuit3.bmp");
             DrawObject(map);
             gameObjects.Add(map);
             /* Player one Car */
@@ -68,7 +70,6 @@ namespace RaceGameTest
             player2Car = new Car("_Images\\JeffersonGTA2.png");
             DrawObject(player2Car);
             gameObjects.Add(player2Car);
-            //map.Draw()
 
 
         }
@@ -87,11 +88,20 @@ namespace RaceGameTest
                 {
                     //Do things
                     //car.speed = 0;
+                    car.velocity = 0;
                 }
                 else if (color == ColorCol.slow)
                 {
-                    //Do things
-                    //car.speed = 100;
+                    if (car.isGoingForward)
+                        car.velocity = 20;
+                    
+                    if (car.isGoingBackwards)
+                        car.velocity = -10;
+
+                    //if (car.velocity > 10 && input.GetKey(Keys.W))
+                    //{
+                       // car.velocity -= (5000 * deltaTime);
+                    //}
                 }
                 else if (color == ColorCol.pitstop)
                 {
@@ -104,22 +114,42 @@ namespace RaceGameTest
                 else if (color == ColorCol.finnish)
                 {
                     //Do things
+                    if (car.checkPoints == 4 && car.laps < 3)
+                    {
+                        car.checkPoints = 0;
+                        car.laps++;
+                    }
+                    if(car.laps == 3)
+                    {
+                        car.checkPoints = 0;
+                        car.velocity = 0;
+                        Console.WriteLine("finished");
+                        //car = null;
+                    }
                 }
                 else if (color == ColorCol.checkp1)
                 {
                     //Do things
+                    if(car.checkPoints == 0)
+                        car.checkPoints = 1;
                 }
                 else if (color == ColorCol.checkp2)
                 {
                     //Do things
+                    if (car.checkPoints == 1)
+                        car.checkPoints = 2;
                 }
                 else if (color == ColorCol.checkp3)
                 {
                     //Do things
+                    if (car.checkPoints == 2)
+                        car.checkPoints = 3;
                 }
                 else if (color == ColorCol.checkp4)
                 {
                     //Do things
+                    if (car.checkPoints == 3)
+                        car.checkPoints = 4;
                 }
             }
         }
@@ -130,46 +160,26 @@ namespace RaceGameTest
 
             PlayerOneCarMovement();
             PlayerTwoCarMovement();
-            /*
-            if (player1Car != null)
-            {
-                if (player1Car.OnBoxCollision(player2Car))
-                {
-                    //Console.WriteLine("To Do");
-                    PointF forward = player1Car.MoveForward();
-                    PointF newPosition = new PointF(player1Car.position.X - ((forward.X * 5) * deltaTime) , player1Car.position.Y - ((forward.Y * 5) * deltaTime)) ;
-                    OnUpdatePosition(player1Car, newPosition);
-
-                    forward = player2Car.MoveForward();
-                    newPosition = new PointF(player2Car.position.X - ((forward.X * 5) * deltaTime), player2Car.position.Y - ((forward.Y * 5) * deltaTime));
-                    OnUpdatePosition(player2Car, newPosition);
-                }
-            }*/
         }
         private void PlayerOneCarMovement()
         {
-            
-            if (input.GetKey(Keys.Up))
+
+            if (input != null && player1Car != null)
             {
-                PointF forward = player1Car.MoveForward();
-                PointF forwardDelta = new PointF(forward.X * deltaTime, forward.Y * deltaTime);
-                PointF newPosition = new PointF(player1Car.position.X + forwardDelta.X, player1Car.position.Y + forwardDelta.Y);
+                player1Car.isGoingForward = input.GetKey(Keys.Up);
+                player1Car.isGoingBackwards =  input.GetKey(Keys.Down);
+                PointF movement = player1Car.Move(input.GetKey(Keys.NumPad0));
+                PointF movementDelta = new PointF(movement.X * deltaTime, movement.Y * deltaTime);
+                PointF newPosition = new PointF(player1Car.position.X + movementDelta.X, player1Car.position.Y + movementDelta.Y);
                 OnUpdatePosition(player1Car, newPosition);
-            }
-            if (input.GetKey(Keys.Down))
-            {
-                PointF forward = player1Car.MoveForward();
-                PointF forwardDelta = new PointF(forward.X * deltaTime, forward.Y * deltaTime);
-                PointF newPosition = new PointF(-forwardDelta.X + player1Car.position.X, -forwardDelta.Y + player1Car.position.Y);
-                OnUpdatePosition(player1Car, newPosition);
-            }
-            if (input.GetKey(Keys.Left))
-            {
-                OnUpdateRotation(player1Car, player1Car.angle - (player1Car.rotationSpeed * deltaTime));
-            }
-            if (input.GetKey(Keys.Right))
-            {
-                OnUpdateRotation(player1Car, player1Car.angle + (player1Car.rotationSpeed * deltaTime));
+
+                ;
+
+                Console.WriteLine(player1Car.position.X + player1Car.RotatePoint(player1Car.fourPoints.topLeft).X + ":"+  player1Car.position.Y + player1Car.RotatePoint(player1Car.fourPoints.topLeft).Y);
+
+
+                float rotation = player1Car.Rotate(input.GetKey(Keys.Left), input.GetKey(Keys.Right));
+                OnUpdateRotation(player1Car, player1Car.angle - (rotation * deltaTime));
             }
         }
         private void PlayerTwoCarMovement()
@@ -177,38 +187,16 @@ namespace RaceGameTest
 
             if (input != null && player2Car != null)
             {
-                PointF movement = player2Car.Move(input.GetKey(Keys.W), input.GetKey(Keys.S), false);
+                player2Car.isGoingForward = input.GetKey(Keys.W);
+                player2Car.isGoingBackwards = input.GetKey(Keys.S);
+                PointF movement = player2Car.Move(input.GetKey(Keys.LShiftKey));
                 PointF movementDelta = new PointF(movement.X * deltaTime,movement.Y * deltaTime);
                 PointF newPosition = new PointF(player2Car.position.X + movementDelta.X, player2Car.position.Y + movementDelta.Y);
                 OnUpdatePosition(player2Car, newPosition);
+
+                float rotation = player2Car.Rotate(input.GetKey(Keys.A), input.GetKey(Keys.D));
+                OnUpdateRotation(player2Car, player2Car.angle - (rotation * deltaTime));
             }
-            /*
-            if (input.GetKey(Keys.W))
-            {
-                player1Car.isForward = true;
-                PointF forward = player2Car.Move();//MoveForward();
-                PointF forwardDelta = new PointF(forward.X * deltaTime,forward.Y * deltaTime);
-                PointF newPosition = new PointF(player2Car.position.X + forwardDelta.X, player2Car.position.Y + forwardDelta.Y);
-                OnUpdatePosition(player2Car, newPosition);
-            }
-            if (input.GetKey(Keys.S))
-            {
-                PointF forward = player2Car.Move();//MoveForward();
-                player1Car.isForward = false;
-                player1Car.isReverse = true;
-                PointF forwardDelta = new PointF(forward.X * deltaTime, forward.Y * deltaTime);
-                PointF newPosition = new PointF(-forwardDelta.X + player2Car.position.X, -forwardDelta.Y + player2Car.position.Y);
-                OnUpdatePosition(player2Car, newPosition);
-            }
-            if (input.GetKey(Keys.A))
-            {
-                OnUpdateRotation(player2Car, player2Car.angle - (player2Car.rotationSpeed * deltaTime));
-            }
-            if (input.GetKey(Keys.D))
-            {
-                OnUpdateRotation(player2Car, player2Car.angle + (player2Car.rotationSpeed * deltaTime));
-            }
-             */ 
         }
         public void DrawObject(Objects.GameObject objectToDraw)
         {

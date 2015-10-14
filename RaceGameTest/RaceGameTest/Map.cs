@@ -18,26 +18,6 @@ namespace RaceGameTest
             //Image.FromFile(pathToColMap).
             colBitmap = new Bitmap(pathToColMap);//Bitmap.FromFile(pathToColMap);
         }
-        /*
-        public void Draw(string pathToVisibleMap,string pathToColMap)
-        {
-            image = Image.FromFile(pathToVisibleMap);
-            center = new PointF(image.Width / 2, image.Height / 2);
-            //Image.FromFile(pathToColMap).
-            colBitmap = new Bitmap(pathToColMap);//Bitmap.FromFile(pathToColMap);
-            //rect = new RectangleF(position.X, position.Y, image.Width, image.Height);
-            //rect.Location = position;
-            
-        }*/
-        /*
-        public bool CheckPixel(int x,int y, Color color)
-        {
-            if(colBitmap.GetPixel(x,y) == color)
-            {
-                return true;
-            }
-            return false;
-        }*/
         
         public Color GetPixelAt(int x,int y)
         {

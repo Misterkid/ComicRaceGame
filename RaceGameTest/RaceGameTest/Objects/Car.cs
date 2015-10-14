@@ -13,18 +13,26 @@ namespace RaceGameTest.Objects
         public int rotationSpeed = 200;
 
        // public int maxSpeed;
-
         public int mass = 1500;//Mass in KG
         public int maxFuel = 1000;//Liters
         public int fuel = 1000;
         public float surface = 1.9f;//m2
-        public float CoEfficient = 0.42f;//Air resitance onzin
+        public float CoEfficient = 0.32f;//Air resitance onzin
         //public bool isReverse = false;//Is reverse
         //public bool isForward = true;//Is forward
        // public bool isBreaking = false;//Is breaking
         public float velocity = 0;//CurrentVelocity
+        public int currentMotorForce = 0;
         public int motorForce = 27000;//Motor force! Horse power
-        
+        public bool isGoingForward = false;
+        public bool isGoingBackwards = false;
+
+        public int checkPoints = 0;//checkpoitns taken.
+        public int maxCheckPoints = 4;//4 checkpoints
+        public int laps = 0;
+        public int maxLaps = 3;
+
+        //public bool[] checkPoints = new bool[4]{false,false,false,false};
         public Car(string path):base(path)
         {
            
@@ -38,7 +46,22 @@ namespace RaceGameTest.Objects
             return new PointF(deltaX, deltaY);
         }
        // public PointF MoveForward(bool isOnPitstop = false)
-        public PointF Move(bool forward,bool backwards,bool isBreak)
+        public float Rotate(bool left,bool right)
+        {
+            int trueMass = CarPhysics.MassaAutoCalculated(fuel, mass);
+            if(left && !right)
+            {
+                float rotation = CarPhysics.Rotation(velocity, trueMass);
+                return rotation;
+            }
+            else if( !left && right)
+            {
+                float rotation = CarPhysics.Rotation(velocity, trueMass);
+                return -rotation;
+            }
+            return 0;
+        }
+        public PointF Move(/*bool forward,bool backwards,*/bool isBreak)
         {
             /*
             int F_MotorCalc1 = F_motorCalculated(Reverse1, F_motor1, FuelCalc1, Forward1);
@@ -49,13 +72,13 @@ namespace RaceGameTest.Objects
             VelocCalc1 = Velocity(VelocCalc1, MassaCalc1, F_MotorCalc1, F_RolCalc1, F_AirCalc1, Reverse1, Break1, Forward1);
             float Rotation1 = Rotation(VelocCalc1, MassaCalc1);
             */
-            int F_MotorCalc1 = CarPhysics.F_motorCalculated(backwards, motorForce, fuel, forward);
+            int F_MotorCalc1 = CarPhysics.F_motorCalculated(isGoingBackwards, motorForce, fuel, isGoingForward);
             fuel = CarPhysics.FuelCalculated(true, F_MotorCalc1, fuel, maxFuel);
             int trueMass = CarPhysics.MassaAutoCalculated(fuel, mass);
             float airForce = CarPhysics.F_Air(CoEfficient, 1.19f, velocity, surface);
             float rolForce = CarPhysics.Frol(200, trueMass, 10, isBreak, velocity);
-            velocity = CarPhysics.Velocity(velocity, trueMass, F_MotorCalc1, rolForce, airForce, backwards, isBreak, forward);
-            Console.WriteLine(velocity);
+            velocity = CarPhysics.Velocity(velocity, trueMass, F_MotorCalc1, rolForce, airForce, isGoingBackwards, isBreak, isGoingForward);
+            //Console.WriteLine(velocity);
             //Console.WriteLine()
             //speed = speed + (int)velocity;
             /*
@@ -87,7 +110,7 @@ namespace RaceGameTest.Objects
         {
             // game.gameObjects[i].position.X + game.gameObjects[i].center.X - 5,game.gameObjects[i].position.Y + game.gameObjects[i].center.Y - 5, 10, 10);
             //ToDo add rotation in drawing the rectangle.... :(
-
+            /*
             boxRect = new RectangleF(position.X, position.Y, image.Width, image.Height);
             PointF topLeft = new PointF(center.X - (image.Width/2),center.Y - (image.Height/2));
 
@@ -103,7 +126,7 @@ namespace RaceGameTest.Objects
             float x = topLeft.X * (float)Math.Cos(rad) - topLeft.Y * (float)Math.Sin(rad);
             float y = topLeft.X * (float)Math.Sin(rad) + topLeft.Y * (float)Math.Cos(rad);
             boxRect = new RectangleF(position.X + x, position.Y + y,image.Width,image.Height);
-
+            */
             base.Update();
         }
     }

@@ -19,14 +19,14 @@ namespace RaceGameTest
                 int F_MotorReturn = F_motor / 6;
                 return F_MotorReturn;
             }
-            if (Reverse == true && Fuel == 0 || Fuel < 0)
+            if (Reverse == true && Fuel <= 0)
             {
                 int F_MotorReturn = F_motor / (6 * 20);
                 return F_MotorReturn;
             }
             if (Fuel == 0 || Fuel < 0 && Forward)
             {
-                int F_MotorReturn = Convert.ToInt16(F_motor * 0.05f);
+                int F_MotorReturn = Convert.ToInt32(F_motor * 0.05f);
                 return F_MotorReturn;
             }
             if (Forward)
@@ -159,7 +159,7 @@ namespace RaceGameTest
              }*/
             else
             {
-                int Steering = 100000;
+                int Steering = 500000;
                 float RotationCalculated = Steering / (Massa + (Convert.ToSingle(Math.Pow(Math.Abs(Velocity), 1.5)))); //0.85
                 return RotationCalculated;
             }

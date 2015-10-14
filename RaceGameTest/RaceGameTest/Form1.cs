@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using RaceGameTest.Keyboard;
+
+using System.Runtime.InteropServices;
 namespace RaceGameTest
 {
     public partial class Form1 : Form
@@ -16,9 +18,24 @@ namespace RaceGameTest
         private Graphics graphics;
         //private Object[] gameObjects;
        // private List<Objects.GameObject> gameObjects = new List<Objects.GameObject>();
+        [DllImport("kernel32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool AllocConsole();
         public Form1()
         {
             InitializeComponent();
+            AllocConsole();
+
+            // Define the border style of the form to a dialog box.
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            // Set the MaximizeBox to false to remove the maximize box.
+            this.MaximizeBox = false;
+            // Set the MinimizeBox to false to remove the minimize box.
+            this.MinimizeBox = false;
+            // Set the start position of the form to the center of the screen.
+            this.StartPosition = FormStartPosition.CenterScreen;
+
+
             graphics = this.CreateGraphics();
 
             game.OnDrawGameObject += game_OnDrawGameObject;
@@ -63,15 +80,24 @@ namespace RaceGameTest
                 //Draw image en update position.
                 e.Graphics.DrawImage(game.gameObjects[i].image, game.gameObjects[i].position);
                 e.Graphics.ResetTransform();
-                
-                //Test
-                e.Graphics.DrawRectangle(new Pen(Color.DarkRed), game.gameObjects[i].boxRect.X, game.gameObjects[i].boxRect.Y, game.gameObjects[i].boxRect.Width, game.gameObjects[i].boxRect.Height);
-                e.Graphics.ResetTransform();
+
                 //Center
                 e.Graphics.DrawEllipse(new Pen(Color.Turquoise),  game.gameObjects[i].position.X + game.gameObjects[i].center.X - 5,game.gameObjects[i].position.Y + game.gameObjects[i].center.Y - 5, 10, 10);
                 e.Graphics.ResetTransform();
-                //Mat Test
-                e.Graphics.DrawEllipse(new Pen(Color.Black), game.gameObjects[i].position.X + game.gameObjects[i].MatTest().X, game.gameObjects[i].position.Y + game.gameObjects[i].MatTest().Y, 10, 10);
+                //Collision circles Debug
+                float centerXWorld = game.gameObjects[i].position.X + game.gameObjects[i].center.X;
+                float centerYWorld = game.gameObjects[i].position.Y + game.gameObjects[i].center.Y;
+
+                e.Graphics.DrawEllipse(new Pen(Color.Yellow), centerXWorld + game.gameObjects[i].RotatePoint(game.gameObjects[i].fourPoints.topLeft).X, centerYWorld + game.gameObjects[i].RotatePoint(game.gameObjects[i].fourPoints.topLeft).Y, 2, 2);
+                e.Graphics.ResetTransform();
+
+                e.Graphics.DrawEllipse(new Pen(Color.Yellow), centerXWorld + game.gameObjects[i].RotatePoint(game.gameObjects[i].fourPoints.topRight).X, centerYWorld + game.gameObjects[i].RotatePoint(game.gameObjects[i].fourPoints.topRight).Y, 2, 2);
+                e.Graphics.ResetTransform();
+
+                e.Graphics.DrawEllipse(new Pen(Color.Yellow), centerXWorld + game.gameObjects[i].RotatePoint(game.gameObjects[i].fourPoints.botLeft).X, centerYWorld + game.gameObjects[i].RotatePoint(game.gameObjects[i].fourPoints.botLeft).Y, 2, 2);
+                e.Graphics.ResetTransform();
+
+                e.Graphics.DrawEllipse(new Pen(Color.Yellow), centerXWorld + game.gameObjects[i].RotatePoint(game.gameObjects[i].fourPoints.botRight).X, centerYWorld + game.gameObjects[i].RotatePoint(game.gameObjects[i].fourPoints.botRight).Y, 2, 2);
                 e.Graphics.ResetTransform();
                 
                 /*

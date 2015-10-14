@@ -13,6 +13,7 @@ namespace RaceGameTest
         public PointF topRight;
         public PointF botLeft;
         public PointF botRight;
+
         public FourPoints(PointF tl,PointF tr, PointF bl,PointF br)
         {
             topLeft = tl;

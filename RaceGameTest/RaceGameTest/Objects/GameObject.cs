@@ -16,30 +16,44 @@ namespace RaceGameTest.Objects
         public PointF center;
         public float angle = 0;
         public RectangleF boxRect = new RectangleF();
+
         public FourPoints fourPoints;
+        public FourPoints rotatedFourPoints;
         public GameObject(string path)
         {
             image = Image.FromFile(path);
             center = new PointF(image.Width / 2, image.Height / 2);
             //fourPoints
-            PointF topLeft = new PointF(center.X - (image.Width / 2), center.Y - (image.Height / 2));
-            PointF topRight = new PointF(center.X + (image.Width / 2), center.Y - (image.Height / 2));
-            PointF botLeft = new PointF(center.X - (image.Width / 2), center.Y + (image.Height / 2));
-            PointF botRight = new PointF(center.X + (image.Width / 2), center.Y + (image.Height / 2));
+            PointF topLeft = new PointF(center.X - (float)(image.Width / 2), center.Y - (float)(image.Height / 2));
+            PointF topRight = new PointF(center.X + (float)(image.Width / 2), center.Y - (float)(image.Height / 2));
+            PointF botLeft = new PointF(center.X - (float)(image.Width / 2), center.Y + (float)(image.Height / 2));
+            PointF botRight = new PointF(center.X + (float)(image.Width / 2), center.Y + (float)(image.Height / 2));
             fourPoints = new FourPoints(topLeft, topRight, botLeft, botRight);
         }
+        public PointF RotatePoint(PointF point)
+        {
+            float rad = -(float)(angle * Math.PI / 180);
+            float zeroCenterX = (point.X - (center.X ));
+            float zeroCenterY = (point.Y - (center.Y ));
+
+            float x = zeroCenterX * (float)Math.Cos(rad) + zeroCenterY * (float)Math.Sin(rad);
+            float y = zeroCenterX * (float)-Math.Sin(rad) + zeroCenterY * (float)Math.Cos(rad);
+
+            return new PointF(x , y );
+        }
         //Trying to move one point.
+        /*
         public PointF MatTest()
         {
-            //PointF topLeft = new PointF(center.X - (image.Width / 2), center.Y - (image.Height / 2));
-            float rad = (float)(angle * Math.PI / 180);
-            float x = fourPoints.topLeft.X * (float)Math.Cos(rad) - fourPoints.topLeft.Y * (float)Math.Sin(rad);
-            float y = fourPoints.topLeft.X * (float)Math.Sin(rad) + fourPoints.topLeft.Y * (float)Math.Cos(rad);
+
             return new PointF(x, y);
-        }
+        }*/
         public virtual void Update()
         {
-
+            rotatedFourPoints.topLeft = RotatePoint(fourPoints.topLeft);
+            rotatedFourPoints.topRight = RotatePoint(fourPoints.topRight);
+            rotatedFourPoints.botLeft = RotatePoint(fourPoints.botLeft);
+            rotatedFourPoints.botRight = RotatePoint(fourPoints.botRight);
         }
     }
 }
