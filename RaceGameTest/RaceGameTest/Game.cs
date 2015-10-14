@@ -63,12 +63,12 @@ namespace RaceGameTest
             /* Player one Car */
             player1Car = new Car();
             player1Car.position = new PointF(300, 400);
-            player1Car.Draw("_Images\\car.jpg");
+            player1Car.Draw("_Images\\JeffersonGTA2.png");
             DrawObject(player1Car);
             gameObjects.Add(player1Car);
             /* Player Two Car */
             player2Car = new Car();
-            player2Car.Draw("_Images\\car.jpg");
+            player2Car.Draw("_Images\\JeffersonGTA2.png");
             DrawObject(player2Car);
             gameObjects.Add(player2Car);
             //map.Draw()
@@ -79,30 +79,42 @@ namespace RaceGameTest
         {
             if (car != null)
             {
-                Color color = map.GetPixelAt((int)car.position.X, (int)car.position.Y);
+                Color color = map.GetPixelAt((int)car.position.X + (int)car.center.X, (int)car.position.Y + (int)car.center.Y);
                 if(color == ColorCol.road)
                 {
                     //Do things
+                    car.speed = 200;
                 }
                 else if( color == ColorCol.collision)
                 {
                     //Do things
                 }
+                else if (color == ColorCol.slow)
+                {
+                    //Do things
+                    car.speed = 100;
+                }
             }
         }
         private void Update()
         {
+            MapColCheck(player1Car);
+            MapColCheck(player2Car);
+
             PlayerOneCarMovement();
             PlayerTwoCarMovement();
             if (player1Car != null)
             {
                 if (player1Car.OnBoxCollision(player2Car))
                 {
-                    
                     //Console.WriteLine("To Do");
                     PointF forward = player1Car.MoveForward();
-                    PointF newPosition = new PointF(player1Car.position.X + (forward.X * 20) , player1Car.position.Y + (forward.Y * 20)) ;
+                    PointF newPosition = new PointF(player1Car.position.X - ((forward.X * 5) * deltaTime) , player1Car.position.Y - ((forward.Y * 5) * deltaTime)) ;
                     OnUpdatePosition(player1Car, newPosition);
+
+                    forward = player2Car.MoveForward();
+                    newPosition = new PointF(player2Car.position.X - ((forward.X * 5) * deltaTime), player2Car.position.Y - ((forward.Y * 5) * deltaTime));
+                    OnUpdatePosition(player2Car, newPosition);
                 }
             }
         }

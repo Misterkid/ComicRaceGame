@@ -63,9 +63,11 @@ namespace RaceGameTest
                 //Draw image en update position.
                 e.Graphics.DrawImage(game.gameObjects[i].image, game.gameObjects[i].position);
                 e.Graphics.ResetTransform();
-
                 //Test
                 e.Graphics.DrawRectangle(new Pen(Color.DarkRed), game.gameObjects[i].boxRect.X, game.gameObjects[i].boxRect.Y, game.gameObjects[i].boxRect.Width, game.gameObjects[i].boxRect.Height);
+                e.Graphics.ResetTransform();
+                //Center
+                e.Graphics.DrawEllipse(new Pen(Color.Turquoise),  game.gameObjects[i].position.X + game.gameObjects[i].center.X - 5,game.gameObjects[i].position.Y + game.gameObjects[i].center.Y - 5, 10, 10);
                 e.Graphics.ResetTransform();
                 /*
                 e.Graphics.DrawRectangle(new Pen(Color.DarkRed),gameObjects[i].GetCollisionDots().X, gameObjects[i].GetCollisionDots().Y, 10, 10);
@@ -81,7 +83,6 @@ namespace RaceGameTest
         }
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-
             game.input.SetKey(e.KeyCode, true);
 
         }
@@ -90,9 +91,5 @@ namespace RaceGameTest
             game.input.SetKey(e.KeyCode, false);
         }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
     }
 }

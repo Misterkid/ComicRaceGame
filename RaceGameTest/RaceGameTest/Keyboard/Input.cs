@@ -9,6 +9,7 @@ namespace RaceGameTest.Keyboard
     class Input
     {
         Dictionary<Keys, bool> registredKeys = new Dictionary<Keys, bool>();
+
         public void RegisterKey(Keys inputKey)
         {
             registredKeys.Add(inputKey, false);
