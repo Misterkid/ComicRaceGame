@@ -126,7 +126,7 @@ namespace RaceGameTest
             if (Speed <= 0 && !Reverse && !Forward)
             {
                 float AccelerateCalc = (F_motorCalculated - F_rol - F_air) / MassaAutoCalculated;
-                Speed += AccelerateCalc;
+                Speed -= AccelerateCalc;
                 return Speed;
             }
                 
