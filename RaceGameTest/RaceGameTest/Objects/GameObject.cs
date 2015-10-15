@@ -22,7 +22,10 @@ namespace RaceGameTest.Objects
         public GameObject(string path)
         {
             image = Image.FromFile(path);
+            //bitmap = new Bitmap(image);
+
             center = new PointF(image.Width / 2, image.Height / 2);
+            
             //fourPoints
             PointF topLeft = new PointF(center.X - (float)(image.Width / 2), center.Y - (float)(image.Height / 2));
             PointF topRight = new PointF(center.X + (float)(image.Width / 2), center.Y - (float)(image.Height / 2));

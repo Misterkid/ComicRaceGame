@@ -63,34 +63,55 @@ namespace RaceGameTest
             gameObjects.Add(map);
             /* Player one Car */
             player1Car = new Car("_Images\\JeffersonGTA2.png");
-            player1Car.position = new PointF(300, 400);
+            player1Car.position = new PointF(500, 700);
+            player1Car.angle = 270;
             DrawObject(player1Car);
             gameObjects.Add(player1Car);
+
             /* Player Two Car */
             player2Car = new Car("_Images\\JeffersonGTA2.png");
+            player2Car.position = new PointF(500, 675);
+            player2Car.angle = 270;
             DrawObject(player2Car);
             gameObjects.Add(player2Car);
 
+            player1Car.SetCollision();
+            player2Car.SetCollision();
 
         }
         private void MapColCheck(Car car)
         {
             if (car != null)
             {
-                Color color = map.GetPixelAt((int)car.position.X + (int)car.center.X, (int)car.position.Y + (int)car.center.Y);
+                car.SetCollision();
+                //Color color = map.GetPixelAt((int)car.position.X + (int)car.center.X, (int)car.position.Y + (int)car.center.Y);
+                float centerXWorld = (int)car.position.X + (int)car.center.X;
+                float centerYWorld = (int)car.position.Y + (int)car.center.Y;
+
+                Color topLeftColor = map.GetPixelAt((int)centerXWorld + (int)car.rotatedFourPoints.topLeft.X, (int)centerYWorld + (int)car.rotatedFourPoints.topLeft.Y);
+                Color topRightColor = map.GetPixelAt((int)centerXWorld + (int)car.rotatedFourPoints.topRight.X, (int)centerYWorld + (int)car.rotatedFourPoints.topRight.Y);
+                Color botLeftColor = map.GetPixelAt((int)centerXWorld + (int)car.rotatedFourPoints.botLeft.X, (int)centerYWorld + (int)car.rotatedFourPoints.botLeft.Y);
+                Color botRightColor = map.GetPixelAt((int)centerXWorld + (int)car.rotatedFourPoints.botRight.X, (int)centerYWorld + (int)car.rotatedFourPoints.botRight.Y);
                 // Can't put color in a switch for some reason!
-                if(color == ColorCol.road)
+
+                if (topLeftColor != ColorCol.collision && topRightColor != ColorCol.collision && botLeftColor != ColorCol.collision && botRightColor != ColorCol.collision)
+                {
+                    car.lastPos = car.position;
+                    car.lastAngle = car.angle;
+                }
+
+                if (topLeftColor == ColorCol.road || topRightColor == ColorCol.road || botLeftColor == ColorCol.road || botRightColor == ColorCol.road)
                 {
                     //Do things
                     //car.speed = 200;
+                    /*
+                    if (topLeftColor == ColorCol.road && topRightColor == ColorCol.road && botLeftColor == ColorCol.road && botRightColor == ColorCol.road)
+                        car.lastRoadPos = car.position;
+                     */ 
                 }
-                else if( color == ColorCol.collision)
-                {
-                    //Do things
-                    //car.speed = 0;
-                    car.velocity = 0;
-                }
-                else if (color == ColorCol.slow)
+                //else if( color == ColorCol.collision)
+                //else if (color == ColorCol.slow)
+                if (topLeftColor == ColorCol.slow || topRightColor == ColorCol.slow || botLeftColor == ColorCol.slow || botRightColor == ColorCol.slow)
                 {
                     if (car.isGoingForward)
                         car.velocity = 20;
@@ -103,15 +124,53 @@ namespace RaceGameTest
                        // car.velocity -= (5000 * deltaTime);
                     //}
                 }
-                else if (color == ColorCol.pitstop)
+                if (topLeftColor == ColorCol.collision || topRightColor == ColorCol.collision || botLeftColor == ColorCol.collision || botRightColor == ColorCol.collision)
+                {
+                    //Do things
+                    //car.lastPos = car.position;
+                    //car.lastAngle = car.angle;
+                    OnUpdatePosition(car, car.lastPos);
+                    OnUpdateRotation(car, car.lastAngle);
+                    /*
+                    if(topLeftColor == ColorCol.collision)
+                    {
+                        OnUpdatePosition(car, car.lastPos);
+                        OnUpdateRotation(car, car.lastAngle);
+
+                    }
+                    else if( topRightColor == ColorCol.collision)
+                    {
+                        OnUpdatePosition(car, car.lastPos);
+                        OnUpdateRotation(car, car.lastAngle);
+
+                    }
+                    else if(botLeftColor == ColorCol.collision)
+                    {
+                        OnUpdatePosition(car, car.lastPos);
+                        OnUpdateRotation(car, car.lastAngle);
+
+                    }
+                    else if(botRightColor == ColorCol.collision)
+                    {
+                        OnUpdatePosition(car, car.lastPos);
+                        OnUpdateRotation(car, car.lastAngle);
+
+                    }*/
+                    //car.speed = 0;
+                    //car.velocity = 0;
+                }
+                //else if (color == ColorCol.pitstop)
+                if (topLeftColor == ColorCol.pitstop || topRightColor == ColorCol.pitstop || botLeftColor == ColorCol.pitstop || botRightColor == ColorCol.pitstop)
                 {
                     //Do things
                 }
-                else if (color == ColorCol.start)
+               // else if (color == ColorCol.start)
+                if (topLeftColor == ColorCol.start || topRightColor == ColorCol.start || botLeftColor == ColorCol.start || botRightColor == ColorCol.start)
                 {
                     //Do things
                 }
-                else if (color == ColorCol.finnish)
+                //else if (color == ColorCol.finnish)
+                if (topLeftColor == ColorCol.finnish || topRightColor == ColorCol.finnish || botLeftColor == ColorCol.finnish || botRightColor == ColorCol.finnish)
                 {
                     //Do things
                     if (car.checkPoints == 4 && car.laps < 3)
@@ -127,25 +186,29 @@ namespace RaceGameTest
                         //car = null;
                     }
                 }
-                else if (color == ColorCol.checkp1)
+                //else if (color == ColorCol.checkp1)
+                if (topLeftColor == ColorCol.checkp1 || topRightColor == ColorCol.checkp1 || botLeftColor == ColorCol.checkp1 || botRightColor == ColorCol.checkp1)
                 {
                     //Do things
                     if(car.checkPoints == 0)
                         car.checkPoints = 1;
                 }
-                else if (color == ColorCol.checkp2)
+                //else if (color == ColorCol.checkp2)
+                if (topLeftColor == ColorCol.checkp2 || topRightColor == ColorCol.checkp2 || botLeftColor == ColorCol.checkp2 || botRightColor == ColorCol.checkp2)
                 {
                     //Do things
                     if (car.checkPoints == 1)
                         car.checkPoints = 2;
                 }
-                else if (color == ColorCol.checkp3)
+                //else if (color == ColorCol.checkp3)
+                if (topLeftColor == ColorCol.checkp3 || topRightColor == ColorCol.checkp3 || botLeftColor == ColorCol.checkp3 || botRightColor == ColorCol.checkp3)
                 {
                     //Do things
                     if (car.checkPoints == 2)
                         car.checkPoints = 3;
                 }
-                else if (color == ColorCol.checkp4)
+               // else if (color == ColorCol.checkp4)
+                if (topLeftColor == ColorCol.checkp4 || topRightColor == ColorCol.checkp4 || botLeftColor == ColorCol.checkp4 || botRightColor == ColorCol.checkp4)
                 {
                     //Do things
                     if (car.checkPoints == 3)
@@ -172,11 +235,7 @@ namespace RaceGameTest
                 PointF movementDelta = new PointF(movement.X * deltaTime, movement.Y * deltaTime);
                 PointF newPosition = new PointF(player1Car.position.X + movementDelta.X, player1Car.position.Y + movementDelta.Y);
                 OnUpdatePosition(player1Car, newPosition);
-
-                ;
-
-                Console.WriteLine(player1Car.position.X + player1Car.RotatePoint(player1Car.fourPoints.topLeft).X + ":"+  player1Car.position.Y + player1Car.RotatePoint(player1Car.fourPoints.topLeft).Y);
-
+                //Console.WriteLine(player1Car.position.X + player1Car.RotatePoint(player1Car.fourPoints.topLeft).X + ":"+  player1Car.position.Y + player1Car.RotatePoint(player1Car.fourPoints.topLeft).Y);
 
                 float rotation = player1Car.Rotate(input.GetKey(Keys.Left), input.GetKey(Keys.Right));
                 OnUpdateRotation(player1Car, player1Car.angle - (rotation * deltaTime));

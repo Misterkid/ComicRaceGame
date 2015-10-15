@@ -10,6 +10,8 @@ using System.Windows.Forms;
 using RaceGameTest.Keyboard;
 
 using System.Runtime.InteropServices;
+
+using System.Drawing.Drawing2D;
 namespace RaceGameTest
 {
     public partial class Form1 : Form
@@ -35,8 +37,8 @@ namespace RaceGameTest
             // Set the start position of the form to the center of the screen.
             this.StartPosition = FormStartPosition.CenterScreen;
 
-
             graphics = this.CreateGraphics();
+            graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
 
             game.OnDrawGameObject += game_OnDrawGameObject;
             //game.input.RegisterKey(Keys.Up);
@@ -81,6 +83,14 @@ namespace RaceGameTest
                 e.Graphics.DrawImage(game.gameObjects[i].image, game.gameObjects[i].position);
                 e.Graphics.ResetTransform();
 
+                Objects.Car car;
+                car = game.gameObjects[i] as Objects.Car;
+                if(car != null)
+                {
+                    e.Graphics.DrawImage(car.colBitMap, car.position);
+                    //car.colBitMap
+                }
+                e.Graphics.ResetTransform();
                 //Center
                 e.Graphics.DrawEllipse(new Pen(Color.Turquoise),  game.gameObjects[i].position.X + game.gameObjects[i].center.X - 5,game.gameObjects[i].position.Y + game.gameObjects[i].center.Y - 5, 10, 10);
                 e.Graphics.ResetTransform();
@@ -99,7 +109,21 @@ namespace RaceGameTest
 
                 e.Graphics.DrawEllipse(new Pen(Color.Yellow), centerXWorld + game.gameObjects[i].rotatedFourPoints.botRight.X, centerYWorld + game.gameObjects[i].rotatedFourPoints.botRight.Y, 2, 2);
                 e.Graphics.ResetTransform();
+               // e.Graphics.DrawLine(new Pen(Color.ForestGreen),game.gameObjects[i].rotatedFourPoints.botLeft,game.gameObjects[i].rotatedFourPoints.topLeft);
                 
+                //... Maybe we can do a hitcheck here... ?
+                /*
+                PointF[] points = new PointF[] { game.gameObjects[i].rotatedFourPoints.topLeft, game.gameObjects[i].rotatedFourPoints.topRight, game.gameObjects[i].rotatedFourPoints.botLeft, game.gameObjects[i].rotatedFourPoints.botRight };
+                Matrix matrix = new Matrix();
+                matrix.TransformPoints(points);
+                Region region = new Region();
+                region.Transform(matrix);
+
+                SolidBrush blueBrush = new SolidBrush(Color.FromArgb(100, 20, 20, 20));
+                e.Graphics.FillRegion(blueBrush, region);
+                */
+                //e.Graphics.reg
+
                 /*
                 e.Graphics.DrawRectangle(new Pen(Color.DarkRed),gameObjects[i].GetCollisionDots().X, gameObjects[i].GetCollisionDots().Y, 10, 10);
                 e.Graphics.ResetTransform();

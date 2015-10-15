@@ -35,9 +35,13 @@ namespace RaceGameTest
                 F_motor += 100;
                 return F_motor;
             }
+            
             if (Forward && MaxF_motor > F_motor)
             {
                 F_motor += 125;
+                if (F_motor > MaxF_motor)
+                    F_motor = MaxF_motor;
+
                 return F_motor;
             }
             if (!Forward && !Reverse && F_motor >= 0)
@@ -45,11 +49,13 @@ namespace RaceGameTest
                 F_motor = 0;
                 return F_motor;
             }
+            /*
             else
             {
                // F_motor = 0;
                 return F_motor;
-            }
+            }*/
+            return F_motor;
         }
 
         public static int FuelCalculated(bool Pitsstop, int F_motorCalculated, int Fuel, int MaxFuel)

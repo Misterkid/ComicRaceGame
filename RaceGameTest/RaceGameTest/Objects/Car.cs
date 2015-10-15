@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Drawing;
 using System.Threading;
 
+using System.Drawing.Drawing2D;
+
 namespace RaceGameTest.Objects
 {
     class Car:GameObject
@@ -15,8 +17,8 @@ namespace RaceGameTest.Objects
 
        // public int maxSpeed;
         public int mass = 1500;//Mass in KG
-        public int maxFuel = 1000;//Liters * 10
-        public int fuel = 1000; // Liters * 10
+        public int maxFuel = 100;//Liters * 10
+        public int fuel = 100; // Liters * 10
         public float surface = 1.9f;//m2
         public float CoEfficient = 0.32f;//Air resitance onzin
         //public bool isReverse = false;//Is reverse
@@ -28,16 +30,88 @@ namespace RaceGameTest.Objects
         public int maxmotorForce = 27000; //Motor force! Horse power
         public bool isGoingForward = false;
         public bool isGoingBackwards = false;
-
+        public bool pitchStop = false;
         public int checkPoints = 0;//checkpoitns taken.
         public int maxCheckPoints = 4;//4 checkpoints
         public int laps = 0;
         public int maxLaps = 3;
 
+        //For collision
+        public PointF lastPos;
+        public float lastAngle;
         //public bool[] checkPoints = new bool[4]{false,false,false,false};
+
+        public Bitmap colBitMap;
         public Car(string path):base(path)
         {
-           
+
+        }
+        /*
+        private Bitmap RotateImage()
+        {
+            Bitmap rotatedImage = new Bitmap(image);
+            using (Graphics g = Graphics.FromImage(rotatedImage))
+            {
+                g.TranslateTransform(image.Width / 2, image.Height / 2); //set the rotation point as the center into the matrix
+                g.RotateTransform(angle); //rotate
+                g.TranslateTransform(-image.Width / 2, -image.Height / 2); //restore rotation point into the matrix
+                g.DrawImage(image, new Point(0, 0)); //draw the image on the new bitmap
+            }
+            return rotatedImage;
+        }*/
+
+        /*
+        private Bitmap RotateImage(Bitmap bmp, float angleT)
+        {
+            Bitmap rotatedImage = new Bitmap(bmp.Width, bmp.Height);
+            using (Graphics g = Graphics.FromImage(rotatedImage))
+            {
+                g.TranslateTransform(bmp.Width / 2, bmp.Height / 2); //set the rotation point as the center into the matrix
+                g.RotateTransform(angleT); //rotate
+                g.TranslateTransform(-bmp.Width / 2, -bmp.Height / 2); //restore rotation point into the matrix
+                g.DrawImage(bmp, new Point(0, 0)); //draw the image on the new bitmap
+            }
+
+            return rotatedImage;
+        }*/
+        private Bitmap RotateImage(Bitmap b, float Angle)
+        {
+            Bitmap returnBitmap = new Bitmap(b.Width, b.Height);
+            using (Graphics g = Graphics.FromImage(returnBitmap))
+            {
+                g.TranslateTransform(b.Width / 2.0f, b.Height / 2.0f);
+                g.RotateTransform(Angle);
+                g.TranslateTransform(-b.Width / 2.0f, -b.Height / 2.0f);
+
+                g.DrawImage(b, 0, 0);
+            }
+
+            return returnBitmap;
+        }
+        public void SetCollision()
+        {
+            colBitMap = new Bitmap(image);//RotateImage(colBitMap, angle);
+            
+            for (int x = 0; x < colBitMap.Width; x++)
+            {
+                for (int y = 0; y < colBitMap.Height; y++)
+                {
+                    colBitMap.SetPixel(x, y, ColorCol.collision);
+                }
+            }
+            colBitMap = RotateImage(colBitMap,angle);
+            /*
+            for (int x = 0; x < colBitMap.Width; x++)
+            {
+                for (int y = 0; y < colBitMap.Height; y++)
+                {
+                    colBitMap.SetPixel(x, y, ColorCol.collision);
+                }
+            }*/
+           // colBitMap = RotateImage();
+            
+           //colBitMap = RotateImage(colBitMap, angle);
+             
         }
         //-MoveForward = backwards... Duh
         public PointF MoveForward()
@@ -76,7 +150,9 @@ namespace RaceGameTest.Objects
             */
             //int F_MotorCalc1 = CarPhysics.F_motorCalculated(isGoingBackwards, motorForce, maxmotorForce, fuel, isGoingForward);
             motorForce = CarPhysics.F_motorCalculated(isGoingBackwards, motorForce, maxmotorForce, fuel, isGoingForward);
-            fuel = CarPhysics.FuelCalculated(true, motorForce/*F_MotorCalc1*/, fuel, maxFuel);
+
+            fuel = CarPhysics.FuelCalculated(pitchStop, motorForce/*F_MotorCalc1*/, fuel, maxFuel);
+
             int trueMass = CarPhysics.MassaAutoCalculated(fuel, mass);
             float airForce = CarPhysics.F_Air(CoEfficient, 1.19f, velocity, surface);
             float rolForce = CarPhysics.Frol(200, trueMass, 10, isBreak, velocity);
@@ -84,7 +160,7 @@ namespace RaceGameTest.Objects
             //Console.WriteLine("{0}, {1}, {2}", motorForce, rolForce, airForce);
             //Thread.Sleep(1000);
 
-            Console.WriteLine(velocity);
+           // Console.WriteLine(fuel  + ":" + motorForce);
             //speed = speed + (int)velocity;
             /*
             if (isRotating)
@@ -104,6 +180,7 @@ namespace RaceGameTest.Objects
             {
                 //RectangleF currentRect = new RectangleF(position.X, position.Y, image.Width, image.Width);
                 // RectangleF otherRect = new RectangleF(other.position.X, other.position.Y, other.image.Width, other.image.Width);
+                //region.Transform()
                 if (boxRect.IntersectsWith(other.boxRect))
                 {
                     return true;
