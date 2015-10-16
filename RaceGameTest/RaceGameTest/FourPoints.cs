@@ -14,12 +14,21 @@ namespace RaceGameTest
         public PointF botLeft;
         public PointF botRight;
 
-        public FourPoints(PointF tl,PointF tr, PointF bl,PointF br)
+        public PointF topCenter;
+        public PointF botCenter;
+        public PointF rightCenter;
+        public PointF leftCenter;
+        public FourPoints(PointF tl,PointF tr, PointF bl,PointF br,PointF center)
         {
             topLeft = tl;
             topRight = tr;
             botLeft = bl;
             botRight = br;
+            topCenter = new PointF(center.X, tl.Y);
+            botCenter = new PointF(center.X, bl.Y);
+
+            leftCenter = new PointF(tl.X, center.Y);
+            rightCenter = new PointF(tr.X, center.Y);
         }
     }
 }

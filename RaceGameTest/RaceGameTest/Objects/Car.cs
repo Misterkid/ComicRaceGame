@@ -37,81 +37,13 @@ namespace RaceGameTest.Objects
         public int maxLaps = 3;
 
         //For collision
+        /*
         public PointF lastPos;
-        public float lastAngle;
+        public float lastAngle;*/
         //public bool[] checkPoints = new bool[4]{false,false,false,false};
-
-        public Bitmap colBitMap;
         public Car(string path):base(path)
         {
 
-        }
-        /*
-        private Bitmap RotateImage()
-        {
-            Bitmap rotatedImage = new Bitmap(image);
-            using (Graphics g = Graphics.FromImage(rotatedImage))
-            {
-                g.TranslateTransform(image.Width / 2, image.Height / 2); //set the rotation point as the center into the matrix
-                g.RotateTransform(angle); //rotate
-                g.TranslateTransform(-image.Width / 2, -image.Height / 2); //restore rotation point into the matrix
-                g.DrawImage(image, new Point(0, 0)); //draw the image on the new bitmap
-            }
-            return rotatedImage;
-        }*/
-
-        /*
-        private Bitmap RotateImage(Bitmap bmp, float angleT)
-        {
-            Bitmap rotatedImage = new Bitmap(bmp.Width, bmp.Height);
-            using (Graphics g = Graphics.FromImage(rotatedImage))
-            {
-                g.TranslateTransform(bmp.Width / 2, bmp.Height / 2); //set the rotation point as the center into the matrix
-                g.RotateTransform(angleT); //rotate
-                g.TranslateTransform(-bmp.Width / 2, -bmp.Height / 2); //restore rotation point into the matrix
-                g.DrawImage(bmp, new Point(0, 0)); //draw the image on the new bitmap
-            }
-
-            return rotatedImage;
-        }*/
-        private Bitmap RotateImage(Bitmap b, float Angle)
-        {
-            Bitmap returnBitmap = new Bitmap(b.Width, b.Height);
-            using (Graphics g = Graphics.FromImage(returnBitmap))
-            {
-                g.TranslateTransform(b.Width / 2.0f, b.Height / 2.0f);
-                g.RotateTransform(Angle);
-                g.TranslateTransform(-b.Width / 2.0f, -b.Height / 2.0f);
-
-                g.DrawImage(b, 0, 0);
-            }
-
-            return returnBitmap;
-        }
-        public void SetCollision()
-        {
-            colBitMap = new Bitmap(image);//RotateImage(colBitMap, angle);
-            
-            for (int x = 0; x < colBitMap.Width; x++)
-            {
-                for (int y = 0; y < colBitMap.Height; y++)
-                {
-                    colBitMap.SetPixel(x, y, ColorCol.collision);
-                }
-            }
-            colBitMap = RotateImage(colBitMap,angle);
-            /*
-            for (int x = 0; x < colBitMap.Width; x++)
-            {
-                for (int y = 0; y < colBitMap.Height; y++)
-                {
-                    colBitMap.SetPixel(x, y, ColorCol.collision);
-                }
-            }*/
-           // colBitMap = RotateImage();
-            
-           //colBitMap = RotateImage(colBitMap, angle);
-             
         }
         //-MoveForward = backwards... Duh
         public PointF MoveForward()
@@ -174,6 +106,7 @@ namespace RaceGameTest.Objects
             return new PointF(deltaX, deltaY);
             
         }
+        /*
         public bool OnBoxCollision(GameObject other)
         {
             if (other != null)
@@ -187,7 +120,7 @@ namespace RaceGameTest.Objects
                 }
             }
             return false;
-        }
+        }*/
         public override void Update()
         {
             // game.gameObjects[i].position.X + game.gameObjects[i].center.X - 5,game.gameObjects[i].position.Y + game.gameObjects[i].center.Y - 5, 10, 10);

@@ -1,4 +1,6 @@
-﻿using System;
+﻿#define __DEBUG_MODE
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -83,6 +85,7 @@ namespace RaceGameTest
                 e.Graphics.DrawImage(game.gameObjects[i].image, game.gameObjects[i].position);
                 e.Graphics.ResetTransform();
 
+                /*
                 Objects.Car car;
                 car = game.gameObjects[i] as Objects.Car;
                 if(car != null)
@@ -90,7 +93,11 @@ namespace RaceGameTest
                     e.Graphics.DrawImage(car.colBitMap, car.position);
                     //car.colBitMap
                 }
+
                 e.Graphics.ResetTransform();
+                 */
+                /* DEBUG! */
+#if __DEBUG_MODE
                 //Center
                 e.Graphics.DrawEllipse(new Pen(Color.Turquoise),  game.gameObjects[i].position.X + game.gameObjects[i].center.X - 5,game.gameObjects[i].position.Y + game.gameObjects[i].center.Y - 5, 10, 10);
                 e.Graphics.ResetTransform();
@@ -109,6 +116,22 @@ namespace RaceGameTest
 
                 e.Graphics.DrawEllipse(new Pen(Color.Yellow), centerXWorld + game.gameObjects[i].rotatedFourPoints.botRight.X, centerYWorld + game.gameObjects[i].rotatedFourPoints.botRight.Y, 2, 2);
                 e.Graphics.ResetTransform();
+
+
+
+                e.Graphics.DrawEllipse(new Pen(Color.Yellow), centerXWorld + game.gameObjects[i].rotatedFourPoints.topCenter.X, centerYWorld + game.gameObjects[i].rotatedFourPoints.topCenter.Y, 2, 2);
+                e.Graphics.ResetTransform();
+
+                e.Graphics.DrawEllipse(new Pen(Color.Yellow), centerXWorld + game.gameObjects[i].rotatedFourPoints.botCenter.X, centerYWorld + game.gameObjects[i].rotatedFourPoints.botCenter.Y, 2, 2);
+                e.Graphics.ResetTransform();
+
+                e.Graphics.DrawEllipse(new Pen(Color.Yellow), centerXWorld + game.gameObjects[i].rotatedFourPoints.leftCenter.X, centerYWorld + game.gameObjects[i].rotatedFourPoints.leftCenter.Y, 2, 2);
+                e.Graphics.ResetTransform();
+
+                e.Graphics.DrawEllipse(new Pen(Color.Yellow), centerXWorld + game.gameObjects[i].rotatedFourPoints.rightCenter.X, centerYWorld + game.gameObjects[i].rotatedFourPoints.rightCenter.Y, 2, 2);
+                e.Graphics.ResetTransform();
+
+#endif
                // e.Graphics.DrawLine(new Pen(Color.ForestGreen),game.gameObjects[i].rotatedFourPoints.botLeft,game.gameObjects[i].rotatedFourPoints.topLeft);
                 
                 //... Maybe we can do a hitcheck here... ?
@@ -129,6 +152,13 @@ namespace RaceGameTest
                 e.Graphics.ResetTransform();
                  */ 
             }
+            //This will be removed!
+            /*
+            if (game.objectCollisionMap.bitmap != null)
+            {
+                e.Graphics.DrawImage(game.objectCollisionMap.bitmap, 0, 0);
+                e.Graphics.ResetTransform();
+            }*/
         }
         void game_OnDrawGameObject(object sender, Objects.GameObject arg)
         {

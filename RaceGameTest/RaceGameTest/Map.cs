@@ -10,7 +10,7 @@ namespace RaceGameTest
 {
     class Map : GameObject
     {
-        private Bitmap colBitmap;
+        //private Bitmap colBitmap;
         public Map(string pathToVisibleMap, string pathToColMap):base(pathToVisibleMap)
         {
             //image = Image.FromFile(pathToVisibleMap);
@@ -21,13 +21,24 @@ namespace RaceGameTest
         
         public Color GetPixelAt(int x,int y)
         {
-
-            //Console.WriteLine(image.Size);
-            if (x > 0 && y > 0 && x < colBitmap.Width && y < colBitmap.Height)
-                return colBitmap.GetPixel(x, y);
-            else
+            try
+            {
+                //Console.WriteLine(image.Size);
+                if (x > 0 && y > 0 && x < colBitmap.Width && y < colBitmap.Height)
+                    return colBitmap.GetPixel(x, y);
+                else
+                    return Color.White;
+            }
+            catch
+            {
                 return Color.White;
+            }
 
+        }
+        protected override void DrawCollisionImage()
+        {
+            
+            //base.DrawCollisionImage();
         }
     }
     //yucky xD

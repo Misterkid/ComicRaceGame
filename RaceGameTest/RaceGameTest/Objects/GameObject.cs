@@ -19,9 +19,19 @@ namespace RaceGameTest.Objects
 
         public FourPoints fourPoints;
         public FourPoints rotatedFourPoints;
+        //For collision
+        public PointF lastPos;
+        public float lastAngle;
+        public int width;
+        public int height;
+        public Bitmap colBitmap;
+
+        public PointF test;
         public GameObject(string path)
         {
             image = Image.FromFile(path);
+            width = image.Width;
+            height = image.Height;
             //bitmap = new Bitmap(image);
 
             center = new PointF(image.Width / 2, image.Height / 2);
@@ -31,8 +41,32 @@ namespace RaceGameTest.Objects
             PointF topRight = new PointF(center.X + (float)(image.Width / 2), center.Y - (float)(image.Height / 2));
             PointF botLeft = new PointF(center.X - (float)(image.Width / 2), center.Y + (float)(image.Height / 2));
             PointF botRight = new PointF(center.X + (float)(image.Width / 2), center.Y + (float)(image.Height / 2));
-            fourPoints = new FourPoints(topLeft, topRight, botLeft, botRight);
-            rotatedFourPoints = new FourPoints(RotatePoint(fourPoints.topLeft), RotatePoint(fourPoints.topRight), RotatePoint(fourPoints.botLeft), RotatePoint(fourPoints.botRight));
+            fourPoints = new FourPoints(topLeft, topRight, botLeft, botRight,center);
+            rotatedFourPoints = new FourPoints(RotatePoint(fourPoints.topLeft), RotatePoint(fourPoints.topRight), RotatePoint(fourPoints.botLeft), RotatePoint(fourPoints.botRight),center);
+            
+            
+            DrawCollisionImage();
+        }
+        protected virtual void DrawCollisionImage()
+        {
+            colBitmap = new Bitmap(image);//RotateImage(colBitMap, angle);
+
+            for (int x = 0; x < colBitmap.Width; x++)
+            {
+                for (int y = 0; y < colBitmap.Height; y++)
+                {
+                    if (x > 2 && x < (colBitmap.Width - 2) &&
+                        y > 2 && y < (colBitmap.Height - 2))
+                    {
+                        colBitmap.SetPixel(x, y, ColorCol.collision);
+                    }
+                }
+            }
+            //Lol Lets not have collision with ourself :)
+            //colBitmap.SetPixel((int)fourPoints.topLeft.X, (int)fourPoints.topLeft.Y, Color.Transparent);
+            //colBitmap.SetPixel((int)fourPoints.topRight.X, (int)fourPoints.topRight.Y, Color.Transparent);
+            //colBitmap.SetPixel((int)fourPoints.botLeft.X, (int)fourPoints.botLeft.Y - 1, Color.Transparent);
+            //colBitmap.SetPixel((int)fourPoints.botRight.X, (int)fourPoints.botRight.Y - 1, Color.Transparent);
         }
         public PointF RotatePoint(PointF point)
         {
@@ -58,6 +92,17 @@ namespace RaceGameTest.Objects
             rotatedFourPoints.topRight = RotatePoint(fourPoints.topRight);
             rotatedFourPoints.botLeft = RotatePoint(fourPoints.botLeft);
             rotatedFourPoints.botRight = RotatePoint(fourPoints.botRight);
+
+            rotatedFourPoints.topCenter = RotatePoint(fourPoints.topCenter);
+            rotatedFourPoints.botCenter = RotatePoint(fourPoints.botCenter);
+
+            rotatedFourPoints.rightCenter = RotatePoint(fourPoints.rightCenter);
+            rotatedFourPoints.leftCenter = RotatePoint(fourPoints.leftCenter);
+
+            //Console.WriteLine(rotatedFourPoints.leftCenter + ":" + rotatedFourPoints.rightCenter);
+
+            //test = RotatePoint(new PointF(center.X,fourPoints.topLeft.Y));
+                // = new FourPoints(RotatePoint(topCenter), RotatePoint(botCenter), RotatePoint(leftCenter), RotatePoint(rightCenter));
         }
     }
 }
