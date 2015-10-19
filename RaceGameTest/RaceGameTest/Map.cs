@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using RaceGameTest.Objects;
-
 using System.Drawing;
+using RaceGameTest.Q_Engine;
 namespace RaceGameTest
 {
     class Map : GameObject
@@ -35,10 +35,9 @@ namespace RaceGameTest
             }
 
         }
-        protected override void DrawCollisionImage()
+        public override void DrawCollisionImage(string pathToCol)
         {
-            
-            //base.DrawCollisionImage();
+ 	        // base.DrawCollisionImage(pathToCol);
         }
     }
     //yucky xD

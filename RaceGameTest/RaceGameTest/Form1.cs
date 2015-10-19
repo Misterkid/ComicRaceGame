@@ -1,4 +1,4 @@
-﻿#define __DEBUG_MODE
+﻿//#define __DEBUG_MODE
 
 using System;
 using System.Collections.Generic;
@@ -12,24 +12,23 @@ using System.Windows.Forms;
 using RaceGameTest.Keyboard;
 
 using System.Runtime.InteropServices;
-
 using System.Drawing.Drawing2D;
+using RaceGameTest.Q_Engine;
 namespace RaceGameTest
 {
-    public partial class Form1 : Form
+    partial class Form1 : Form
     {
-        private Game game = new Game();
+        public Game game;// = new Game();
         private Graphics graphics;
         //private Object[] gameObjects;
        // private List<Objects.GameObject> gameObjects = new List<Objects.GameObject>();
         [DllImport("kernel32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         static extern bool AllocConsole();
-        public Form1()
+        public Form1(Game _game)//I'm lazy to redo all
         {
             InitializeComponent();
             AllocConsole();
-
             // Define the border style of the form to a dialog box.
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             // Set the MaximizeBox to false to remove the maximize box.
@@ -41,6 +40,7 @@ namespace RaceGameTest
 
             graphics = this.CreateGraphics();
             graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+            game = _game;
 
             game.OnDrawGameObject += game_OnDrawGameObject;
             //game.input.RegisterKey(Keys.Up);
@@ -50,7 +50,7 @@ namespace RaceGameTest
             //Controls.Add(pictureBox);
         }
 
-        void game_OnUpdateRotation(Objects.GameObject gameObject, float angle)
+        void game_OnUpdateRotation(GameObject gameObject, float angle)
         {
            // throw new NotImplementedException();
            // Invoke((MethodInvoker)(() =>
@@ -61,7 +61,7 @@ namespace RaceGameTest
             //}));
         }
 
-        void game_OnUpdatePosition(Objects.GameObject gameObject, PointF newPosition)
+        void game_OnUpdatePosition(GameObject gameObject, PointF newPosition)
         {
             //Invoke((MethodInvoker)(() =>
            // {
@@ -160,7 +160,7 @@ namespace RaceGameTest
                 e.Graphics.ResetTransform();
             }*/
         }
-        void game_OnDrawGameObject(object sender, Objects.GameObject arg)
+        void game_OnDrawGameObject(object sender, GameObject arg)
         {
             //gameObjects.Add(arg);
             arg.Update();

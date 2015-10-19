@@ -8,38 +8,28 @@ using RaceGameTest.Objects;
 using System.Windows.Forms;
 using RaceGameTest.Keyboard;
 using System.Drawing;
-
 using System.Diagnostics;
+using RaceGameTest.Q_Engine;
+using RaceGameTest.Objects;
 namespace RaceGameTest
 {
 
-    class Game
+    class Game:BaseGame
     {
-
-        private float deltaTime;
-        private float prevFrame;
-        private float currentFrame;
-        private Stopwatch stopWatch = new Stopwatch();
-
         public Input input = new Input();
 
         private Car player1Car;
         private Car player2Car;
         private Map map;
-
+#if !__NO_OBJ_COL 
         public ObjectCollisionMap objectCollisionMap;
-
-        public List<Objects.GameObject> gameObjects = new List<Objects.GameObject>();
+#endif
+        public List<GameObject> gameObjects = new List<GameObject>();
         public Game()
         {
-            //60 frames per second = 16.6666667(1000/60)
+#if !__NO_OBJ_COL 
             objectCollisionMap = new ObjectCollisionMap();
-            System.Timers.Timer gameTimer = new System.Timers.Timer(0.5f);//Locked ? ha not needed now!
-            gameTimer.Start();
-            gameTimer.Elapsed += gameTimer_Elapsed;
-
-            stopWatch.Start();
-
+#endif
             RegisterKeys();
         }
         //Register input here
@@ -69,6 +59,7 @@ namespace RaceGameTest
             player1Car = new Car("_Images\\JeffersonGTA2.png");
             player1Car.position = new PointF(500, 700);
             player1Car.angle = 270;
+            player1Car.DrawCollisionImage("_Images\\JeffersonGTA2Col.bmp");
             DrawObject(player1Car);
             gameObjects.Add(player1Car);
 
@@ -76,56 +67,31 @@ namespace RaceGameTest
             player2Car = new Car("_Images\\JeffersonGTA2.png");
             player2Car.position = new PointF(500, 675);
             player2Car.angle = 270;
+            player2Car.DrawCollisionImage("_Images\\JeffersonGTA2Col.bmp");
             DrawObject(player2Car);
             gameObjects.Add(player2Car);
             //player1Car.SetCollision();
             //player2Car.SetCollision();
 
         }
-        //Game Loop
-        private void Update()
+        //Update on each frame! :D
+        protected override void UpdateFrame()
         {
-            MapColCheck(player1Car);
-            MapColCheck(player2Car);
-            MovingObjectColCheck(player1Car);
-            MovingObjectColCheck(player2Car);
-
             PlayerOneCarMovement();
             PlayerTwoCarMovement();
+#if !__NO_OBJ_COL
+            objectCollisionMap.UpdateObjects(this);
+#endif
+            MapColCheck(player1Car);
+            MapColCheck(player2Car);
+
+            base.UpdateFrame();
         }
-        //Only use this on MOVING objects
-        private void MovingObjectColCheck(GameObject gameObject)
+
+        protected override void DrawFrame()
         {
-            /*
-            if (gameObject != null && objectCollisionMap != null)
-            {
-                objectCollisionMap.UpdateObjects(this);
-                float centerXWorld = (int)gameObject.position.X + (int)gameObject.center.X;
-                float centerYWorld = (int)gameObject.position.Y + (int)gameObject.center.Y;
-                Color topLeftColor = objectCollisionMap.GetPixelAt((int)centerXWorld + (int)gameObject.rotatedFourPoints.topLeft.X, (int)centerYWorld + (int)gameObject.rotatedFourPoints.topLeft.Y);
-                Color topRightColor = objectCollisionMap.GetPixelAt((int)centerXWorld + (int)gameObject.rotatedFourPoints.topRight.X, (int)centerYWorld + (int)gameObject.rotatedFourPoints.topRight.Y);
-                Color botLeftColor = objectCollisionMap.GetPixelAt((int)centerXWorld + (int)gameObject.rotatedFourPoints.botLeft.X, (int)centerYWorld + (int)gameObject.rotatedFourPoints.botLeft.Y);
-                Color botRightColor = objectCollisionMap.GetPixelAt((int)centerXWorld + (int)gameObject.rotatedFourPoints.botRight.X, (int)centerYWorld + (int)gameObject.rotatedFourPoints.botRight.Y);
 
-
-                if (topLeftColor != ColorCol.collision && topRightColor != ColorCol.collision && botLeftColor != ColorCol.collision && botRightColor != ColorCol.collision)
-                {
-                    gameObject.lastPos = gameObject.position;
-                    gameObject.lastAngle = gameObject.angle;
-                   // Console.WriteLine("It works?");
-                }
-                if (topLeftColor == ColorCol.collision || topRightColor == ColorCol.collision || botLeftColor == ColorCol.collision || botRightColor == ColorCol.collision)
-                {
-                    //Do things
-                    //car.lastPos = car.position;
-                    //car.lastAngle = car.angle;
-                    OnUpdatePosition(gameObject, gameObject.lastPos);
-                    OnUpdateRotation(gameObject, gameObject.lastAngle);
-                    Console.WriteLine("BAM");
-                }
-
-            }*/
-
+            base.DrawFrame();
         }
         //Only use this on MOVING objects
         private void MapColCheck(Car car)
@@ -134,7 +100,6 @@ namespace RaceGameTest
             {
                 //car.SetCollision();
                 //Color color = map.GetPixelAt((int)car.position.X + (int)car.center.X, (int)car.position.Y + (int)car.center.Y);
-                objectCollisionMap.UpdateObjects(this);
                 float centerXWorld = (int)car.position.X + (int)car.center.X;
                 float centerYWorld = (int)car.position.Y + (int)car.center.Y;
 
@@ -144,6 +109,7 @@ namespace RaceGameTest
                 Color botRightColor = map.GetPixelAt((int)centerXWorld + (int)car.rotatedFourPoints.botRight.X, (int)centerYWorld + (int)car.rotatedFourPoints.botRight.Y);
 
                 //Object collision points.
+#if !__NO_OBJ_COL 
                 Color topLeftColor2 = objectCollisionMap.GetPixelAt((int)centerXWorld + (int)car.rotatedFourPoints.topLeft.X, (int)centerYWorld + (int)car.rotatedFourPoints.topLeft.Y);
                 Color topRightColor2 = objectCollisionMap.GetPixelAt((int)centerXWorld + (int)car.rotatedFourPoints.topRight.X, (int)centerYWorld + (int)car.rotatedFourPoints.topRight.Y);
                 Color botLeftColor2 = objectCollisionMap.GetPixelAt((int)centerXWorld + (int)car.rotatedFourPoints.botLeft.X, (int)centerYWorld + (int)car.rotatedFourPoints.botLeft.Y);
@@ -153,23 +119,19 @@ namespace RaceGameTest
                 Color botCenterColor2 = objectCollisionMap.GetPixelAt((int)centerXWorld + (int)car.rotatedFourPoints.botCenter.X, (int)centerYWorld + (int)car.rotatedFourPoints.botCenter.Y);
                 Color LeftCenterColor2 = objectCollisionMap.GetPixelAt((int)centerXWorld + (int)car.rotatedFourPoints.leftCenter.X, (int)centerYWorld + (int)car.rotatedFourPoints.leftCenter.Y);
                 Color RightCenterColor2 = objectCollisionMap.GetPixelAt((int)centerXWorld + (int)car.rotatedFourPoints.rightCenter.X, (int)centerYWorld + (int)car.rotatedFourPoints.rightCenter.Y);
-                
+#endif                
                 // Can't put color in a switch for some reason!
-
-                bool changeLastPos = false;
+#if __NO_OBJ_COL
+                if (topLeftColor != ColorCol.collision && topRightColor != ColorCol.collision && botLeftColor != ColorCol.collision && botRightColor != ColorCol.collision)
+#else
                 if (topLeftColor != ColorCol.collision && topRightColor != ColorCol.collision && botLeftColor != ColorCol.collision && botRightColor != ColorCol.collision &&
                     topLeftColor2 != ColorCol.collision && topRightColor2 != ColorCol.collision && botLeftColor2 != ColorCol.collision && botRightColor2 != ColorCol.collision &&
                     topCenterColor2 != ColorCol.collision && botCenterColor2 != ColorCol.collision && LeftCenterColor2 != ColorCol.collision && RightCenterColor2 != ColorCol.collision)
+#endif
                 {
                    // Console.WriteLine("?");
-                    changeLastPos = true;
                     car.lastPos = car.position;
                     car.lastAngle = car.angle;
-                }
-                if(changeLastPos)
-                {
-                    //List<PointF> points = new List<PointF>();
-                    //PointF[] points =
                 }
 
                 if (topLeftColor == ColorCol.road || topRightColor == ColorCol.road || botLeftColor == ColorCol.road || botRightColor == ColorCol.road)
@@ -190,48 +152,20 @@ namespace RaceGameTest
                     
                     if (car.isGoingBackwards)
                         car.velocity = -10;
-
-                    //if (car.velocity > 10 && input.GetKey(Keys.W))
-                    //{
-                       // car.velocity -= (5000 * deltaTime);
-                    //}
                 }
-                if (topLeftColor == ColorCol.collision || topRightColor == ColorCol.collision || botLeftColor == ColorCol.collision || botRightColor == ColorCol.collision ||
+#if __NO_OBJ_COL 
+
+                if (topLeftColor == ColorCol.collision || topRightColor == ColorCol.collision || botLeftColor == ColorCol.collision || botRightColor == ColorCol.collision)
+#else
+                if (topLeftColor == ColorCol.collision || topRightColor == ColorCol.collision || botLeftColor == ColorCol.collision || botRightColor == ColorCol.collision ||                   
                     topLeftColor2 == ColorCol.collision || topRightColor2 == ColorCol.collision || botLeftColor2 == ColorCol.collision || botRightColor2 == ColorCol.collision ||
                     topCenterColor2 == ColorCol.collision || botCenterColor2 == ColorCol.collision || LeftCenterColor2 == ColorCol.collision || RightCenterColor2 == ColorCol.collision)
+#endif
                 {
                     //Do things
-                    //car.lastPos = car.position;
-                    //car.lastAngle = car.angle;
+                   // Console.WriteLine("?");
                     OnUpdatePosition(car, car.lastPos);
                     OnUpdateRotation(car, car.lastAngle);
-                    /*
-                    if(topLeftColor == ColorCol.collision)
-                    {
-                        OnUpdatePosition(car, car.lastPos);
-                        OnUpdateRotation(car, car.lastAngle);
-
-                    }
-                    else if( topRightColor == ColorCol.collision)
-                    {
-                        OnUpdatePosition(car, car.lastPos);
-                        OnUpdateRotation(car, car.lastAngle);
-
-                    }
-                    else if(botLeftColor == ColorCol.collision)
-                    {
-                        OnUpdatePosition(car, car.lastPos);
-                        OnUpdateRotation(car, car.lastAngle);
-
-                    }
-                    else if(botRightColor == ColorCol.collision)
-                    {
-                        OnUpdatePosition(car, car.lastPos);
-                        OnUpdateRotation(car, car.lastAngle);
-
-                    }*/
-                    //car.speed = 0;
-                    //car.velocity = 0;
                 }
                 //else if (color == ColorCol.pitstop)
                 if (topLeftColor == ColorCol.pitstop || topRightColor == ColorCol.pitstop || botLeftColor == ColorCol.pitstop || botRightColor == ColorCol.pitstop)
@@ -323,29 +257,19 @@ namespace RaceGameTest
                 OnUpdateRotation(player2Car, player2Car.angle - (rotation * deltaTime));
             }
         }
-        public void DrawObject(Objects.GameObject objectToDraw)
+        public void DrawObject(GameObject objectToDraw)
         {
             OnDrawObjectHandler handler = OnDrawGameObject;
             if (OnDrawGameObject != null)
                 handler(this, objectToDraw);
         }
-        private void gameTimer_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            currentFrame = stopWatch.ElapsedMilliseconds;
-            deltaTime = (currentFrame - prevFrame) / 1000;
-            prevFrame = currentFrame;
-
-            Update();
-
-        }
-        public delegate void OnDrawObjectHandler(object sender, Objects.GameObject arg);
+        public delegate void OnDrawObjectHandler(object sender,GameObject arg);
         public event OnDrawObjectHandler OnDrawGameObject;
 
-        public delegate void OnUpdateObjectPositionHandler(Objects.GameObject gameObject, PointF newPosition);
+        public delegate void OnUpdateObjectPositionHandler(GameObject gameObject, PointF newPosition);
         public event OnUpdateObjectPositionHandler OnUpdatePosition;
 
-
-        public delegate void OnUpdateObjectRotationHandler(Objects.GameObject gameObject, float angle);
+        public delegate void OnUpdateObjectRotationHandler(GameObject gameObject, float angle);
         public event OnUpdateObjectRotationHandler OnUpdateRotation;
     }
 }

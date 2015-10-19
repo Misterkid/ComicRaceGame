@@ -14,6 +14,7 @@ namespace RaceGameTest
         public Bitmap bitmap;
         private int width = 1024;
         private int height = 768;
+        private object lockObject = new object();
         public ObjectCollisionMap()
         {
             bitmap = new Bitmap(width, height);
@@ -24,14 +25,14 @@ namespace RaceGameTest
            // {
                 //Bitmap updatedBitmap = new Bitmap(width, height);
             //remake :|
-            try
+            bitmap.Dispose();
+            bitmap = null;
+            bitmap = new Bitmap(width, height);
+            lock (lockObject)//Lock. To prevent some nasty errors
             {
-                bitmap.Dispose();
-                bitmap = null;
-                bitmap = new Bitmap(width, height);
-
                 using (Graphics g = Graphics.FromImage(bitmap))
                 {
+                   // Console.WriteLine(bitmap);
                     for (int i = 0; i < game.gameObjects.Count; i++)
                     {
                         if (!(game.gameObjects[i] is Map))//Not map!
@@ -50,10 +51,6 @@ namespace RaceGameTest
 
                 }
             }
-            catch
-            {
-
-            }
                 /*
                 bitmap = updatedBitmap;
                 updatedBitmap.Dispose();
@@ -68,17 +65,17 @@ namespace RaceGameTest
         {
 
             //Console.WriteLine(image.Size);
-            try
-            {
+           // try
+            //{
                 if (x > 0 && y > 0 && x < bitmap.Width && y < bitmap.Height)
                     return bitmap.GetPixel(x, y);
                 else
                     return Color.White;
-            }
-            catch
-            {
-                return Color.White;
-            }
+           // }
+            //catch
+            //{
+                //return Color.White;
+           // }
 
         }
     }
