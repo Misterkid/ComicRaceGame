@@ -18,7 +18,7 @@ namespace RaceGameTest.Objects
        // public int maxSpeed;
         public int mass = 1500;//Mass in KG
         public int maxFuel = 100;//Liters * 10
-        public int fuel = 100; // Liters * 10
+        public float fuel = 100; // Liters * 10
         public float surface = 1.9f;//m2
         public float CoEfficient = 0.32f;//Air resitance onzin
         //public bool isReverse = false;//Is reverse

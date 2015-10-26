@@ -12,7 +12,7 @@ namespace RaceGameTest
         {
 
         }
-        public static int F_motorCalculated(bool Reverse, int F_motor, int MaxF_motor, int Fuel, bool Forward)
+        public static int F_motorCalculated(bool Reverse, int F_motor, int MaxF_motor, float Fuel, bool Forward)
         {
             if (Reverse && Fuel > 0 && MaxF_motor / 6 > F_motor)
             {
@@ -58,31 +58,31 @@ namespace RaceGameTest
             return F_motor;
         }
 
-        public static int FuelCalculated(bool Pitsstop, int F_motorCalculated, int Fuel, int MaxFuel)
+        public static float FuelCalculated(bool Pitsstop, int F_motorCalculated, float Fuel, int MaxFuel)
         {
             if (Fuel <= 0)
             {
-                int ReturnFuel = 0;
+                float ReturnFuel = 0;
                 return ReturnFuel;
 
             }
             else if (Pitsstop && Fuel < MaxFuel)
             {
 
-                int FuelUsage = 1;
-                int ReturnFuel = Fuel + FuelUsage;
+                float FuelUsage = 1;
+                float ReturnFuel = Fuel + FuelUsage;
                 return ReturnFuel;
             }
             else
             {
-                int FuelUsage = Convert.ToInt32(F_motorCalculated * 0.0005);
-                int ReturnFuel = Fuel - FuelUsage;
+                float FuelUsage = Convert.ToInt32(F_motorCalculated * 0.0005);
+                float ReturnFuel = Fuel - FuelUsage;
                 return ReturnFuel;
             }
 
         }
 
-        public static int MassaAutoCalculated(int FuelCalculated, int Massa)
+        public static int MassaAutoCalculated(float FuelCalculated, int Massa)
         {
             int ReturnMassa = Convert.ToInt32(Massa + FuelCalculated);
             return ReturnMassa;
