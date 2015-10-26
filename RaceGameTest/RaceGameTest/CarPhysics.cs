@@ -69,13 +69,13 @@ namespace RaceGameTest
             else if (Pitsstop && Fuel < MaxFuel)
             {
 
-                int FuelUsage = 10;
+                int FuelUsage = 1;
                 int ReturnFuel = Fuel + FuelUsage;
                 return ReturnFuel;
             }
             else
             {
-                int FuelUsage = Convert.ToInt32(F_motorCalculated * 0.005);
+                int FuelUsage = Convert.ToInt32(F_motorCalculated * 0.0005);
                 int ReturnFuel = Fuel - FuelUsage;
                 return ReturnFuel;
             }
@@ -84,7 +84,7 @@ namespace RaceGameTest
 
         public static int MassaAutoCalculated(int FuelCalculated, int Massa)
         {
-            int ReturnMassa = Convert.ToInt32(Massa + (FuelCalculated * 0.01));
+            int ReturnMassa = Convert.ToInt32(Massa + FuelCalculated);
             return ReturnMassa;
         }
 
