@@ -8,21 +8,24 @@ namespace Application
 {
 	public class EmptyClass
 	{
+		Dictionary<string, string> geluidsDictionary = new Dictionary<string, SoundPlayer>();
 		public static void Main ()
 		{
-		geluid("rem");
+			//geluid("rem");
+			AddSound("rem","remmen.wav");
+			AddSound("rem2","remmen.wav");
+			AddSound("rem3","remmen.wav");
+			
+			PlaySound("rem");
 		}
-		public static void geluid(string gebeurtenis)
+		public static void PlaySound(string soundName)
 		{
-		Dictionary<string, string> geluidsDictionary = new Dictionary<string, string>();
-		geluidsDictionary.Add("bots", "bots.wav");
-		geluidsDictionary.Add("rem", "remmen.wav");
-		geluidsDictionary.Add("vroem", "vroem.wav");
-		
-		string aanvraag = geluidsDictionary[gebeurtenis];
-		System.Media.SoundPlayer player = new System.Media.SoundPlayer(aanvraag);
-		player.Play();
-		Console.ReadLine();
+			geluidsDictionary[soundName].Play();
+		}
+		public static void AddSound(string soundName, string soundPath)
+		{
+			System.Media.SoundPlayer player = new System.Media.SoundPlayer(soundPath);
+			geluidsDictionary.Add(soundName, player);
 		}	
 	}
 }

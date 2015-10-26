@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using RaceGameTest.Q_Engine;
 namespace RaceGameTest
 {
     class CarPhysics
@@ -27,7 +27,11 @@ namespace RaceGameTest
                 F_motor += 25;
                 return F_motor;
             }
-            if (Fuel <= 0 && Forward && MaxF_motor / 3 > F_motor)
+            else if (Reverse && Fuel <= 0)
+            {
+                F_motor -= 25;
+            }
+            if (Fuel <= 0 && Forward && MaxF_motor / 10 > F_motor)
             {
                 //int F_MotorReturn = Convert.ToInt32(F_motor * 0.05f);
                 //return F_MotorReturn;
@@ -35,8 +39,12 @@ namespace RaceGameTest
                 F_motor += 100;
                 return F_motor;
             }
-            
-            if (Forward && MaxF_motor > F_motor)
+            else if (Forward && Fuel <= 0)
+            {
+                F_motor -= 100;
+            }
+
+            if (Forward && MaxF_motor > F_motor && Fuel != 0)
             {
                 F_motor += 125;
                 if (F_motor > MaxF_motor)
@@ -70,13 +78,13 @@ namespace RaceGameTest
             {
 
                 float FuelUsage = 1;
-                float ReturnFuel = Fuel + FuelUsage;
+                float ReturnFuel = Fuel + ((FuelUsage * 100) * QTime.DeltaTime);
                 return ReturnFuel;
             }
             else
             {
                 float FuelUsage = Convert.ToInt32(F_motorCalculated * 0.0005);
-                float ReturnFuel = Fuel - FuelUsage;
+                float ReturnFuel = Fuel - (FuelUsage * QTime.DeltaTime);
                 return ReturnFuel;
             }
 

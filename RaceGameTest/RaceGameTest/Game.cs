@@ -30,6 +30,7 @@ namespace RaceGameTest
 #if !__NO_OBJ_COL 
             objectCollisionMap = new ObjectCollisionMap();
 #endif
+            InitSounds();
             RegisterKeys();
         }
         //Register input here
@@ -73,6 +74,15 @@ namespace RaceGameTest
             //player1Car.SetCollision();
             //player2Car.SetCollision();
 
+        }
+        private void InitSounds()
+        {
+            jSound.AddSound("Rem","_Sounds\\rem.wav");
+            jSound.AddSound("Vroem", "_Sounds\\vroem.wav");
+            jSound.AddSound("Bots", "_Sounds\\bots.wav");
+
+           // jSound.PlaySound("Bots");
+           // jSound.PlaySound("Vroem");
         }
         //Update on each frame! :D
         protected override void UpdateFrame()
@@ -164,6 +174,7 @@ namespace RaceGameTest
                 {
                     //Do things
                    // Console.WriteLine("?");
+                    //jSound.PlaySound("Bots");
                     OnUpdatePosition(car, car.lastPos);
                     OnUpdateRotation(car, car.lastAngle);
                 }
@@ -171,6 +182,11 @@ namespace RaceGameTest
                 if (topLeftColor == ColorCol.pitstop || topRightColor == ColorCol.pitstop || botLeftColor == ColorCol.pitstop || botRightColor == ColorCol.pitstop)
                 {
                     //Do things
+                    car.pitchStop = true;
+                }
+                else if(car.pitchStop)
+                {
+                    car.pitchStop = false;
                 }
                // else if (color == ColorCol.start)
                 if (topLeftColor == ColorCol.start || topRightColor == ColorCol.start || botLeftColor == ColorCol.start || botRightColor == ColorCol.start)

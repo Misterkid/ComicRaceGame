@@ -17,9 +17,8 @@ namespace RaceGameTest.Objects
 
        // public int maxSpeed;
         public int mass = 1500;//Mass in KG
-        public float maxFuel = 100;//Liters * 10
+        public int maxFuel = 100;//Liters * 10
         public float fuel = 100; // Liters * 10
-        public float fuel = 100; // Liters * 10 
         public float surface = 1.9f;//m2
         public float CoEfficient = 0.32f;//Air resitance onzin
         //public bool isReverse = false;//Is reverse
@@ -78,11 +77,12 @@ namespace RaceGameTest.Objects
             }
             return 0;
         }
+        //Calculate how the car moves(Forward,backward and how fast) using car physics from Michael
         public PointF Move(/*bool forward,bool backwards,*/bool isBreak)
         {
             motorForce = CarPhysics.F_motorCalculated(isGoingBackwards, motorForce, maxmotorForce,fuel, isGoingForward);
+            fuel = CarPhysics.FuelCalculated(pitchStop, motorForce, fuel, maxFuel);
 
-            fuel = CarPhysics.FuelCalculated(pitchStop, motorForce, fuel, maxFuel) * QTime.DeltaTime;
             int trueMass = CarPhysics.MassaAutoCalculated(fuel, mass);
             float airForce = CarPhysics.F_Air(CoEfficient, 1.19f, velocity, surface);
             float rolForce = CarPhysics.Frol(200, trueMass, 10, isBreak, velocity);
