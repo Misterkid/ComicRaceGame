@@ -30,7 +30,7 @@ namespace RaceGameTest.Q_Engine
         [SuppressUnmanagedCodeSecurity, DllImport("user32.dll", CharSet = CharSet.Auto)]
         private static extern bool PeekMessage(out Message msg, IntPtr hWnd, uint messageFilterMin, uint messageFilterMax, uint flags);
 
-        protected float deltaTime;
+        //protected float deltaTime;
         private float prevFrame;
         private float currentFrame;
         private Stopwatch stopWatch = new Stopwatch();
@@ -55,7 +55,8 @@ namespace RaceGameTest.Q_Engine
         protected virtual void UpdateFrame()
         {
             currentFrame = stopWatch.ElapsedMilliseconds;
-            deltaTime = (currentFrame - prevFrame) / 1000;
+            QTime.DeltaTime = (currentFrame - prevFrame) / 1000;//Make it into seconds.
+            QTime.RunTime = stopWatch.ElapsedMilliseconds / 1000;//How long is the game running in seconds?
             prevFrame = currentFrame;
         }
 

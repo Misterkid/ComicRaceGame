@@ -232,13 +232,13 @@ namespace RaceGameTest
                 player1Car.isGoingForward = input.GetKey(Keys.Up);
                 player1Car.isGoingBackwards =  input.GetKey(Keys.Down);
                 PointF movement = player1Car.Move(input.GetKey(Keys.NumPad0));
-                PointF movementDelta = new PointF(movement.X * deltaTime, movement.Y * deltaTime);
+                PointF movementDelta = new PointF(movement.X * QTime.DeltaTime, movement.Y * QTime.DeltaTime);
                 PointF newPosition = new PointF(player1Car.position.X + movementDelta.X, player1Car.position.Y + movementDelta.Y);
                 OnUpdatePosition(player1Car, newPosition);
                 //Console.WriteLine(player1Car.position.X + player1Car.RotatePoint(player1Car.fourPoints.topLeft).X + ":"+  player1Car.position.Y + player1Car.RotatePoint(player1Car.fourPoints.topLeft).Y);
 
                 float rotation = player1Car.Rotate(input.GetKey(Keys.Left), input.GetKey(Keys.Right));
-                OnUpdateRotation(player1Car, player1Car.angle - (rotation * deltaTime));
+                OnUpdateRotation(player1Car, player1Car.angle - (rotation * QTime.DeltaTime));
             }
         }
         private void PlayerTwoCarMovement()
@@ -249,12 +249,12 @@ namespace RaceGameTest
                 player2Car.isGoingForward = input.GetKey(Keys.W);
                 player2Car.isGoingBackwards = input.GetKey(Keys.S);
                 PointF movement = player2Car.Move(input.GetKey(Keys.LShiftKey));
-                PointF movementDelta = new PointF(movement.X * deltaTime,movement.Y * deltaTime);
+                PointF movementDelta = new PointF(movement.X * QTime.DeltaTime, movement.Y * QTime.DeltaTime);
                 PointF newPosition = new PointF(player2Car.position.X + movementDelta.X, player2Car.position.Y + movementDelta.Y);
                 OnUpdatePosition(player2Car, newPosition);
 
                 float rotation = player2Car.Rotate(input.GetKey(Keys.A), input.GetKey(Keys.D));
-                OnUpdateRotation(player2Car, player2Car.angle - (rotation * deltaTime));
+                OnUpdateRotation(player2Car, player2Car.angle - (rotation * QTime.DeltaTime));
             }
         }
         public void DrawObject(GameObject objectToDraw)
