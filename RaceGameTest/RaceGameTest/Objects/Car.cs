@@ -36,6 +36,9 @@ namespace RaceGameTest.Objects
         public int laps = 0;//How many laps did we do?
         public int maxLaps = 3;//How many laps does this car have to do ?
 
+        public string breakSoundName = "break1";
+        public string engineSoundName = "engine1";
+        public string bumpSoundName = "bump1";
         //For collision
         /*
         public PointF lastPos;
@@ -44,6 +47,12 @@ namespace RaceGameTest.Objects
         public Car(string path):base(path)
         {
 
+        }
+        public void initSoundNames(string breakName,string engineName,string bumpName)
+        {
+            breakSoundName = breakName;
+            engineSoundName = engineName;
+            bumpSoundName = bumpName;
         }
         //-MoveForward = backwards... Duh
         /*

@@ -10,7 +10,8 @@ using RaceGameTest.Keyboard;
 using System.Drawing;
 using System.Diagnostics;
 using RaceGameTest.Q_Engine;
-using RaceGameTest.Objects;
+//using RaceGameTest.Objects;
+
 namespace RaceGameTest
 {
 
@@ -30,7 +31,6 @@ namespace RaceGameTest
 #if !__NO_OBJ_COL 
             objectCollisionMap = new ObjectCollisionMap();
 #endif
-            InitSounds();
             RegisterKeys();
         }
         //Register input here
@@ -61,6 +61,7 @@ namespace RaceGameTest
             player1Car.position = new PointF(500, 700);
             player1Car.angle = 270;
             player1Car.DrawCollisionImage("_Images\\JeffersonGTA2Col.bmp");
+            player1Car.initSoundNames("break1", "engine1", "bump1");
             DrawObject(player1Car);
             gameObjects.Add(player1Car);
 
@@ -69,20 +70,27 @@ namespace RaceGameTest
             player2Car.position = new PointF(500, 675);
             player2Car.angle = 270;
             player2Car.DrawCollisionImage("_Images\\JeffersonGTA2Col.bmp");
+            player2Car.initSoundNames("break2", "engine2", "bump2");
             DrawObject(player2Car);
             gameObjects.Add(player2Car);
+
+            InitSounds();
             //player1Car.SetCollision();
             //player2Car.SetCollision();
 
         }
         private void InitSounds()
         {
-            jSound.AddSound("Rem","_Sounds\\rem.wav");
-            jSound.AddSound("Vroem", "_Sounds\\vroem.wav");
-            jSound.AddSound("Bots", "_Sounds\\bots.wav");
+            jSound.AddSound(player1Car.breakSoundName, "_Sounds\\rem.wav", 1);
+            jSound.AddSound(player1Car.engineSoundName, "_Sounds\\vroem.wav", 1);
+            jSound.AddSound(player1Car.bumpSoundName, "_Sounds\\bots.wav", 1);
 
-           // jSound.PlaySound("Bots");
-           // jSound.PlaySound("Vroem");
+            jSound.AddSound(player2Car.breakSoundName, "_Sounds\\rem.wav", 1);
+            jSound.AddSound(player2Car.engineSoundName, "_Sounds\\vroem.wav", 1);
+            jSound.AddSound(player2Car.bumpSoundName, "_Sounds\\bots.wav", 1);
+
+            jSound.AddSound("Bgm", "_Sounds\\megaman.wav", 0.01f);
+            jSound.PlaySoundLooping("Bgm");
         }
         //Update on each frame! :D
         protected override void UpdateFrame()
@@ -95,12 +103,17 @@ namespace RaceGameTest
             MapColCheck(player1Car);
             MapColCheck(player2Car);
 
+            if (player1Car.isGoingForward)
+                jSound.PlaySound(player1Car.engineSoundName);
+
+            if(player2Car.isGoingForward)
+                jSound.PlaySound(player2Car.engineSoundName);
+
             base.UpdateFrame();
         }
 
         protected override void DrawFrame()
         {
-
             base.DrawFrame();
         }
         //Only use this on MOVING objects
@@ -174,7 +187,8 @@ namespace RaceGameTest
                 {
                     //Do things
                    // Console.WriteLine("?");
-                    //jSound.PlaySound("Bots");
+                    jSound.PlaySound(car.bumpSoundName);
+
                     OnUpdatePosition(car, car.lastPos);
                     OnUpdateRotation(car, car.lastAngle);
                 }

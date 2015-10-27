@@ -4,20 +4,29 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Media;
+
 namespace RaceGameTest.Q_Engine
 {
     class jSound
     {
-        private static Dictionary<string, SoundPlayer> geluidsDictionary = new Dictionary<string, SoundPlayer>();
+        private static Dictionary<string, jSoundFile> geluidsDictionary = new Dictionary<string, jSoundFile>();
 
         public static void PlaySound(string soundName)
         {
-            geluidsDictionary[soundName].PlaySync();
+            geluidsDictionary[soundName].Play();
         }
-        public static void AddSound(string soundName, string soundPath)
+        public static void PlaySoundLooping(string soundName)
         {
-            System.Media.SoundPlayer player = new System.Media.SoundPlayer(soundPath);
-            geluidsDictionary.Add(soundName, player);
+            geluidsDictionary[soundName].PlayLooping();
+        }
+        public static void StopSound(string soundName)
+        {
+            geluidsDictionary[soundName].Stop();
+        }
+        public static void AddSound(string soundName, string soundPath,float volume)
+        {
+            jSoundFile jSoundFile = new jSoundFile(soundPath,volume);
+            geluidsDictionary.Add(soundName, jSoundFile);
         }	
     }
 }
