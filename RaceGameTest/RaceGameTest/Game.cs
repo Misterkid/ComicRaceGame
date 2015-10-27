@@ -89,7 +89,8 @@ namespace RaceGameTest
             jSound.AddSound(player2Car.engineSoundName, "_Sounds\\vroem.wav", 1);
             jSound.AddSound(player2Car.bumpSoundName, "_Sounds\\bots.wav", 1);
 
-            jSound.AddSound("Bgm", "_Sounds\\megaman.wav", 0.01f);
+            jSound.AddSound("Bgm", "_Sounds\\The Dictator theme song.wav", 0.1f);
+            //jSound.AddSound("Bgm", "_Sounds\\aladeen_mofo.wav", 0.1f);
             jSound.PlaySoundLooping("Bgm");
         }
         //Update on each frame! :D

@@ -21,15 +21,17 @@ namespace RaceGameTest.Q_Engine
         {
             // start up the engine
             engine = new ISoundEngine();
-            _path = path;
             volume = vlm;
+            Console.WriteLine(volume);
+            engine.SoundVolume = volume;
+            _path = path;
         }
         public void Play()
         {
             if (!engine.IsCurrentlyPlaying(_path))
             {
-                engine.SoundVolume = volume;
-                engine.Play2D(_path);
+                ISound sound = engine.Play2D(_path);
+                //sound.Volume = 0.1f;//volume;
             }
         }
         public void Stop()
