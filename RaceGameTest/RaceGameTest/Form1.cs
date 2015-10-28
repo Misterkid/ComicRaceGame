@@ -37,6 +37,7 @@ namespace RaceGameTest
             graphics = this.CreateGraphics();
             graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
             game = _game;
+            game.InitializeGame();
             //game.Initialize();//Start update shit.
             game.OnDrawGameObject += game_OnDrawGameObject;
             //game.input.RegisterKey(Keys.Up);
@@ -45,6 +46,11 @@ namespace RaceGameTest
             game.OnUpdateRotation += game_OnUpdateRotation;
             game.OnUpdateUI += game_OnUpdateUI;
             //Controls.Add(pictureBox);
+
+            jSound.AddSound("3", "_Sounds\\3.wav", 1f);
+            jSound.AddSound("2", "_Sounds\\2.wav", 1f);
+            jSound.AddSound("1", "_Sounds\\1.wav", 1f);
+            jSound.AddSound("go", "_Sounds\\go.wav", 1f);
         }
 
         void game_OnUpdateRotation(GameObject gameObject, float angle)
@@ -109,6 +115,10 @@ namespace RaceGameTest
 
 #endif
             }
+           // game.speed1Car
+            /*
+            e.Graphics.DrawImage(game.speed1Car.gaugeLine, new Point(200, 200));
+            e.Graphics.ResetTransform();*/
         }
 
         void game_OnUpdateUI(Car carPlayer1, Car carPlayer2)
@@ -121,6 +131,54 @@ namespace RaceGameTest
             fuelbarrplayer2.Maximum = (int)carPlayer2.maxFuel;
             fuelbarrplayer1.Value = (int)carPlayer1.fuel;
             fuelbarrplayer2.Value = (int)carPlayer2.fuel;
+            if(QTime.RunTime < 5)
+            {
+                CountDownText.Text = (3 - QTime.RunTime).ToString();
+                switch((int)QTime.RunTime)
+                {
+                    case 0:
+                        jSound.PlaySound("3");
+                    break;
+                        
+                    case 1:
+                        jSound.PlaySound("2");
+                    break;
+
+                    case 2:
+                        jSound.PlaySound("1");
+                    break;
+
+                    case 3:
+                        jSound.PlaySound("go");
+                        CountDownText.Text = "اذهب!";
+                        game.canPlay = true;
+                    break;
+
+                    case 4:
+                        CountDownText.Hide();
+                    break;
+                }
+                /*
+                if(QTime.RunTime == 3)
+                {
+                    CountDownText.Text = "اذهب!";
+                    game.canPlay = true;
+                    //Give controls to player
+                }
+                if(QTime.RunTime == 4)
+                {
+                    CountDownText.Hide();
+                }*/
+            }
+            if ((QTime.RunTime - 3) < 0)
+            {
+                label2.Text = "Game Time: " + 0;
+            }
+            else
+            {
+                label2.Text = "Game Time: " + (QTime.RunTime - 3).ToString();
+            }
+            
         }
         void game_OnDrawGameObject(object sender, GameObject arg)
         {
@@ -173,9 +231,19 @@ namespace RaceGameTest
                 }
             }
             jSound.StopAllSounds();
+            jSound.PlaySound("greet");
+            jSound.PlaySoundLooping("menuMusic");
+            game.Dispose();
+            game.Reset();
+
+            game.OnDrawGameObject -= game_OnDrawGameObject;
+            //game.input.RegisterKey(Keys.Up);
+            game.DrawObjects();
+            game.OnUpdatePosition -= game_OnUpdatePosition;
+            game.OnUpdateRotation -= game_OnUpdateRotation;
+            game.OnUpdateUI -= game_OnUpdateUI;
             this.Dispose();
             Close();
         }
-
     }
 }

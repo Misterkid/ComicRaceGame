@@ -16,25 +16,40 @@ namespace RaceGameTest
 
     class Game:BaseGame
     {
-        public Input input = new Input();
+        public Input input;
 
         private Car player1Car;
         private Car player2Car;
         private Map map;
-        public Gauge speed1Car = new Gauge();
-        public Gauge speed2Car = new Gauge();
-        public Gauge fuel1Car = new Gauge();
-        public Gauge fuel2Car = new Gauge();
+        public Gauge speed1Car;// = new Gauge();
+        public Gauge speed2Car;// = new Gauge();
+        public Gauge fuel1Car;// = new Gauge();
+        public Gauge fuel2Car;// = new Gauge();
 #if !__NO_OBJ_COL 
         public ObjectCollisionMap objectCollisionMap;
 #endif
-        public List<GameObject> gameObjects = new List<GameObject>();//Game Object to draw.
-        private bool gameEnd = false;
+        public List<GameObject> gameObjects; //= new List<GameObject>();//Game Object to draw.
+        private bool gameEnd;// = false;
+        public bool canPlay;// = false;
         public Game()
         {
 #if !__NO_OBJ_COL 
             objectCollisionMap = new ObjectCollisionMap();
 #endif
+            
+        }
+        public void InitializeGame()
+        {
+            gameObjects = new List<GameObject>();
+            /*
+            speed1Car = new Gauge();
+            
+            speed2Car = new Gauge();
+            fuel1Car = new Gauge();
+            fuel2Car = new Gauge();*/
+            gameEnd = false;
+            canPlay = false;
+            input = new Input();
         }
         //Prepare objects to draw
         public void DrawObjects()
@@ -77,6 +92,8 @@ namespace RaceGameTest
             jSound.AddSound(player2Car.engineSoundName, "_Sounds\\vroem.wav", 0.1f);
             jSound.AddSound(player2Car.bumpSoundName, "_Sounds\\bots.wav", 1);
 
+            jSound.AddSound("finish", "_Sounds\\finished.wav", 1);
+
             jSound.AddSound("Bgm", "_Sounds\\The Dictator theme song.wav", 0.3f);
             //jSound.AddSound("Bgm", "_Sounds\\aladeen_mofo.wav", 0.1f);
             jSound.PlaySoundLooping("Bgm");
@@ -84,7 +101,7 @@ namespace RaceGameTest
         //Update on each frame! :D
         protected override void UpdateFrame()
         {
-            if (!gameEnd)
+            if (!gameEnd && canPlay)
             {
                 PlayerCarMovement(player1Car,Keys.W,Keys.S,Keys.A,Keys.D);
                 PlayerCarMovement(player2Car, Keys.Up, Keys.Down, Keys.Left, Keys.Right);
@@ -93,11 +110,17 @@ namespace RaceGameTest
 #endif          
                 MapColCheck(player1Car);
                 MapColCheck(player2Car);
-                speed1Car.updateSpeedGauge(player1Car.velocity);
+                //speed1Car.updateSpeedGauge(player1Car.velocity);
                 CarSound();
                 //Send out ui update event!
-                OnUpdateUI(player1Car,player2Car);
             }
+            /*
+            OnDrawObjectHandler handler = OnDrawGameObject;
+            if (OnDrawGameObject != null)
+                */
+            if (OnUpdateUI != null)
+                OnUpdateUI(player1Car, player2Car);
+
             base.UpdateFrame();
         }
         private void CarSound()
@@ -204,15 +227,18 @@ namespace RaceGameTest
 
                 //"collision" with pitstop.
                 if (topLeftColor == ColorCol.pitstop || topRightColor == ColorCol.pitstop || botLeftColor == ColorCol.pitstop || botRightColor == ColorCol.pitstop)
-
                 {
                     //Do things
                     car.pitchStop = true;
                 }
-                else if (topLeftColor != ColorCol.pitstop || topRightColor != ColorCol.pitstop || botLeftColor != ColorCol.pitstop || botRightColor != ColorCol.pitstop)
+                if (topLeftColor != ColorCol.pitstop || topRightColor != ColorCol.pitstop || botLeftColor != ColorCol.pitstop || botRightColor != ColorCol.pitstop)
                 {
-                    car.pitchStop = false;
+                    if (car.pitchStop)
+                    {
+                        car.pitchStop = false;
+                    }
                 }
+
                 if (topLeftColor == ColorCol.start || topRightColor == ColorCol.start || botLeftColor == ColorCol.start || botRightColor == ColorCol.start)
                 {
                     //Do things
@@ -229,6 +255,7 @@ namespace RaceGameTest
                         //car.checkPoints = 0;
                         //car.velocity = 0;
                         gameEnd = true;
+                        jSound.PlaySound("finish");
                         Console.WriteLine("finished");
                         //car = null;
                     }
@@ -284,6 +311,15 @@ namespace RaceGameTest
             OnDrawObjectHandler handler = OnDrawGameObject;
             if (OnDrawGameObject != null)
                 handler(this, objectToDraw);
+        }
+        public override void Reset()
+        {
+            canPlay = false;
+            base.Reset();
+        }
+        public override void Dispose()
+        {
+            base.Dispose();
         }
         public delegate void OnDrawObjectHandler(object sender,GameObject arg);
         public event OnDrawObjectHandler OnDrawGameObject;

@@ -37,7 +37,6 @@ namespace RaceGameTest.Q_Engine
 
         public void Run(Form form)
         {
-
             Application.Run(form);
         }
 
@@ -55,6 +54,23 @@ namespace RaceGameTest.Q_Engine
             stopWatch.Start();
             Application.Idle += new EventHandler(Application_Idle);
         }
+        public virtual void Reset()
+        {
+            stopWatch.Stop();
+            stopWatch.Reset();
+            prevFrame = 0;
+            currentFrame = 0;
+        }
+        public virtual void Dispose()
+        {
+            /*
+            stopWatch.Stop();
+            stopWatch.Reset();
+            prevFrame = 0;
+            currentFrame = 0;
+            Application.Idle -= new EventHandler(Application_Idle);
+             */ 
+        }
         protected virtual void UpdateFrame()
         {
             currentFrame = stopWatch.ElapsedMilliseconds;
@@ -62,7 +78,6 @@ namespace RaceGameTest.Q_Engine
             QTime.RunTime = stopWatch.ElapsedMilliseconds / 1000;//How long is the game running in seconds?
             prevFrame = currentFrame;
         }
-
         protected virtual void DrawFrame()
         {
             //ToDo Draw objects here instead of drawing at form1.

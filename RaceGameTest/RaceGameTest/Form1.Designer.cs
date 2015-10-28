@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.label2 = new System.Windows.Forms.Label();
             this.Exit = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -39,6 +38,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.player1speedText = new System.Windows.Forms.Label();
             this.fuelbarrplayer1 = new System.Windows.Forms.ProgressBar();
+            this.CountDownText = new System.Windows.Forms.Label();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -49,10 +49,11 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(503, 705);
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(448, 9);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(31, 13);
+            this.label2.Size = new System.Drawing.Size(79, 33);
             this.label2.TabIndex = 10;
             this.label2.Text = "0:0:0";
             // 
@@ -152,19 +153,31 @@
             this.fuelbarrplayer1.TabIndex = 1;
             this.fuelbarrplayer1.Value = 100;
             // 
+            // CountDownText
+            // 
+            this.CountDownText.AutoSize = true;
+            this.CountDownText.BackColor = System.Drawing.Color.Transparent;
+            this.CountDownText.Font = new System.Drawing.Font("Microsoft Sans Serif", 128F);
+            this.CountDownText.ForeColor = System.Drawing.SystemColors.ActiveCaption;
+            this.CountDownText.Location = new System.Drawing.Point(407, 241);
+            this.CountDownText.Name = "CountDownText";
+            this.CountDownText.Size = new System.Drawing.Size(177, 193);
+            this.CountDownText.TabIndex = 11;
+            this.CountDownText.Text = "3";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1008, 729);
+            this.Controls.Add(this.CountDownText);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.Exit);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.DoubleBuffered = true;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
-            this.Text = "Race Game";
+            this.Text = "الطغاة لعبة سباق";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyUp);
             this.groupBox2.ResumeLayout(false);
@@ -188,6 +201,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label player1speedText;
         private System.Windows.Forms.ProgressBar fuelbarrplayer1;
+        private System.Windows.Forms.Label CountDownText;
 
 
     }

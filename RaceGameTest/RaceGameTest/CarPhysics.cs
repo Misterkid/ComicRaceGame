@@ -68,7 +68,6 @@ namespace RaceGameTest
 
         public static float FuelCalculated(bool Pitsstop, int F_motorCalculated, float Fuel, int MaxFuel)
         {
-            Console.WriteLine(Fuel);
             if (Fuel <= 0)
             {
                 float ReturnFuel = 0;

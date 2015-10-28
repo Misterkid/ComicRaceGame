@@ -24,7 +24,6 @@ namespace RaceGameTest.Objects
         public void updateSpeedGauge(float Velocity)
         {
             angle = Math.Abs(Velocity / 2);
-            Console.WriteLine(angle);
             gaugeLine = RotateImage(source, angle);
         }
 
