@@ -23,6 +23,7 @@ namespace RaceGameTest
 
             jSound.AddSound("menuMusic", "_Sounds\\aladeen_mofo.wav", 0.3f);
             jSound.PlaySoundLooping("menuMusic");
+            //this.FormBorderStyle = FormBorderStyle.FixedDialog;
         }
 
         public void button1_Click(object sender, EventArgs e)

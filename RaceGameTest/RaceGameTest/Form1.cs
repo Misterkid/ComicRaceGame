@@ -24,6 +24,7 @@ namespace RaceGameTest
         public Form1(Game _game)//I'm lazy to redo all
         {
             InitializeComponent();
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.KeyPreview = true;
             // Define the border style of the form to a dialog box.
             this.FormBorderStyle = FormBorderStyle.FixedDialog;

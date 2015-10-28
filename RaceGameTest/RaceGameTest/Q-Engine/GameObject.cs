@@ -95,7 +95,7 @@ namespace RaceGameTest.Q_Engine
             }
             //for(int i = -width/2)
         }
-        public PointF RotatePoint(PointF point)
+        public PointF RotatePoint(PointF point) 
         {
             float rad = -(float)(angle * Math.PI / 180);
             float zeroCenterX = (point.X - (center.X ));

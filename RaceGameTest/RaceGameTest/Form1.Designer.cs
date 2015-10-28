@@ -31,10 +31,14 @@
             this.label2 = new System.Windows.Forms.Label();
             this.Exit = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.pitStopPlayer2 = new System.Windows.Forms.Label();
+            this.lapsPlayer2 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.player2speedText = new System.Windows.Forms.Label();
             this.fuelbarrplayer2 = new System.Windows.Forms.ProgressBar();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.pitStopPlayer1 = new System.Windows.Forms.Label();
+            this.lapsPlayer1 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.player1speedText = new System.Windows.Forms.Label();
             this.fuelbarrplayer1 = new System.Windows.Forms.ProgressBar();
@@ -70,6 +74,8 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.pitStopPlayer2);
+            this.groupBox2.Controls.Add(this.lapsPlayer2);
             this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Controls.Add(this.player2speedText);
             this.groupBox2.Controls.Add(this.fuelbarrplayer2);
@@ -80,6 +86,26 @@
             this.groupBox2.Size = new System.Drawing.Size(150, 81);
             this.groupBox2.TabIndex = 8;
             this.groupBox2.TabStop = false;
+            // 
+            // pitStopPlayer2
+            // 
+            this.pitStopPlayer2.AutoSize = true;
+            this.pitStopPlayer2.Location = new System.Drawing.Point(73, 15);
+            this.pitStopPlayer2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.pitStopPlayer2.Name = "pitStopPlayer2";
+            this.pitStopPlayer2.Size = new System.Drawing.Size(44, 13);
+            this.pitStopPlayer2.TabIndex = 10;
+            this.pitStopPlayer2.Text = "Pitstops";
+            // 
+            // lapsPlayer2
+            // 
+            this.lapsPlayer2.AutoSize = true;
+            this.lapsPlayer2.Location = new System.Drawing.Point(4, 15);
+            this.lapsPlayer2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lapsPlayer2.Name = "lapsPlayer2";
+            this.lapsPlayer2.Size = new System.Drawing.Size(30, 13);
+            this.lapsPlayer2.TabIndex = 9;
+            this.lapsPlayer2.Text = "Laps";
             // 
             // label4
             // 
@@ -94,7 +120,7 @@
             // player2speedText
             // 
             this.player2speedText.AutoSize = true;
-            this.player2speedText.Location = new System.Drawing.Point(38, 23);
+            this.player2speedText.Location = new System.Drawing.Point(4, 43);
             this.player2speedText.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.player2speedText.Name = "player2speedText";
             this.player2speedText.Size = new System.Drawing.Size(32, 13);
@@ -103,7 +129,7 @@
             // 
             // fuelbarrplayer2
             // 
-            this.fuelbarrplayer2.Location = new System.Drawing.Point(4, 46);
+            this.fuelbarrplayer2.Location = new System.Drawing.Point(4, 58);
             this.fuelbarrplayer2.Margin = new System.Windows.Forms.Padding(2);
             this.fuelbarrplayer2.Name = "fuelbarrplayer2";
             this.fuelbarrplayer2.Size = new System.Drawing.Size(130, 19);
@@ -112,6 +138,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.pitStopPlayer1);
+            this.groupBox1.Controls.Add(this.lapsPlayer1);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.player1speedText);
             this.groupBox1.Controls.Add(this.fuelbarrplayer1);
@@ -122,6 +150,26 @@
             this.groupBox1.Size = new System.Drawing.Size(150, 81);
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
+            // 
+            // pitStopPlayer1
+            // 
+            this.pitStopPlayer1.AutoSize = true;
+            this.pitStopPlayer1.Location = new System.Drawing.Point(66, 15);
+            this.pitStopPlayer1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.pitStopPlayer1.Name = "pitStopPlayer1";
+            this.pitStopPlayer1.Size = new System.Drawing.Size(44, 13);
+            this.pitStopPlayer1.TabIndex = 9;
+            this.pitStopPlayer1.Text = "Pitstops";
+            // 
+            // lapsPlayer1
+            // 
+            this.lapsPlayer1.AutoSize = true;
+            this.lapsPlayer1.Location = new System.Drawing.Point(4, 15);
+            this.lapsPlayer1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lapsPlayer1.Name = "lapsPlayer1";
+            this.lapsPlayer1.Size = new System.Drawing.Size(30, 13);
+            this.lapsPlayer1.TabIndex = 8;
+            this.lapsPlayer1.Text = "Laps";
             // 
             // label3
             // 
@@ -136,7 +184,7 @@
             // player1speedText
             // 
             this.player1speedText.AutoSize = true;
-            this.player1speedText.Location = new System.Drawing.Point(40, 23);
+            this.player1speedText.Location = new System.Drawing.Point(4, 43);
             this.player1speedText.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.player1speedText.Name = "player1speedText";
             this.player1speedText.Size = new System.Drawing.Size(32, 13);
@@ -145,7 +193,7 @@
             // 
             // fuelbarrplayer1
             // 
-            this.fuelbarrplayer1.Location = new System.Drawing.Point(4, 46);
+            this.fuelbarrplayer1.Location = new System.Drawing.Point(4, 58);
             this.fuelbarrplayer1.Margin = new System.Windows.Forms.Padding(2);
             this.fuelbarrplayer1.Name = "fuelbarrplayer1";
             this.fuelbarrplayer1.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -202,6 +250,10 @@
         private System.Windows.Forms.Label player1speedText;
         private System.Windows.Forms.ProgressBar fuelbarrplayer1;
         private System.Windows.Forms.Label CountDownText;
+        private System.Windows.Forms.Label pitStopPlayer2;
+        private System.Windows.Forms.Label lapsPlayer2;
+        private System.Windows.Forms.Label pitStopPlayer1;
+        private System.Windows.Forms.Label lapsPlayer1;
 
 
     }
