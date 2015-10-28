@@ -56,11 +56,11 @@ namespace RaceGameTest
         {
 
             /*The Map */
-            map = new Map("_Images\\Circuit3.bmp", "_Images\\Circuit3.bmp");//Map
+            map = new Map("_Images\\Circuit4.bmp", "_Images\\Circuit4Col.bmp");//Map
             DrawObject(map);//Send Event to draw!
             gameObjects.Add(map);
             /* Player one Car */
-            player1Car = new Car("_Images\\JeffersonGTA2.png");
+            player1Car = new Car("_Images\\rrcargame.png");
             player1Car.position = new PointF(500, 700);
             player1Car.angle = 270;
             player1Car.DrawCollisionImage("_Images\\JeffersonGTA2Col.bmp");
@@ -192,18 +192,18 @@ namespace RaceGameTest
                 if (topLeftColor == ColorCol.slow || topRightColor == ColorCol.slow || botLeftColor == ColorCol.slow || botRightColor == ColorCol.slow)
                 {
                     if (car.isGoingForward)
-                        car.CoEfficient = 5f;
+                        car.CoEfficient = 10f;
 
                     if (car.isGoingBackwards)
-                        car.CoEfficient = 5f;
+                        car.CoEfficient = 10f;
                 }
                 if (topLeftColor != ColorCol.slow || topRightColor != ColorCol.slow || botLeftColor != ColorCol.slow || botRightColor != ColorCol.slow)
                 {
                     if (car.isGoingForward)
-                        car.CoEfficient = 0.32f;
+                        car.CoEfficient = 0.42f;
 
                     if (car.isGoingBackwards)
-                        car.CoEfficient = 0.32f;
+                        car.CoEfficient = 0.42f;
                 }
                 //"Collision" against a object
 #if __NO_OBJ_COL 
