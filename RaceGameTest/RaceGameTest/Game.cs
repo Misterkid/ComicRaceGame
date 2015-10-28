@@ -223,15 +223,16 @@ namespace RaceGameTest
                     OnUpdateRotation(car, car.lastAngle);
                 }
                 //else if (color == ColorCol.pitstop)
-                if ((topLeftColor == ColorCol.pitstop || topRightColor == ColorCol.pitstop || botLeftColor == ColorCol.pitstop || botRightColor == ColorCol.pitstop) && car.velocity == 0)
+                // if ((topLeftColor == ColorCol.pitstop || topRightColor == ColorCol.pitstop || botLeftColor == ColorCol.pitstop || botRightColor == ColorCol.pitstop) && car.velocity == 0)
 
                 //"collision" with pitstop.
-                if (topLeftColor == ColorCol.pitstop || topRightColor == ColorCol.pitstop || botLeftColor == ColorCol.pitstop || botRightColor == ColorCol.pitstop)
+                // if (topLeftColor == ColorCol.pitstop || topRightColor == ColorCol.pitstop || botLeftColor == ColorCol.pitstop || botRightColor == ColorCol.pitstop)
+                if ((topLeftColor == ColorCol.pitstop || topRightColor == ColorCol.pitstop || botLeftColor == ColorCol.pitstop || botRightColor == ColorCol.pitstop) && car.velocity == 0)
                 {
                     //Do things
                     car.pitchStop = true;
                 }
-                if (topLeftColor != ColorCol.pitstop || topRightColor != ColorCol.pitstop || botLeftColor != ColorCol.pitstop || botRightColor != ColorCol.pitstop)
+                if (topLeftColor != ColorCol.pitstop || topRightColor != ColorCol.pitstop || botLeftColor != ColorCol.pitstop || botRightColor != ColorCol.pitstop || car.velocity != 0)
                 {
                     if (car.pitchStop)
                     {

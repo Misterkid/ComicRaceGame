@@ -20,7 +20,7 @@ namespace RaceGameTest
                 F_motor += 50;
                 return F_motor;
             }
-            if (Reverse && Fuel <= 0 && MaxF_motor / 18 > F_motor)
+            if (Reverse && Fuel <= 0 && MaxF_motor / 24 > F_motor)
             {
                 //int F_MotorReturn = F_motor / (6 * 20);
                 //return F_MotorReturn;
@@ -31,7 +31,7 @@ namespace RaceGameTest
             {
                 F_motor -= 25;
             }
-            if (Fuel <= 0 && Forward && MaxF_motor / 10 > F_motor)
+            if (Fuel <= 0 && Forward && MaxF_motor / 12 > F_motor)
             {
                 //int F_MotorReturn = Convert.ToInt32(F_motor * 0.05f);
                 //return F_MotorReturn;
@@ -39,10 +39,10 @@ namespace RaceGameTest
                 F_motor += 100;
                 return F_motor;
             }
-            else if (Forward && Fuel <= 0)
+            /*else if (Forward && Fuel <= 0)
             {
                 F_motor -= 100;
-            }
+            }*/
 
             if (Forward && MaxF_motor > F_motor && Fuel != 0)
             {
@@ -68,13 +68,13 @@ namespace RaceGameTest
 
         public static float FuelCalculated(bool Pitsstop, int F_motorCalculated, float Fuel, int MaxFuel)
         {
-            if (Fuel <= 0)
+            if (Fuel <= 0 && !Pitsstop)
             {
                 float ReturnFuel = 0;
                 return ReturnFuel;
 
             }
-            else if (Pitsstop && Fuel < MaxFuel)
+            else if (Pitsstop && Math.Abs(Fuel) < MaxFuel)
             {
 
                 float FuelUsage = 1;
@@ -83,7 +83,7 @@ namespace RaceGameTest
             }
             else
             {
-                float FuelUsage = Convert.ToInt32(Math.Abs(F_motorCalculated * 0.00017));
+                float FuelUsage = Convert.ToInt32(Math.Abs(F_motorCalculated * 0.00013));
                 float ReturnFuel = Fuel - (FuelUsage * QTime.DeltaTime);
                 return ReturnFuel;
             }
