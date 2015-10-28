@@ -21,6 +21,10 @@ namespace RaceGameTest
         private Car player1Car;
         private Car player2Car;
         private Map map;
+        public Gauge speed1Car = new Gauge();
+        public Gauge speed2Car = new Gauge();
+        public Gauge fuel1Car = new Gauge();
+        public Gauge fuel2Car = new Gauge();
 #if !__NO_OBJ_COL 
         public ObjectCollisionMap objectCollisionMap;
 #endif
@@ -86,9 +90,10 @@ namespace RaceGameTest
                 PlayerCarMovement(player2Car, Keys.Up, Keys.Down, Keys.Left, Keys.Right);
 #if !__NO_OBJ_COL
             objectCollisionMap.UpdateObjects(this);
-#endif
+#endif          
                 MapColCheck(player1Car);
                 MapColCheck(player2Car);
+                speed1Car.updateSpeedGauge(player1Car.velocity);
                 CarSound();
                 //Send out ui update event!
                 OnUpdateUI(player1Car,player2Car);
@@ -164,10 +169,18 @@ namespace RaceGameTest
                 if (topLeftColor == ColorCol.slow || topRightColor == ColorCol.slow || botLeftColor == ColorCol.slow || botRightColor == ColorCol.slow)
                 {
                     if (car.isGoingForward)
-                        car.velocity = 20;
-                    
+                        car.CoEfficient = 5f;
+
                     if (car.isGoingBackwards)
-                        car.velocity = -10;
+                        car.CoEfficient = 5f;
+                }
+                if (topLeftColor != ColorCol.slow || topRightColor != ColorCol.slow || botLeftColor != ColorCol.slow || botRightColor != ColorCol.slow)
+                {
+                    if (car.isGoingForward)
+                        car.CoEfficient = 0.32f;
+
+                    if (car.isGoingBackwards)
+                        car.CoEfficient = 0.32f;
                 }
                 //"Collision" against a object
 #if __NO_OBJ_COL 
@@ -186,13 +199,17 @@ namespace RaceGameTest
                     OnUpdatePosition(car, car.lastPos);
                     OnUpdateRotation(car, car.lastAngle);
                 }
+                //else if (color == ColorCol.pitstop)
+                if ((topLeftColor == ColorCol.pitstop || topRightColor == ColorCol.pitstop || botLeftColor == ColorCol.pitstop || botRightColor == ColorCol.pitstop) && car.velocity == 0)
+
                 //"collision" with pitstop.
                 if (topLeftColor == ColorCol.pitstop || topRightColor == ColorCol.pitstop || botLeftColor == ColorCol.pitstop || botRightColor == ColorCol.pitstop)
+
                 {
                     //Do things
                     car.pitchStop = true;
                 }
-                else if(car.pitchStop)
+                else if (topLeftColor != ColorCol.pitstop || topRightColor != ColorCol.pitstop || botLeftColor != ColorCol.pitstop || botRightColor != ColorCol.pitstop)
                 {
                     car.pitchStop = false;
                 }

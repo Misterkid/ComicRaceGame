@@ -35,7 +35,7 @@ namespace RaceGameTest
             {
                 //int F_MotorReturn = Convert.ToInt32(F_motor * 0.05f);
                 //return F_MotorReturn;
-           
+
                 F_motor += 100;
                 return F_motor;
             }
@@ -68,6 +68,7 @@ namespace RaceGameTest
 
         public static float FuelCalculated(bool Pitsstop, int F_motorCalculated, float Fuel, int MaxFuel)
         {
+            Console.WriteLine(Fuel);
             if (Fuel <= 0)
             {
                 float ReturnFuel = 0;
@@ -78,12 +79,12 @@ namespace RaceGameTest
             {
 
                 float FuelUsage = 1;
-                float ReturnFuel = Fuel + ((FuelUsage * 100) * QTime.DeltaTime);
+                float ReturnFuel = Fuel + ((FuelUsage * 10) * QTime.DeltaTime);
                 return ReturnFuel;
             }
             else
             {
-                float FuelUsage = Convert.ToInt32(F_motorCalculated * 0.0005);
+                float FuelUsage = Convert.ToInt32(Math.Abs(F_motorCalculated * 0.00017));
                 float ReturnFuel = Fuel - (FuelUsage * QTime.DeltaTime);
                 return ReturnFuel;
             }
@@ -135,44 +136,44 @@ namespace RaceGameTest
             }
             if (Reverse && !Forward && Speed <= 0)
             {
-                
+
                 float AccelerateCalc = ((-F_motorCalculated + F_rol + F_air) / MassaAutoCalculated);
-                Speed += AccelerateCalc;
+                Speed += (AccelerateCalc * 0.5f);
                 return Speed;
-                 
+
             }
             if (!Reverse && Forward && Speed <= 0)
             {
 
                 float AccelerateCalc = ((F_motorCalculated + F_rol + F_air) / MassaAutoCalculated);
-                Speed += AccelerateCalc;
+                Speed += (AccelerateCalc * 0.5f);
                 return Speed;
 
             }
             if (Reverse && !Forward && Speed >= 0)
             {
                 float AccelerateCalc = ((-F_motorCalculated - F_rol - F_air) / MassaAutoCalculated);
-                Speed += AccelerateCalc;
+                Speed += (AccelerateCalc * 0.5f);
                 return Speed;
             }
-            
+
             if (!Reverse && !Forward && Speed <= 0)
             {
                 float AccelerateCalc = (F_motorCalculated + F_rol + F_air) / MassaAutoCalculated;
-                Speed += AccelerateCalc;
+                Speed += (AccelerateCalc * 0.5f);
                 return Speed;
             }
-                
-          /*  if (Speed >= 0 && !Break && !Reverse && Forward)
-            {
-                float AccelerateCalc = (F_motorCalculated - F_rol - F_air) / MassaAutoCalculated;
-                Speed += AccelerateCalc;
-                return Speed;
-            } */
+
+            /*  if (Speed >= 0 && !Break && !Reverse && Forward)
+              {
+                  float AccelerateCalc = (F_motorCalculated - F_rol - F_air) / MassaAutoCalculated;
+                  Speed += AccelerateCalc;
+                  return Speed;
+              } */
             else
             {
                 float AccelerateCalc = (F_motorCalculated - F_rol - F_air) / MassaAutoCalculated;
-                Speed += AccelerateCalc;
+                Speed += (AccelerateCalc * 0.5f);
                 return Speed;
             }
 
