@@ -62,7 +62,7 @@ namespace RaceGameTest.Q_Engine
 
         protected virtual void DrawFrame()
         {
-
+            //ToDo Draw objects here instead of drawing at form1.
         }
     }
 }

@@ -21,9 +21,6 @@ namespace RaceGameTest.Objects
         public float fuel = 100; // Liters * 10
         public float surface = 1.9f;//m2
         public float CoEfficient = 0.32f;//Air resitance onzin
-        //public bool isReverse = false;//Is reverse
-        //public bool isForward = true;//Is forward
-       // public bool isBreaking = false;//Is breaking
         public float velocity = 0;//CurrentVelocity
         public int currentMotorForce = 0;
         public int motorForce = 0;//Motor force! Horse power *need eddy het is in freaking WATT
@@ -39,11 +36,7 @@ namespace RaceGameTest.Objects
         public string breakSoundName = "break1";
         public string engineSoundName = "engine1";
         public string bumpSoundName = "bump1";
-        //For collision
-        /*
-        public PointF lastPos;
-        public float lastAngle;*/
-        //public bool[] checkPoints = new bool[4]{false,false,false,false};
+
         public Car(string path):base(path)
         {
 

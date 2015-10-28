@@ -10,7 +10,6 @@ using RaceGameTest.Keyboard;
 using System.Drawing;
 using System.Diagnostics;
 using RaceGameTest.Q_Engine;
-//using RaceGameTest.Objects;
 
 namespace RaceGameTest
 {
@@ -26,28 +25,12 @@ namespace RaceGameTest
         public ObjectCollisionMap objectCollisionMap;
 #endif
         public List<GameObject> gameObjects = new List<GameObject>();
+        private bool gameEnd = false;
         public Game()
         {
 #if !__NO_OBJ_COL 
             objectCollisionMap = new ObjectCollisionMap();
 #endif
-            RegisterKeys();
-        }
-        //Register input here
-        private void RegisterKeys()
-        {
-            //Player One
-            input.RegisterKey(Keys.Up);
-            input.RegisterKey(Keys.Down);
-            input.RegisterKey(Keys.Left);
-            input.RegisterKey(Keys.Right);
-            input.RegisterKey(Keys.NumPad0);
-            //Player Two
-            input.RegisterKey(Keys.W);
-            input.RegisterKey(Keys.S);
-            input.RegisterKey(Keys.A);
-            input.RegisterKey(Keys.D);
-            input.RegisterKey(Keys.LShiftKey);
         }
         public void DrawObjects()
         {
@@ -96,26 +79,39 @@ namespace RaceGameTest
         //Update on each frame! :D
         protected override void UpdateFrame()
         {
-            PlayerOneCarMovement();
-            PlayerTwoCarMovement();
+            if (!gameEnd)
+            {
+                PlayerCarMovement(player1Car,Keys.W,Keys.S,Keys.A,Keys.D);
+                PlayerCarMovement(player2Car, Keys.Up, Keys.Down, Keys.Left, Keys.Right);
 #if !__NO_OBJ_COL
             objectCollisionMap.UpdateObjects(this);
 #endif
-            MapColCheck(player1Car);
-            MapColCheck(player2Car);
+                MapColCheck(player1Car);
+                MapColCheck(player2Car);
+                CarSound();
 
-            if (player1Car.isGoingForward)
-                jSound.PlaySound(player1Car.engineSoundName);
-
-            if(player2Car.isGoingForward)
-                jSound.PlaySound(player2Car.engineSoundName);
-
+            }
             base.UpdateFrame();
         }
-
-        protected override void DrawFrame()
+        private void CarSound()
         {
-            base.DrawFrame();
+            //sound
+            if (player1Car.isGoingForward || player1Car.isGoingBackwards)
+            {
+                jSound.PlaySoundLooping(player1Car.engineSoundName);
+            }
+            else
+            {
+                jSound.StopSound(player1Car.engineSoundName);
+            }
+            if (player2Car.isGoingForward || player2Car.isGoingBackwards)
+            {
+                jSound.PlaySoundLooping(player2Car.engineSoundName);
+            }
+            else
+            {
+                jSound.StopSound(player2Car.engineSoundName);
+            }
         }
         //Only use this on MOVING objects
         private void MapColCheck(Car car)
@@ -157,18 +153,12 @@ namespace RaceGameTest
                     car.lastPos = car.position;
                     car.lastAngle = car.angle;
                 }
-
+                //"collision" with road.
                 if (topLeftColor == ColorCol.road || topRightColor == ColorCol.road || botLeftColor == ColorCol.road || botRightColor == ColorCol.road)
                 {
-                    //Do things
-                    //car.speed = 200;
-                    /*
-                    if (topLeftColor == ColorCol.road && topRightColor == ColorCol.road && botLeftColor == ColorCol.road && botRightColor == ColorCol.road)
-                        car.lastRoadPos = car.position;
-                     */ 
+
                 }
-                //else if( color == ColorCol.collision)
-                //else if (color == ColorCol.slow)
+                // "Collision" with "sand"
                 if (topLeftColor == ColorCol.slow || topRightColor == ColorCol.slow || botLeftColor == ColorCol.slow || botRightColor == ColorCol.slow)
                 {
                     if (car.isGoingForward)
@@ -177,6 +167,7 @@ namespace RaceGameTest
                     if (car.isGoingBackwards)
                         car.velocity = -10;
                 }
+                //"Collision" against a object
 #if __NO_OBJ_COL 
 
                 if (topLeftColor == ColorCol.collision || topRightColor == ColorCol.collision || botLeftColor == ColorCol.collision || botRightColor == ColorCol.collision)
@@ -193,7 +184,7 @@ namespace RaceGameTest
                     OnUpdatePosition(car, car.lastPos);
                     OnUpdateRotation(car, car.lastAngle);
                 }
-                //else if (color == ColorCol.pitstop)
+                //"collision" with pitstop.
                 if (topLeftColor == ColorCol.pitstop || topRightColor == ColorCol.pitstop || botLeftColor == ColorCol.pitstop || botRightColor == ColorCol.pitstop)
                 {
                     //Do things
@@ -203,15 +194,15 @@ namespace RaceGameTest
                 {
                     car.pitchStop = false;
                 }
-               // else if (color == ColorCol.start)
                 if (topLeftColor == ColorCol.start || topRightColor == ColorCol.start || botLeftColor == ColorCol.start || botRightColor == ColorCol.start)
                 {
                     //Do things
                 }
-                //else if (color == ColorCol.finnish)
                 if (topLeftColor == ColorCol.finnish || topRightColor == ColorCol.finnish || botLeftColor == ColorCol.finnish || botRightColor == ColorCol.finnish)
                 {
                     //Do things
+                    gameEnd = true;
+                    
                     if (car.checkPoints == 4 && car.laps < 3)
                     {
                         car.checkPoints = 0;
@@ -219,13 +210,14 @@ namespace RaceGameTest
                     }
                     if(car.laps == 3)
                     {
-                        car.checkPoints = 0;
-                        car.velocity = 0;
-                        Console.WriteLine("finished");
+                        //car.checkPoints = 0;
+                        //car.velocity = 0;
+                        gameEnd = true;
+                        //Console.WriteLine("finished");
                         //car = null;
                     }
                 }
-                //else if (color == ColorCol.checkp1)
+                //"Collision" with checkpoints
                 if (topLeftColor == ColorCol.checkp1 || topRightColor == ColorCol.checkp1 || botLeftColor == ColorCol.checkp1 || botRightColor == ColorCol.checkp1)
                 {
                     //Do things
@@ -255,37 +247,20 @@ namespace RaceGameTest
                 }
             }
         }
-        private void PlayerOneCarMovement()
+        private void PlayerCarMovement(Car car,Keys forward,Keys backwards, Keys left,Keys right)
         {
-
-            if (input != null && player1Car != null)
+            if (input != null && car != null)
             {
-                player1Car.isGoingForward = input.GetKey(Keys.Up);
-                player1Car.isGoingBackwards =  input.GetKey(Keys.Down);
-                PointF movement = player1Car.Move(input.GetKey(Keys.NumPad0));
+                car.isGoingForward = input.GetKey(forward);
+                car.isGoingBackwards = input.GetKey(backwards);
+                //PointF movement = car.Move(input.GetKey(Keys.NumPad0));
+                PointF movement = car.Move(false);//Break isn't working :P
                 PointF movementDelta = new PointF(movement.X * QTime.DeltaTime, movement.Y * QTime.DeltaTime);
-                PointF newPosition = new PointF(player1Car.position.X + movementDelta.X, player1Car.position.Y + movementDelta.Y);
-                OnUpdatePosition(player1Car, newPosition);
-                //Console.WriteLine(player1Car.position.X + player1Car.RotatePoint(player1Car.fourPoints.topLeft).X + ":"+  player1Car.position.Y + player1Car.RotatePoint(player1Car.fourPoints.topLeft).Y);
+                PointF newPosition = new PointF(car.position.X + movementDelta.X, car.position.Y + movementDelta.Y);
+                OnUpdatePosition(car, newPosition);
 
-                float rotation = player1Car.Rotate(input.GetKey(Keys.Left), input.GetKey(Keys.Right));
-                OnUpdateRotation(player1Car, player1Car.angle - (rotation * QTime.DeltaTime));
-            }
-        }
-        private void PlayerTwoCarMovement()
-        {
-
-            if (input != null && player2Car != null)
-            {
-                player2Car.isGoingForward = input.GetKey(Keys.W);
-                player2Car.isGoingBackwards = input.GetKey(Keys.S);
-                PointF movement = player2Car.Move(input.GetKey(Keys.LShiftKey));
-                PointF movementDelta = new PointF(movement.X * QTime.DeltaTime, movement.Y * QTime.DeltaTime);
-                PointF newPosition = new PointF(player2Car.position.X + movementDelta.X, player2Car.position.Y + movementDelta.Y);
-                OnUpdatePosition(player2Car, newPosition);
-
-                float rotation = player2Car.Rotate(input.GetKey(Keys.A), input.GetKey(Keys.D));
-                OnUpdateRotation(player2Car, player2Car.angle - (rotation * QTime.DeltaTime));
+                float rotation = car.Rotate(input.GetKey(left), input.GetKey(right));
+                OnUpdateRotation(car, car.angle - (rotation * QTime.DeltaTime));
             }
         }
         public void DrawObject(GameObject objectToDraw)

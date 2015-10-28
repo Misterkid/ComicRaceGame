@@ -22,8 +22,18 @@ namespace RaceGameTest.Keyboard
         {
             registredKeys[inputKey] = isDown;
         }
+        public bool KeyExists(Keys inputkey)
+        {
+            if (registredKeys.ContainsKey(inputkey))
+                return true;
+            else
+                return false;
+        }
         public bool GetKey(Keys inputKey)
         {
+            if (!KeyExists(inputKey))
+                RegisterKey(inputKey);
+
             return registredKeys[inputKey];
         }
     }

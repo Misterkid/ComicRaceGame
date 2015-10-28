@@ -22,7 +22,6 @@ namespace RaceGameTest.Q_Engine
             // start up the engine
             engine = new ISoundEngine();
             volume = vlm;
-            Console.WriteLine(volume);
             engine.SoundVolume = volume;
             _path = path;
         }
@@ -40,7 +39,10 @@ namespace RaceGameTest.Q_Engine
         }
         public void PlayLooping()
         {
-            engine.Play2D(_path, true, false, StreamMode.Streaming,true);
+            if (!engine.IsCurrentlyPlaying(_path))
+            {
+                engine.Play2D(_path, true, false, StreamMode.AutoDetect, true);
+            }
         }
     }
 }
