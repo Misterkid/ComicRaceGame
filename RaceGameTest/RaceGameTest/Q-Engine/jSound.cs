@@ -23,10 +23,20 @@ namespace RaceGameTest.Q_Engine
         {
             geluidsDictionary[soundName].Stop();
         }
+        public static void StopAllSounds()
+        {
+            for(int i = 0; i < geluidsDictionary.Count; i++)
+            {
+                StopSound(geluidsDictionary.ElementAt(i).Key);
+            }
+        }
         public static void AddSound(string soundName, string soundPath,float volume)
         {
-            jSoundFile jSoundFile = new jSoundFile(soundPath,volume);
-            geluidsDictionary.Add(soundName, jSoundFile);
+            if (!geluidsDictionary.ContainsKey(soundName))
+            {
+                jSoundFile jSoundFile = new jSoundFile(soundPath, volume);
+                geluidsDictionary.Add(soundName, jSoundFile);
+            }
         }	
     }
 }

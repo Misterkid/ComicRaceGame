@@ -106,13 +106,8 @@ namespace RaceGameTest.Q_Engine
 
             return new PointF(x , y );
         }
-        //Trying to move one point.
-        /*
-        public PointF MatTest()
-        {
-
-            return new PointF(x, y);
-        }*/
+        //For now it just updates the "collision" points.
+        //I will have to improve those when I have more time!
         public virtual void Update()
         {
             rotatedFourPoints.topLeft = RotatePoint(fourPoints.topLeft);

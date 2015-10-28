@@ -11,24 +11,20 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using RaceGameTest.Keyboard;
 
-using System.Runtime.InteropServices;
 using System.Drawing.Drawing2D;
 using RaceGameTest.Q_Engine;
+using RaceGameTest.Objects;
 namespace RaceGameTest
 {
     partial class Form1 : Form
     {
-        public Game game;// = new Game();
-        private Graphics graphics;
-        //private Object[] gameObjects;
-       // private List<Objects.GameObject> gameObjects = new List<Objects.GameObject>();
-        [DllImport("kernel32.dll", SetLastError = true)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        static extern bool AllocConsole();
+        public Game game;
+
+        private Graphics graphics;//Have to draw something. We use gdi+
         public Form1(Game _game)//I'm lazy to redo all
         {
             InitializeComponent();
-            AllocConsole();
+            this.KeyPreview = true;
             // Define the border style of the form to a dialog box.
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             // Set the MaximizeBox to false to remove the maximize box.
@@ -41,35 +37,28 @@ namespace RaceGameTest
             graphics = this.CreateGraphics();
             graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
             game = _game;
-
+            //game.Initialize();//Start update shit.
             game.OnDrawGameObject += game_OnDrawGameObject;
             //game.input.RegisterKey(Keys.Up);
             game.DrawObjects();
             game.OnUpdatePosition += game_OnUpdatePosition;
             game.OnUpdateRotation += game_OnUpdateRotation;
+            game.OnUpdateUI += game_OnUpdateUI;
             //Controls.Add(pictureBox);
         }
 
         void game_OnUpdateRotation(GameObject gameObject, float angle)
         {
-           // throw new NotImplementedException();
-           // Invoke((MethodInvoker)(() =>
-            //{
-                gameObject.angle = angle;
-                gameObject.Update();
-                Invalidate();
-            //}));
+            gameObject.angle = angle;
+            gameObject.Update();
+            Invalidate();//Redraw. Calls the onpaint function
         }
 
         void game_OnUpdatePosition(GameObject gameObject, PointF newPosition)
         {
-            //Invoke((MethodInvoker)(() =>
-           // {
-                gameObject.position = newPosition;
-                gameObject.Update();
-                Invalidate();
-                //gameObject.pictureBox.Location = newPosition;
-            //}));
+            gameObject.position = newPosition;
+            gameObject.Update();
+            Invalidate();
         }
         protected override void OnPaint(PaintEventArgs e)
         {
@@ -85,17 +74,6 @@ namespace RaceGameTest
                 e.Graphics.DrawImage(game.gameObjects[i].image, game.gameObjects[i].position);
                 e.Graphics.ResetTransform();
 
-                /*
-                Objects.Car car;
-                car = game.gameObjects[i] as Objects.Car;
-                if(car != null)
-                {
-                    e.Graphics.DrawImage(car.colBitMap, car.position);
-                    //car.colBitMap
-                }
-
-                e.Graphics.ResetTransform();
-                 */
                 /* DEBUG! */
 #if __DEBUG_MODE
                 //Center
@@ -117,8 +95,6 @@ namespace RaceGameTest
                 e.Graphics.DrawEllipse(new Pen(Color.Yellow), centerXWorld + game.gameObjects[i].rotatedFourPoints.botRight.X, centerYWorld + game.gameObjects[i].rotatedFourPoints.botRight.Y, 2, 2);
                 e.Graphics.ResetTransform();
 
-
-
                 e.Graphics.DrawEllipse(new Pen(Color.Yellow), centerXWorld + game.gameObjects[i].rotatedFourPoints.topCenter.X, centerYWorld + game.gameObjects[i].rotatedFourPoints.topCenter.Y, 2, 2);
                 e.Graphics.ResetTransform();
 
@@ -132,48 +108,73 @@ namespace RaceGameTest
                 e.Graphics.ResetTransform();
 
 #endif
-               // e.Graphics.DrawLine(new Pen(Color.ForestGreen),game.gameObjects[i].rotatedFourPoints.botLeft,game.gameObjects[i].rotatedFourPoints.topLeft);
-                
-                //... Maybe we can do a hitcheck here... ?
-                /*
-                PointF[] points = new PointF[] { game.gameObjects[i].rotatedFourPoints.topLeft, game.gameObjects[i].rotatedFourPoints.topRight, game.gameObjects[i].rotatedFourPoints.botLeft, game.gameObjects[i].rotatedFourPoints.botRight };
-                Matrix matrix = new Matrix();
-                matrix.TransformPoints(points);
-                Region region = new Region();
-                region.Transform(matrix);
-
-                SolidBrush blueBrush = new SolidBrush(Color.FromArgb(100, 20, 20, 20));
-                e.Graphics.FillRegion(blueBrush, region);
-                */
-                //e.Graphics.reg
-
-                /*
-                e.Graphics.DrawRectangle(new Pen(Color.DarkRed),gameObjects[i].GetCollisionDots().X, gameObjects[i].GetCollisionDots().Y, 10, 10);
-                e.Graphics.ResetTransform();
-                 */ 
             }
-            //This will be removed!
-            /*
-            if (game.objectCollisionMap.bitmap != null)
-            {
-                e.Graphics.DrawImage(game.objectCollisionMap.bitmap, 0, 0);
-                e.Graphics.ResetTransform();
-            }*/
+        }
+
+        void game_OnUpdateUI(Car carPlayer1, Car carPlayer2)
+        {
+            player1speedText.Text = (int)carPlayer1.velocity + " km/h";
+            player2speedText.Text = (int)carPlayer2.velocity + " km/h";
+
+            //Fuel bar
+            fuelbarrplayer1.Maximum = (int)carPlayer1.maxFuel;
+            fuelbarrplayer2.Maximum = (int)carPlayer2.maxFuel;
+            fuelbarrplayer1.Value = (int)carPlayer1.fuel;
+            fuelbarrplayer2.Value = (int)carPlayer2.fuel;
         }
         void game_OnDrawGameObject(object sender, GameObject arg)
         {
             //gameObjects.Add(arg);
-            arg.Update();
-            Invalidate();
+            arg.Update();//Update gameobject
+            Invalidate();//Redraw. Calls the onpaint function.(Fires a event)
+        }
+        //Little hack because arrow keys doens't work anymore :/ Idk why
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            //handle your keys here
+            if (keyData == Keys.Up || keyData == Keys.Left || keyData == Keys.Right || keyData == Keys.Down)
+            {
+                game.input.SetKey(keyData, true);
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
         }
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
             game.input.SetKey(e.KeyCode, true);
-
         }
         private void Form1_KeyUp(object sender, KeyEventArgs e)
         {
             game.input.SetKey(e.KeyCode, false);
+        }
+
+        //Martin 
+        /*
+        public void PassValue1(string strvalue)
+        {
+            label3.Text = strvalue;
+        }
+        public void PassValue2(string strvalue)
+        {
+            label4.Text = strvalue;
+        }*/
+        public void SetPlayerNames(string player1,string player2)
+        {
+            label3.Text = player1;
+            label4.Text = player2;
+        }
+        private void Exit_Click(object sender, EventArgs e)
+        {
+            foreach (Form unhide in Application.OpenForms)
+            {
+                if (unhide is Menu)// if Unhide is of type Menu
+                {
+                    unhide.Show();
+                    break;
+                }
+            }
+            jSound.StopAllSounds();
+            this.Dispose();
+            Close();
         }
 
     }

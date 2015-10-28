@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Media;
 using System.Runtime.InteropServices;
 using System.Timers;
-using IrrKlang;
+using IrrKlang;//Using the irrklang sound libary. The Windows c# libaries sucks!
 
 using System.Diagnostics;
 
@@ -30,7 +30,6 @@ namespace RaceGameTest.Q_Engine
             if (!engine.IsCurrentlyPlaying(_path))
             {
                 ISound sound = engine.Play2D(_path);
-                //sound.Volume = 0.1f;//volume;
             }
         }
         public void Stop()

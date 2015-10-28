@@ -37,8 +37,7 @@ namespace RaceGameTest.Q_Engine
 
         public void Run(Form form)
         {
-            stopWatch.Start();
-            Application.Idle += new EventHandler(Application_Idle);
+
             Application.Run(form);
         }
 
@@ -51,7 +50,11 @@ namespace RaceGameTest.Q_Engine
                 DrawFrame();
             }
         }
-
+        public void Initialize()
+        {
+            stopWatch.Start();
+            Application.Idle += new EventHandler(Application_Idle);
+        }
         protected virtual void UpdateFrame()
         {
             currentFrame = stopWatch.ElapsedMilliseconds;

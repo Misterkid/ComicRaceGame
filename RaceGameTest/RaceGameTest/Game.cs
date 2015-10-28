@@ -24,7 +24,7 @@ namespace RaceGameTest
 #if !__NO_OBJ_COL 
         public ObjectCollisionMap objectCollisionMap;
 #endif
-        public List<GameObject> gameObjects = new List<GameObject>();
+        public List<GameObject> gameObjects = new List<GameObject>();//Game Object to draw.
         private bool gameEnd = false;
         public Game()
         {
@@ -32,12 +32,13 @@ namespace RaceGameTest
             objectCollisionMap = new ObjectCollisionMap();
 #endif
         }
+        //Prepare objects to draw
         public void DrawObjects()
         {
 
             /*The Map */
-            map = new Map("_Images\\Circuit3.bmp", "_Images\\Circuit3.bmp");
-            DrawObject(map);
+            map = new Map("_Images\\Circuit3.bmp", "_Images\\Circuit3.bmp");//Map
+            DrawObject(map);//Send Event to draw!
             gameObjects.Add(map);
             /* Player one Car */
             player1Car = new Car("_Images\\JeffersonGTA2.png");
@@ -65,14 +66,14 @@ namespace RaceGameTest
         private void InitSounds()
         {
             jSound.AddSound(player1Car.breakSoundName, "_Sounds\\rem.wav", 1);
-            jSound.AddSound(player1Car.engineSoundName, "_Sounds\\vroem.wav", 1);
+            jSound.AddSound(player1Car.engineSoundName, "_Sounds\\vroem.wav", 0.1f);
             jSound.AddSound(player1Car.bumpSoundName, "_Sounds\\bots.wav", 1);
 
             jSound.AddSound(player2Car.breakSoundName, "_Sounds\\rem.wav", 1);
-            jSound.AddSound(player2Car.engineSoundName, "_Sounds\\vroem.wav", 1);
+            jSound.AddSound(player2Car.engineSoundName, "_Sounds\\vroem.wav", 0.1f);
             jSound.AddSound(player2Car.bumpSoundName, "_Sounds\\bots.wav", 1);
 
-            jSound.AddSound("Bgm", "_Sounds\\The Dictator theme song.wav", 0.1f);
+            jSound.AddSound("Bgm", "_Sounds\\The Dictator theme song.wav", 0.3f);
             //jSound.AddSound("Bgm", "_Sounds\\aladeen_mofo.wav", 0.1f);
             jSound.PlaySoundLooping("Bgm");
         }
@@ -89,7 +90,8 @@ namespace RaceGameTest
                 MapColCheck(player1Car);
                 MapColCheck(player2Car);
                 CarSound();
-
+                //Send out ui update event!
+                OnUpdateUI(player1Car,player2Car);
             }
             base.UpdateFrame();
         }
@@ -200,9 +202,6 @@ namespace RaceGameTest
                 }
                 if (topLeftColor == ColorCol.finnish || topRightColor == ColorCol.finnish || botLeftColor == ColorCol.finnish || botRightColor == ColorCol.finnish)
                 {
-                    //Do things
-                    gameEnd = true;
-                    
                     if (car.checkPoints == 4 && car.laps < 3)
                     {
                         car.checkPoints = 0;
@@ -213,7 +212,7 @@ namespace RaceGameTest
                         //car.checkPoints = 0;
                         //car.velocity = 0;
                         gameEnd = true;
-                        //Console.WriteLine("finished");
+                        Console.WriteLine("finished");
                         //car = null;
                     }
                 }
@@ -277,5 +276,8 @@ namespace RaceGameTest
 
         public delegate void OnUpdateObjectRotationHandler(GameObject gameObject, float angle);
         public event OnUpdateObjectRotationHandler OnUpdateRotation;
+
+        public delegate void OnUpdateUIHandler(Car carPlayer1, Car carPlayer2);
+        public event OnUpdateUIHandler OnUpdateUI;
     }
 }

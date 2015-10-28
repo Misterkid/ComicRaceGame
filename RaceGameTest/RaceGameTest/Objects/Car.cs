@@ -47,15 +47,6 @@ namespace RaceGameTest.Objects
             engineSoundName = engineName;
             bumpSoundName = bumpName;
         }
-        //-MoveForward = backwards... Duh
-        /*
-        public PointF MoveForward()
-        {
-            float rad = (float)(angle * Math.PI / 180);
-            float deltaX = (float)Math.Sin(rad) * velocity;//speed;
-            float deltaY = (float)-Math.Cos(rad) * velocity;//speed;
-            return new PointF(deltaX, deltaY);
-        }*/
         //Function to rotate the car left or right.
         public float Rotate(bool left,bool right)
         {

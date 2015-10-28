@@ -5,6 +5,8 @@ VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RaceGameTest", "RaceGameTest\RaceGameTest.csproj", "{230C635B-47C7-4CBE-8248-DDE120978028}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ui test1", "C:\Users\Quget\Dropbox\RaceGame P1P\ui test\ui test1\ui test1.csproj", "{907381C1-9695-4252-94BD-D2C827191D14}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{230C635B-47C7-4CBE-8248-DDE120978028}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{230C635B-47C7-4CBE-8248-DDE120978028}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{230C635B-47C7-4CBE-8248-DDE120978028}.Release|Any CPU.Build.0 = Release|Any CPU
+		{907381C1-9695-4252-94BD-D2C827191D14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{907381C1-9695-4252-94BD-D2C827191D14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{907381C1-9695-4252-94BD-D2C827191D14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{907381C1-9695-4252-94BD-D2C827191D14}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
