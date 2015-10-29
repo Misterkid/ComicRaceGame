@@ -31,7 +31,6 @@ namespace RaceGameTest.Q_Engine
         [SuppressUnmanagedCodeSecurity, DllImport("user32.dll", CharSet = CharSet.Auto)]
         private static extern bool PeekMessage(out Message msg, IntPtr hWnd, uint messageFilterMin, uint messageFilterMax, uint flags);
 
-        //protected float deltaTime;
         private float prevFrame;
         private float currentFrame;
         private Stopwatch stopWatch = new Stopwatch();
@@ -70,6 +69,7 @@ namespace RaceGameTest.Q_Engine
         {
             //ToDo 
         }
+        //Update each frame
         protected virtual void UpdateFrame()
         {
             currentFrame = stopWatch.ElapsedMilliseconds;
@@ -84,10 +84,10 @@ namespace RaceGameTest.Q_Engine
                 QTime.FramesPerSeconds = frameCount / totalDT;
                 frameCount = 0;
                 totalDT -= 1.0f / 1;
-                Console.WriteLine(QTime.FramesPerSeconds);
             }
 
         }
+        //Update after updateframe. Not used yet...
         protected virtual void DrawFrame()
         {
             //ToDo Draw objects here instead of drawing at form1.

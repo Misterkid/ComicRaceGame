@@ -28,7 +28,7 @@ namespace RaceGameTest
         public List<GameObject> gameObjects; //= new List<GameObject>();//Game Object to draw.
         private bool gameEnd;// = false;
         public bool canPlay;// = false;
-        public bool useMusic, useSound = true;
+        public bool useMusic, useSound;
         public Game()
         {
 #if !__NO_OBJ_COL 
@@ -247,14 +247,18 @@ namespace RaceGameTest
                         if (car.playerName == "Aladeen" || car.playerName == "علاء الدين")
                         {
                             jSound.StopAllSounds();
+                            //Weird bug
+                            jSound.StopSound(player1Car.engineSoundName);
+                            jSound.StopSound(player2Car.engineSoundName);
                             if (useSound)
                             {
                                 jSound.PlaySound("finish");
                             }
+                            /*
                             if(useMusic)
                             {
-                                jSound.PlaySound("bgmMenu");
-                            }
+                                jSound.PlaySound("bgm");
+                            }*/
                             gameEnd = true;
                             OnGameEnd();
                             Console.WriteLine("finished");
@@ -325,6 +329,8 @@ namespace RaceGameTest
         {
             base.Dispose();
         }
+        //All kind of events we sound out to Form1 
+        //To draw, update draws, update ui and to let it know the game finished!
         public delegate void OnDrawObjectHandler(object sender,GameObject arg);
         public event OnDrawObjectHandler OnDrawGameObject;
 

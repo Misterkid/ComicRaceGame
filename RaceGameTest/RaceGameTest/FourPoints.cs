@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using System.Drawing;
 namespace RaceGameTest
 {
+    //Just some points for the gameobjects! well not four anymore.
+    //This will be improved in the future.
     class FourPoints
     {
         public PointF topLeft;

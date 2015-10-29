@@ -8,8 +8,8 @@ namespace RaceGameTest.Q_Engine
 {
     class QTime
     {
-        public static float DeltaTime = 0;
-        public static float RunTime = 0;
-        public static float FramesPerSeconds;
+        public static float DeltaTime = 0;//Delta time in seconds. (Diffrence per frame /1000 )
+        public static float RunTime = 0;//How long the game is running
+        public static float FramesPerSeconds;//The ammount of frames each second!
     }
 }

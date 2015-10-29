@@ -14,28 +14,32 @@ namespace RaceGameTest.Q_Engine
 {
     class jSoundFile
     {
-        private float volume = 1;
-        ISoundEngine engine;
-        private string _path;
+       // private float volume = 1;//Sound volume
+        ISoundEngine engine;//the sound engine(I use it mutiple times.... Could be used ones.) No time to test
+        private string _path;//File path
+
+        //constructor. sound need path and volume
         public jSoundFile(string path, float vlm)
         {
             // start up the engine
-            engine = new ISoundEngine();
-            volume = vlm;
-            engine.SoundVolume = volume;
-            _path = path;
+            engine = new ISoundEngine();//sound engine!
+            //volume = vlm;//set volume
+            engine.SoundVolume = vlm;//^
+            _path = path;//Set file path
         }
         public void Play()
         {
-            if (!engine.IsCurrentlyPlaying(_path))
+            if (!engine.IsCurrentlyPlaying(_path))//is the sound not playing?
             {
-                ISound sound = engine.Play2D(_path);
+                ISound sound = engine.Play2D(_path);//play
             }
         }
+        //stop sound
         public void Stop()
         {
             engine.StopAllSounds();
         }
+        //play sound looping if not playing
         public void PlayLooping()
         {
             if (!engine.IsCurrentlyPlaying(_path))

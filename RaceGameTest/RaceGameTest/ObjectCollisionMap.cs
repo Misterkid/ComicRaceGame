@@ -8,7 +8,7 @@ using System.Drawing;
 using RaceGameTest.Objects;
 namespace RaceGameTest
 {
-    
+    //This is not being used. Please ignore.
     class ObjectCollisionMap
     {
         public Bitmap bitmap;

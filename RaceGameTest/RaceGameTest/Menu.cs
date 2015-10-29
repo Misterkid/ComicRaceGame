@@ -17,10 +17,10 @@ namespace RaceGameTest
         private System.Timers.Timer timerTextBox1;
         private string player1Name = "Aladeen";
         private string player2Name = "علاء الدين";
-        private bool useMusic, useSound = true;
+        private bool useMusic = true;
+        private bool useSound = true;
         public Menu(Game _game)
         {
-            
             InitializeComponent();
             game = _game;
 
@@ -33,6 +33,8 @@ namespace RaceGameTest
             timerTextBox1.Interval = 1000;
             timerTextBox1.Elapsed += timerTextBox1_Elapsed;
             timerTextBox1.AutoReset = true;
+            Image backgroundImage = Image.FromFile("_Images\\menuBackground.png");
+            menuBackgroundPictureBox.Image = backgroundImage;
             //this.FormBorderStyle = FormBorderStyle.FixedDialog;
         }
 
@@ -48,7 +50,6 @@ namespace RaceGameTest
         }
         public void button1_Click(object sender, EventArgs e)
         {
-            //this.KeyPreview = true;
             jSound.StopAllSounds();
             this.Hide();
             Form1 form1 = new Form1(game);
@@ -57,6 +58,7 @@ namespace RaceGameTest
             form1.game.Initialize();
             textBox1.Text = player1Name;
             textBox2.Text = player2Name;
+
             form1.SetPlayerNames(textBox1.Text, textBox2.Text);
             form1.SetSoundSettings(useMusic, useSound);
         }

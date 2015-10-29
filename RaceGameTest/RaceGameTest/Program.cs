@@ -22,7 +22,7 @@ namespace RaceGameTest
         static void Main()
         {
 #if __DEBUG_MODE
-            AllocConsole();
+            AllocConsole();//We want console to use console.writeline!
 #endif
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

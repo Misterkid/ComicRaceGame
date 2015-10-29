@@ -51,6 +51,7 @@ namespace RaceGameTest
             game.OnGameEnd += game_OnGameEnd;
             //Make the endscreen invisible.
             EndGameScreen.Visible = false;
+            EndGameScreen.BackgroundImage = Image.FromFile("_Images\\winner.bmp");
             //Controls.Add(pictureBox);
 
             //Add sounds ( It gets played in form1 )
@@ -126,28 +127,30 @@ namespace RaceGameTest
 #endif
             }
         }
-
+        //Update the ui. (Winforms ui xD)
         void game_OnUpdateUI(Car carPlayer1, Car carPlayer2)
         {
+            //Set texts.
             player1speedText.Text = (int)carPlayer1.velocity + " km/h";
             player2speedText.Text = (int)carPlayer2.velocity + " km/h";
             lapsPlayer1.Text = "Laps:" + carPlayer1.laps;
             lapsPlayer2.Text = "Laps:" + carPlayer2.laps;
             pitStopPlayer1.Text = "Pitstop:" + carPlayer1.pitchStop;
             pitStopPlayer2.Text = "Pitstop:" + carPlayer2.pitchStop;
-            //Fuel bar
+            //set Fuel bar
             fuelbarrplayer1.Maximum = (int)carPlayer1.maxFuel;
             fuelbarrplayer2.Maximum = (int)carPlayer2.maxFuel;
             fuelbarrplayer1.Value = (int)carPlayer1.fuel;
             fuelbarrplayer2.Value = (int)carPlayer2.fuel;
+            //if the game is running for less then 5 seconds
             if(QTime.RunTime < 5)
             {
-                CountDownText.Text = (3 - QTime.RunTime).ToString();
-                switch((int)QTime.RunTime)
+                CountDownText.Text = (3 - QTime.RunTime).ToString();//Countdown text - 3
+                switch((int)QTime.RunTime)//Switch on the time.
                 {
                     case 0:
                         if(game.useSound)
-                            jSound.PlaySound("3");
+                            jSound.PlaySound("3");//Play sound 3
                     break;
                         
                     case 1:
@@ -164,16 +167,16 @@ namespace RaceGameTest
                         if (game.useSound)
                             jSound.PlaySound("go");
 
-                        CountDownText.Text = "اذهب!";
-                        game.canPlay = true;
+                        CountDownText.Text = "اذهب!";//Go!
+                        game.canPlay = true;//We can drive
                     break;
 
                     case 4:
-                        CountDownText.Hide();
+                        CountDownText.Hide();//Hide it after 4 seconds
                     break;
                 }
             }
-            if ((QTime.RunTime - 3) < 0)
+            if ((QTime.RunTime - 3) < 0)//If time -3 is lower then 0 the time is 0;
             {
                 label2.Text = "وقت:" + 0;
             }
@@ -199,21 +202,28 @@ namespace RaceGameTest
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
+        //Key down
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            game.input.SetKey(e.KeyCode, true);
+            game.input.SetKey(e.KeyCode, true);//set keycode to true
         }
+        //key up
         private void Form1_KeyUp(object sender, KeyEventArgs e)
         {
-            game.input.SetKey(e.KeyCode, false);
+            game.input.SetKey(e.KeyCode, false);//set keycode to false
         }
+        //Volume settings from menu
         public void SetSoundSettings(bool useMusic,bool useSound)
         {
             game.useMusic = useMusic;
-            if(game.useMusic)
+            Console.WriteLine(useMusic);
+            if (game.useMusic)
+            {
                 jSound.PlaySoundLooping("Bgm");
+            }
             game.useSound = useSound;
         }
+        //playernames from menu.Its alladeen anyway.
         public void SetPlayerNames(string player1,string player2)
         {
             game.player1Car.playerName = player1;
@@ -222,11 +232,13 @@ namespace RaceGameTest
             label3.Text = player1;
             label4.Text = player2;
         }
-
+        //Game has ended!
         void game_OnGameEnd()
         {
+            jSound.StopAllSounds();
             EndGameScreen.Visible = true;
         }
+        //clicking on exit button goes back to menu.
         private void Exit_Click(object sender, EventArgs e)
         {
             foreach (Form unhide in Application.OpenForms)

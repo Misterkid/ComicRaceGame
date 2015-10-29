@@ -11,6 +11,7 @@ namespace RaceGameTest
     class Map : GameObject
     {
         //private Bitmap colBitmap;
+        //We got a collision map too! 
         public Map(string pathToVisibleMap, string pathToColMap):base(pathToVisibleMap)
         {
             //image = Image.FromFile(pathToVisibleMap);
@@ -18,7 +19,7 @@ namespace RaceGameTest
             //Image.FromFile(pathToColMap).
             colBitmap = new Bitmap(pathToColMap);//Bitmap.FromFile(pathToColMap);
         }
-        
+        //Get pixel at x and y coordinates
         public Color GetPixelAt(int x,int y)
         {
             try
