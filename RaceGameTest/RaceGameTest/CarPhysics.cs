@@ -137,7 +137,7 @@ namespace RaceGameTest
             {
 
                 float AccelerateCalc = ((-F_motorCalculated + F_rol + F_air) / MassaAutoCalculated);
-                Speed += (AccelerateCalc * 0.5f);
+                Speed += (AccelerateCalc * 0.35f);
                 return Speed;
 
             }
@@ -145,21 +145,21 @@ namespace RaceGameTest
             {
 
                 float AccelerateCalc = ((F_motorCalculated + F_rol + F_air) / MassaAutoCalculated);
-                Speed += (AccelerateCalc * 0.5f);
+                Speed += (AccelerateCalc * 0.35f);
                 return Speed;
 
             }
             if (Reverse && !Forward && Speed >= 0)
             {
                 float AccelerateCalc = ((-F_motorCalculated - F_rol - F_air) / MassaAutoCalculated);
-                Speed += (AccelerateCalc * 0.5f);
+                Speed += (AccelerateCalc * 0.35f);
                 return Speed;
             }
 
             if (!Reverse && !Forward && Speed <= 0)
             {
                 float AccelerateCalc = (F_motorCalculated + F_rol + F_air) / MassaAutoCalculated;
-                Speed += (AccelerateCalc * 0.5f);
+                Speed += (AccelerateCalc * 0.6f);
                 return Speed;
             }
 
@@ -172,7 +172,7 @@ namespace RaceGameTest
             else
             {
                 float AccelerateCalc = (F_motorCalculated - F_rol - F_air) / MassaAutoCalculated;
-                Speed += (AccelerateCalc * 0.5f);
+                Speed += (AccelerateCalc * 0.35f);
                 return Speed;
             }
 

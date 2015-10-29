@@ -70,7 +70,7 @@ namespace RaceGameTest
             gameObjects.Add(player1Car);
 
             /* Player Two Car */
-            player2Car = new Car("_Images\\JeffersonGTA2.png");
+            player2Car = new Car("_Images\\rrcargame2.png");
             player2Car.position = new PointF(500, 675);
             player2Car.angle = 270;
             player2Car.DrawCollisionImage("_Images\\JeffersonGTA2Col.bmp");
@@ -189,12 +189,12 @@ namespace RaceGameTest
                 if (topLeftColor == ColorCol.slow || topRightColor == ColorCol.slow || botLeftColor == ColorCol.slow || botRightColor == ColorCol.slow)
                 {
                     if (car.isGoingForward)
-                        car.CoEfficient = 10f;
+                        car.CoEfficient = 4f;
 
                     if (car.isGoingBackwards)
-                        car.CoEfficient = 10f;
+                        car.CoEfficient = 4f;
                 }
-                if (topLeftColor != ColorCol.slow || topRightColor != ColorCol.slow || botLeftColor != ColorCol.slow || botRightColor != ColorCol.slow)
+                if (topLeftColor != ColorCol.slow && topRightColor != ColorCol.slow && botLeftColor != ColorCol.slow && botRightColor != ColorCol.slow)
                 {
                     if (car.isGoingForward)
                         car.CoEfficient = 0.42f;
