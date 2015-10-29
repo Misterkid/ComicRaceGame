@@ -59,15 +59,5 @@ namespace RaceGameTest.Properties {
                 resourceCulture = value;
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap sacha_baron_cohen_2011_a_p {
-            get {
-                object obj = ResourceManager.GetObject("sacha_baron_cohen_2011_a_p", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
     }
 }

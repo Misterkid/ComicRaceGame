@@ -27,7 +27,7 @@ namespace RaceGameTest.Q_Engine
         {
             for(int i = 0; i < geluidsDictionary.Count; i++)
             {
-                StopSound(geluidsDictionary.ElementAt(i).Key);
+                geluidsDictionary.ElementAt(i).Value.Stop();
             }
         }
         public static void AddSound(string soundName, string soundPath,float volume)

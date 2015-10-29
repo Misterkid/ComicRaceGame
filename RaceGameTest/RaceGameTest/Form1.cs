@@ -52,6 +52,9 @@ namespace RaceGameTest
             jSound.AddSound("2", "_Sounds\\2.wav", 1f);
             jSound.AddSound("1", "_Sounds\\1.wav", 1f);
             jSound.AddSound("go", "_Sounds\\go.wav", 1f);
+
+            jSound.AddSound("Bgm", "_Sounds\\The Dictator theme song.wav", 0.3f);
+            jSound.PlaySoundLooping("Bgm");
         }
 
         void game_OnUpdateRotation(GameObject gameObject, float angle)
@@ -126,7 +129,10 @@ namespace RaceGameTest
         {
             player1speedText.Text = (int)carPlayer1.velocity + " km/h";
             player2speedText.Text = (int)carPlayer2.velocity + " km/h";
-
+            lapsPlayer1.Text = "Laps:" + carPlayer1.laps;
+            lapsPlayer2.Text = "Laps:" + carPlayer2.laps;
+            pitStopPlayer1.Text = "Pitstop:" + carPlayer1.pitchStop;
+            pitStopPlayer2.Text = "Pitstop:" + carPlayer2.pitchStop;
             //Fuel bar
             fuelbarrplayer1.Maximum = (int)carPlayer1.maxFuel;
             fuelbarrplayer2.Maximum = (int)carPlayer2.maxFuel;
@@ -159,17 +165,6 @@ namespace RaceGameTest
                         CountDownText.Hide();
                     break;
                 }
-                /*
-                if(QTime.RunTime == 3)
-                {
-                    CountDownText.Text = "اذهب!";
-                    game.canPlay = true;
-                    //Give controls to player
-                }
-                if(QTime.RunTime == 4)
-                {
-                    CountDownText.Hide();
-                }*/
             }
             if ((QTime.RunTime - 3) < 0)
             {
@@ -218,6 +213,9 @@ namespace RaceGameTest
         }*/
         public void SetPlayerNames(string player1,string player2)
         {
+            game.player1Car.playerName = player1;
+            game.player2Car.playerName = player2;
+
             label3.Text = player1;
             label4.Text = player2;
         }

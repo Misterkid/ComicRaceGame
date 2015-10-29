@@ -33,6 +33,7 @@ namespace RaceGameTest.Objects
         public int laps = 0;//How many laps did we do?
         public int maxLaps = 3;//How many laps does this car have to do ?
 
+        public string playerName = "Aladeen";
         public string breakSoundName = "break1";
         public string engineSoundName = "engine1";
         public string bumpSoundName = "bump1";

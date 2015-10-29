@@ -52,14 +52,16 @@
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.label2.AutoSize = true;
+            this.label2.BackColor = System.Drawing.Color.Transparent;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(448, 9);
+            this.label2.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.label2.Location = new System.Drawing.Point(11, 9);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(79, 33);
+            this.label2.Size = new System.Drawing.Size(986, 33);
             this.label2.TabIndex = 10;
             this.label2.Text = "0:0:0";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // Exit
             // 
@@ -203,24 +205,25 @@
             // 
             // CountDownText
             // 
-            this.CountDownText.AutoSize = true;
             this.CountDownText.BackColor = System.Drawing.Color.Transparent;
             this.CountDownText.Font = new System.Drawing.Font("Microsoft Sans Serif", 128F);
-            this.CountDownText.ForeColor = System.Drawing.SystemColors.ActiveCaption;
-            this.CountDownText.Location = new System.Drawing.Point(407, 241);
+            this.CountDownText.ForeColor = System.Drawing.Color.Green;
+            this.CountDownText.Location = new System.Drawing.Point(18, 211);
             this.CountDownText.Name = "CountDownText";
-            this.CountDownText.Size = new System.Drawing.Size(177, 193);
+            this.CountDownText.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.CountDownText.Size = new System.Drawing.Size(979, 193);
             this.CountDownText.TabIndex = 11;
-            this.CountDownText.Text = "3";
+            this.CountDownText.Text = "Start!";
+            this.CountDownText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1008, 729);
+            this.Controls.Add(this.Exit);
             this.Controls.Add(this.CountDownText);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.Exit);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.DoubleBuffered = true;
@@ -233,7 +236,6 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 

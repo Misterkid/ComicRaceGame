@@ -93,8 +93,8 @@ namespace RaceGameTest.Q_Engine
                     colBitmap.SetPixel((int)point.X + i, (int)point.Y + j, color);
                 }
             }
-            //for(int i = -width/2)
         }
+        //Rotate points from the center of the object.
         public PointF RotatePoint(PointF point) 
         {
             float rad = -(float)(angle * Math.PI / 180);

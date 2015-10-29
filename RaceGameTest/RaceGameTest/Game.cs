@@ -18,8 +18,9 @@ namespace RaceGameTest
     {
         public Input input;
 
-        private Car player1Car;
-        private Car player2Car;
+        public Car player1Car;
+        public Car player2Car;
+
         private Map map;
         public Gauge speed1Car;// = new Gauge();
         public Gauge speed2Car;// = new Gauge();
@@ -93,10 +94,6 @@ namespace RaceGameTest
             jSound.AddSound(player2Car.bumpSoundName, "_Sounds\\bots.wav", 1);
 
             jSound.AddSound("finish", "_Sounds\\finished.wav", 1);
-
-            jSound.AddSound("Bgm", "_Sounds\\The Dictator theme song.wav", 0.3f);
-            //jSound.AddSound("Bgm", "_Sounds\\aladeen_mofo.wav", 0.1f);
-            jSound.PlaySoundLooping("Bgm");
         }
         //Update on each frame! :D
         protected override void UpdateFrame()
@@ -255,9 +252,18 @@ namespace RaceGameTest
                     {
                         //car.checkPoints = 0;
                         //car.velocity = 0;
-                        gameEnd = true;
-                        jSound.PlaySound("finish");
-                        Console.WriteLine("finished");
+                        if (car.playerName == "Aladeen" || car.playerName == "علاء الدين")
+                        {
+                            gameEnd = true;
+                            jSound.PlaySound("finish");
+                            Console.WriteLine("finished");
+                        }
+                        else
+                        {
+
+                            Console.WriteLine("You are not Aladeen!");
+                        }
+
                         //car = null;
                     }
                 }
