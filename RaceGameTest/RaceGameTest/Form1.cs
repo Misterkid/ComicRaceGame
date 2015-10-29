@@ -37,39 +37,45 @@ namespace RaceGameTest
             graphics = this.CreateGraphics();
             graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
             game = _game;
+            //Start update shit.
             game.InitializeGame();
-            //game.Initialize();//Start update shit.
+            //Listen to OnDrawGameObject event
             game.OnDrawGameObject += game_OnDrawGameObject;
-            //game.input.RegisterKey(Keys.Up);
             game.DrawObjects();
+            //Listen to Update position and rotatione events.(Could be one event :| maybe for later)
             game.OnUpdatePosition += game_OnUpdatePosition;
             game.OnUpdateRotation += game_OnUpdateRotation;
+            //Update UI
             game.OnUpdateUI += game_OnUpdateUI;
+            //Send out that the game has ended!
             game.OnGameEnd += game_OnGameEnd;
+            //Make the endscreen invisible.
             EndGameScreen.Visible = false;
             //Controls.Add(pictureBox);
 
+            //Add sounds ( It gets played in form1 )
             jSound.AddSound("3", "_Sounds\\3.wav", 1f);
             jSound.AddSound("2", "_Sounds\\2.wav", 1f);
             jSound.AddSound("1", "_Sounds\\1.wav", 1f);
             jSound.AddSound("go", "_Sounds\\go.wav", 1f);
 
             jSound.AddSound("Bgm", "_Sounds\\gameBGM.wav", 0.3f);
-            jSound.PlaySoundLooping("Bgm");
         }
+        //If rotation event is fired. Rotate the object!
         void game_OnUpdateRotation(GameObject gameObject, float angle)
         {
             gameObject.angle = angle;
             gameObject.Update();
             Invalidate();//Redraw. Calls the onpaint function
         }
-
+        //Same as above but with position
         void game_OnUpdatePosition(GameObject gameObject, PointF newPosition)
         {
             gameObject.position = newPosition;
             gameObject.Update();
             Invalidate();
         }
+        //On paint. (gets called when invalidate gets called)
         protected override void OnPaint(PaintEventArgs e)
         {
             for(int i = 0; i < game.gameObjects.Count; i++)
@@ -119,10 +125,6 @@ namespace RaceGameTest
 
 #endif
             }
-           // game.speed1Car
-            /*
-            e.Graphics.DrawImage(game.speed1Car.gaugeLine, new Point(200, 200));
-            e.Graphics.ResetTransform();*/
         }
 
         void game_OnUpdateUI(Car carPlayer1, Car carPlayer2)
@@ -144,19 +146,24 @@ namespace RaceGameTest
                 switch((int)QTime.RunTime)
                 {
                     case 0:
-                        jSound.PlaySound("3");
+                        if(game.useSound)
+                            jSound.PlaySound("3");
                     break;
                         
                     case 1:
-                        jSound.PlaySound("2");
+                        if (game.useSound)
+                            jSound.PlaySound("2");
                     break;
 
                     case 2:
-                        jSound.PlaySound("1");
+                        if (game.useSound)
+                            jSound.PlaySound("1");
                     break;
 
                     case 3:
-                        jSound.PlaySound("go");
+                        if (game.useSound)
+                            jSound.PlaySound("go");
+
                         CountDownText.Text = "اذهب!";
                         game.canPlay = true;
                     break;
@@ -200,17 +207,13 @@ namespace RaceGameTest
         {
             game.input.SetKey(e.KeyCode, false);
         }
-
-        //Martin 
-        /*
-        public void PassValue1(string strvalue)
+        public void SetSoundSettings(bool useMusic,bool useSound)
         {
-            label3.Text = strvalue;
+            game.useMusic = useMusic;
+            if(game.useMusic)
+                jSound.PlaySoundLooping("Bgm");
+            game.useSound = useSound;
         }
-        public void PassValue2(string strvalue)
-        {
-            label4.Text = strvalue;
-        }*/
         public void SetPlayerNames(string player1,string player2)
         {
             game.player1Car.playerName = player1;
@@ -235,8 +238,11 @@ namespace RaceGameTest
                 }
             }
             jSound.StopAllSounds();
-            jSound.PlaySound("greet");
-            jSound.PlaySoundLooping("menuMusic");
+            if(game.useSound)
+                jSound.PlaySound("greet");
+            if(game.useMusic)
+                jSound.PlaySoundLooping("menuMusic");
+
             game.Dispose();
             game.Reset();
 

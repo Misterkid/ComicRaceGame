@@ -17,6 +17,7 @@ namespace RaceGameTest
         private System.Timers.Timer timerTextBox1;
         private string player1Name = "Aladeen";
         private string player2Name = "علاء الدين";
+        private bool useMusic, useSound = true;
         public Menu(Game _game)
         {
             
@@ -57,6 +58,7 @@ namespace RaceGameTest
             textBox1.Text = player1Name;
             textBox2.Text = player2Name;
             form1.SetPlayerNames(textBox1.Text, textBox2.Text);
+            form1.SetSoundSettings(useMusic, useSound);
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -79,11 +81,36 @@ namespace RaceGameTest
             timerTextBox1.Stop();
             timerTextBox1.Start();
         }
-
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
             timerTextBox1.Stop();
             timerTextBox1.Start();
+        }
+
+        private void soundCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            useSound = soundCheckBox.Checked;
+            if (!useSound)
+            {
+                //jSound.StopSound("menuMusic");
+            }
+            else
+            {
+                jSound.PlaySound("greet");
+            }
+        }
+
+        private void musicCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            useMusic = musicCheckBox.Checked;
+            if(!useMusic)
+            {
+                jSound.StopSound("menuMusic");
+            }
+            else
+            {
+                jSound.PlaySoundLooping("menuMusic");
+            }
         }
     }
 }

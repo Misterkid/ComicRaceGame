@@ -14,7 +14,7 @@ using RaceGameTest.Q_Engine;
 namespace RaceGameTest
 {
 
-    class Game:BaseGame
+    class Game:BaseGame//extends from basegame
     {
         public Input input;
 
@@ -22,16 +22,13 @@ namespace RaceGameTest
         public Car player2Car;
 
         private Map map;
-        public Gauge speed1Car;// = new Gauge();
-        public Gauge speed2Car;// = new Gauge();
-        public Gauge fuel1Car;// = new Gauge();
-        public Gauge fuel2Car;// = new Gauge();
 #if !__NO_OBJ_COL 
         public ObjectCollisionMap objectCollisionMap;
 #endif
         public List<GameObject> gameObjects; //= new List<GameObject>();//Game Object to draw.
         private bool gameEnd;// = false;
         public bool canPlay;// = false;
+        public bool useMusic, useSound = true;
         public Game()
         {
 #if !__NO_OBJ_COL 
@@ -39,20 +36,15 @@ namespace RaceGameTest
 #endif
             
         }
+        //initialize game
         public void InitializeGame()
         {
             gameObjects = new List<GameObject>();
-            /*
-            speed1Car = new Gauge();
-            
-            speed2Car = new Gauge();
-            fuel1Car = new Gauge();
-            fuel2Car = new Gauge();*/
             gameEnd = false;
             canPlay = false;
             input = new Input();
         }
-        //Prepare objects to draw
+        //Prepare objects to draw and init sound... I know
         public void DrawObjects()
         {
 
@@ -78,14 +70,13 @@ namespace RaceGameTest
             DrawObject(player2Car);
             gameObjects.Add(player2Car);
 
-            InitSounds();
-            //player1Car.SetCollision();
-            //player2Car.SetCollision();
+            InitSounds();// Initalize here... Yupe
 
         }
+        //initialize sounds
         private void InitSounds()
         {
-            jSound.AddSound(player1Car.breakSoundName, "_Sounds\\rem.wav", 1);
+            jSound.AddSound(player1Car.breakSoundName, "_Sounds\\rem.wav", 1);//Adds a sound
             jSound.AddSound(player1Car.engineSoundName, "_Sounds\\vroem.wav", 0.1f);
             jSound.AddSound(player1Car.bumpSoundName, "_Sounds\\bots.wav", 1);
 
@@ -98,8 +89,10 @@ namespace RaceGameTest
         //Update on each frame! :D
         protected override void UpdateFrame()
         {
+            //Can we play? is the game not ended?
             if (!gameEnd && canPlay)
             {
+                //Make the cars move
                 PlayerCarMovement(player1Car,Keys.W,Keys.S,Keys.A,Keys.D);
                 PlayerCarMovement(player2Car, Keys.Up, Keys.Down, Keys.Left, Keys.Right);
 #if !__NO_OBJ_COL
@@ -107,49 +100,50 @@ namespace RaceGameTest
 #endif          
                 MapColCheck(player1Car);
                 MapColCheck(player2Car);
-                //speed1Car.updateSpeedGauge(player1Car.velocity);
                 CarSound();
-                //Send out ui update event!
             }
-            /*
-            OnDrawObjectHandler handler = OnDrawGameObject;
-            if (OnDrawGameObject != null)
-                */
+            //Update the UI sending out a event to form1
             if (OnUpdateUI != null)
                 OnUpdateUI(player1Car, player2Car);
 
-            base.UpdateFrame();
+            base.UpdateFrame();//Also do basegame stuff.
         }
+        //Car sound while moving.
         private void CarSound()
         {
             //sound
-            if (player1Car.isGoingForward || player1Car.isGoingBackwards)
+            if (useSound)
             {
-                jSound.PlaySoundLooping(player1Car.engineSoundName);
-            }
-            else
-            {
-                jSound.StopSound(player1Car.engineSoundName);
-            }
-            if (player2Car.isGoingForward || player2Car.isGoingBackwards)
-            {
-                jSound.PlaySoundLooping(player2Car.engineSoundName);
-            }
-            else
-            {
-                jSound.StopSound(player2Car.engineSoundName);
+                if (player1Car.isGoingForward || player1Car.isGoingBackwards)
+                {
+                    jSound.PlaySoundLooping(player1Car.engineSoundName);
+                }
+                else
+                {
+                    jSound.StopSound(player1Car.engineSoundName);
+                }
+                if (player2Car.isGoingForward || player2Car.isGoingBackwards)
+                {
+                    jSound.PlaySoundLooping(player2Car.engineSoundName);
+                }
+                else
+                {
+                    jSound.StopSound(player2Car.engineSoundName);
+                }
             }
         }
         //Only use this on MOVING objects
+        //Collision with collision map(s).
         private void MapColCheck(Car car)
         {
             if (car != null)
             {
-                //car.SetCollision();
-                //Color color = map.GetPixelAt((int)car.position.X + (int)car.center.X, (int)car.position.Y + (int)car.center.Y);
+                //Car wolrd center position.
                 float centerXWorld = (int)car.position.X + (int)car.center.X;
                 float centerYWorld = (int)car.position.Y + (int)car.center.Y;
 
+
+                //Get car corners within the world.
                 Color topLeftColor = map.GetPixelAt((int)centerXWorld + (int)car.rotatedFourPoints.topLeft.X, (int)centerYWorld + (int)car.rotatedFourPoints.topLeft.Y);
                 Color topRightColor = map.GetPixelAt((int)centerXWorld + (int)car.rotatedFourPoints.topRight.X, (int)centerYWorld + (int)car.rotatedFourPoints.topRight.Y);
                 Color botLeftColor = map.GetPixelAt((int)centerXWorld + (int)car.rotatedFourPoints.botLeft.X, (int)centerYWorld + (int)car.rotatedFourPoints.botLeft.Y);
@@ -167,7 +161,9 @@ namespace RaceGameTest
                 Color LeftCenterColor2 = objectCollisionMap.GetPixelAt((int)centerXWorld + (int)car.rotatedFourPoints.leftCenter.X, (int)centerYWorld + (int)car.rotatedFourPoints.leftCenter.Y);
                 Color RightCenterColor2 = objectCollisionMap.GetPixelAt((int)centerXWorld + (int)car.rotatedFourPoints.rightCenter.X, (int)centerYWorld + (int)car.rotatedFourPoints.rightCenter.Y);
 #endif                
-                // Can't put color in a switch for some reason!
+                // Can't put color in a switch for some reason! its not a enum. Why isn't it converted to int ? wait what.
+
+                //No collision with solid object. set the lastpos and angle.
 #if __NO_OBJ_COL
                 if (topLeftColor != ColorCol.collision && topRightColor != ColorCol.collision && botLeftColor != ColorCol.collision && botRightColor != ColorCol.collision)
 #else
@@ -176,30 +172,24 @@ namespace RaceGameTest
                     topCenterColor2 != ColorCol.collision && botCenterColor2 != ColorCol.collision && LeftCenterColor2 != ColorCol.collision && RightCenterColor2 != ColorCol.collision)
 #endif
                 {
-                   // Console.WriteLine("?");
                     car.lastPos = car.position;
                     car.lastAngle = car.angle;
                 }
                 //"collision" with road.
                 if (topLeftColor == ColorCol.road || topRightColor == ColorCol.road || botLeftColor == ColorCol.road || botRightColor == ColorCol.road)
                 {
-
+                    //TODO
                 }
-                // "Collision" with "sand"
+                // "Collision" with slowness
                 if (topLeftColor == ColorCol.slow || topRightColor == ColorCol.slow || botLeftColor == ColorCol.slow || botRightColor == ColorCol.slow)
                 {
-                    if (car.isGoingForward)
-                        car.CoEfficient = 4f;
-
-                    if (car.isGoingBackwards)
+                    if (car.isGoingForward || car.isGoingBackwards)// are we moving?
                         car.CoEfficient = 4f;
                 }
+                //No collision with slowness
                 if (topLeftColor != ColorCol.slow && topRightColor != ColorCol.slow && botLeftColor != ColorCol.slow && botRightColor != ColorCol.slow)
                 {
-                    if (car.isGoingForward)
-                        car.CoEfficient = 0.42f;
-
-                    if (car.isGoingBackwards)
+                    if (car.isGoingForward || car.isGoingBackwards)// are we moving?
                         car.CoEfficient = 0.42f;
                 }
                 //"Collision" against a object
@@ -212,37 +202,39 @@ namespace RaceGameTest
                     topCenterColor2 == ColorCol.collision || botCenterColor2 == ColorCol.collision || LeftCenterColor2 == ColorCol.collision || RightCenterColor2 == ColorCol.collision)
 #endif
                 {
-                    //Do things
                    // Console.WriteLine("?");
-                    jSound.PlaySound(car.bumpSoundName);
-
+                    if (useSound)
+                    {
+                        jSound.PlaySound(car.bumpSoundName);//Play bumpsound
+                    }
+                    //Update position and rotation to the last location and angle
                     OnUpdatePosition(car, car.lastPos);
                     OnUpdateRotation(car, car.lastAngle);
                 }
-                //else if (color == ColorCol.pitstop)
-                // if ((topLeftColor == ColorCol.pitstop || topRightColor == ColorCol.pitstop || botLeftColor == ColorCol.pitstop || botRightColor == ColorCol.pitstop) && car.velocity == 0)
-
                 //"collision" with pitstop.
-                // if (topLeftColor == ColorCol.pitstop || topRightColor == ColorCol.pitstop || botLeftColor == ColorCol.pitstop || botRightColor == ColorCol.pitstop)
                 if ((topLeftColor == ColorCol.pitstop || topRightColor == ColorCol.pitstop || botLeftColor == ColorCol.pitstop || botRightColor == ColorCol.pitstop) && car.velocity == 0)
                 {
-                    //Do things
+                    //We are on pitstop!
                     car.pitchStop = true;
                 }
                 if (topLeftColor != ColorCol.pitstop || topRightColor != ColorCol.pitstop || botLeftColor != ColorCol.pitstop || botRightColor != ColorCol.pitstop || car.velocity != 0)
                 {
+                    //We are not on pitstop.
                     if (car.pitchStop)
                     {
                         car.pitchStop = false;
                     }
                 }
 
+                //hitting start. 
                 if (topLeftColor == ColorCol.start || topRightColor == ColorCol.start || botLeftColor == ColorCol.start || botRightColor == ColorCol.start)
                 {
-                    //Do things
+                    //Do things. TODO
                 }
+                //Finish line!
                 if (topLeftColor == ColorCol.finnish || topRightColor == ColorCol.finnish || botLeftColor == ColorCol.finnish || botRightColor == ColorCol.finnish)
                 {
+                    //Add lap and reset checkpoints
                     if (car.checkPoints == 4 && car.laps < 3)
                     {
                         car.checkPoints = 0;
@@ -255,9 +247,15 @@ namespace RaceGameTest
                         if (car.playerName == "Aladeen" || car.playerName == "علاء الدين")
                         {
                             jSound.StopAllSounds();
-                            jSound.PlaySound("bgmMenu");
+                            if (useSound)
+                            {
+                                jSound.PlaySound("finish");
+                            }
+                            if(useMusic)
+                            {
+                                jSound.PlaySound("bgmMenu");
+                            }
                             gameEnd = true;
-                            jSound.PlaySound("finish");
                             OnGameEnd();
                             Console.WriteLine("finished");
                         }
@@ -266,40 +264,33 @@ namespace RaceGameTest
 
                             Console.WriteLine("You are not Aladeen!");
                         }
-
-                        //car = null;
                     }
                 }
                 //"Collision" with checkpoints
+                //Set checkpoint count if you hit a checkpoint(resets when each lap) Need 4 checkpoints to get a lap.
                 if (topLeftColor == ColorCol.checkp1 || topRightColor == ColorCol.checkp1 || botLeftColor == ColorCol.checkp1 || botRightColor == ColorCol.checkp1)
                 {
-                    //Do things
                     if(car.checkPoints == 0)
                         car.checkPoints = 1;
                 }
-                //else if (color == ColorCol.checkp2)
                 if (topLeftColor == ColorCol.checkp2 || topRightColor == ColorCol.checkp2 || botLeftColor == ColorCol.checkp2 || botRightColor == ColorCol.checkp2)
                 {
-                    //Do things
                     if (car.checkPoints == 1)
                         car.checkPoints = 2;
                 }
-                //else if (color == ColorCol.checkp3)
                 if (topLeftColor == ColorCol.checkp3 || topRightColor == ColorCol.checkp3 || botLeftColor == ColorCol.checkp3 || botRightColor == ColorCol.checkp3)
                 {
-                    //Do things
                     if (car.checkPoints == 2)
                         car.checkPoints = 3;
                 }
-               // else if (color == ColorCol.checkp4)
                 if (topLeftColor == ColorCol.checkp4 || topRightColor == ColorCol.checkp4 || botLeftColor == ColorCol.checkp4 || botRightColor == ColorCol.checkp4)
                 {
-                    //Do things
                     if (car.checkPoints == 3)
                         car.checkPoints = 4;
                 }
             }
         }
+        //Move a car with specific keys
         private void PlayerCarMovement(Car car,Keys forward,Keys backwards, Keys left,Keys right)
         {
             if (input != null && car != null)
@@ -316,17 +307,20 @@ namespace RaceGameTest
                 OnUpdateRotation(car, car.angle - (rotation * QTime.DeltaTime));
             }
         }
+        //Draw object on screen.
         public void DrawObject(GameObject objectToDraw)
         {
             OnDrawObjectHandler handler = OnDrawGameObject;
             if (OnDrawGameObject != null)
                 handler(this, objectToDraw);
         }
+        //Reset this game. Duo to a weird way of making a menu screen.... 
         public override void Reset()
         {
             canPlay = false;
             base.Reset();
         }
+        //Dispose of this class! (Overwriten from baseGame)
         public override void Dispose()
         {
             base.Dispose();

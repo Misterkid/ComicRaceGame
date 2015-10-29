@@ -39,6 +39,8 @@
             this.button2 = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.musicCheckBox = new System.Windows.Forms.CheckBox();
+            this.soundCheckBox = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -98,8 +100,9 @@
             // 
             // button2
             // 
-            this.button2.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.button2.BackColor = System.Drawing.Color.Green;
             resources.ApplyResources(this.button2, "button2");
+            this.button2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.button2.Name = "button2";
             this.button2.UseVisualStyleBackColor = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
@@ -107,8 +110,8 @@
             // label3
             // 
             resources.ApplyResources(this.label3, "label3");
-            this.label3.BackColor = System.Drawing.Color.Transparent;
-            this.label3.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.label3.BackColor = System.Drawing.Color.Green;
+            this.label3.ForeColor = System.Drawing.Color.Orange;
             this.label3.Name = "label3";
             // 
             // pictureBox1
@@ -117,10 +120,34 @@
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.TabStop = false;
             // 
+            // musicCheckBox
+            // 
+            resources.ApplyResources(this.musicCheckBox, "musicCheckBox");
+            this.musicCheckBox.BackColor = System.Drawing.Color.Green;
+            this.musicCheckBox.Checked = true;
+            this.musicCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.musicCheckBox.ForeColor = System.Drawing.Color.Orange;
+            this.musicCheckBox.Name = "musicCheckBox";
+            this.musicCheckBox.UseVisualStyleBackColor = false;
+            this.musicCheckBox.CheckedChanged += new System.EventHandler(this.musicCheckBox_CheckedChanged);
+            // 
+            // soundCheckBox
+            // 
+            resources.ApplyResources(this.soundCheckBox, "soundCheckBox");
+            this.soundCheckBox.BackColor = System.Drawing.Color.Green;
+            this.soundCheckBox.Checked = true;
+            this.soundCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.soundCheckBox.ForeColor = System.Drawing.Color.Orange;
+            this.soundCheckBox.Name = "soundCheckBox";
+            this.soundCheckBox.UseVisualStyleBackColor = false;
+            this.soundCheckBox.CheckedChanged += new System.EventHandler(this.soundCheckBox_CheckedChanged);
+            // 
             // Menu
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.soundCheckBox);
+            this.Controls.Add(this.musicCheckBox);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
@@ -154,5 +181,7 @@
         public System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.CheckBox musicCheckBox;
+        private System.Windows.Forms.CheckBox soundCheckBox;
     }
 }

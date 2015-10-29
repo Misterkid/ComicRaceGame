@@ -9,6 +9,7 @@ using System.Security;
 using System.Windows.Forms;
 using System.Diagnostics;
 /*
+ * Got example from here. I want this "game" to run on each frame!
  * https://social.msdn.microsoft.com/Forums/vstudio/en-US/9003bda2-7edd-47e4-8731-142b03d2d433/visual-c-function-that-occurs-every-frame
  * 
  */ 
@@ -36,12 +37,11 @@ namespace RaceGameTest.Q_Engine
         private Stopwatch stopWatch = new Stopwatch();
         private int frameCount = 0;
         private float totalDT = 0;
-
+        //Run application
         public void Run(Form form)
         {
             Application.Run(form);
         }
-
         void Application_Idle(object sender, EventArgs e)
         {
             Message message;
@@ -51,27 +51,24 @@ namespace RaceGameTest.Q_Engine
                 DrawFrame();
             }
         }
+        //Initialize game!
         public void Initialize()
         {
             stopWatch.Start();
             Application.Idle += new EventHandler(Application_Idle);
         }
+        //Reset some stuff.
         public virtual void Reset()
         {
             stopWatch.Stop();
             stopWatch.Reset();
             prevFrame = 0;
             currentFrame = 0;
+
         }
         public virtual void Dispose()
         {
-            /*
-            stopWatch.Stop();
-            stopWatch.Reset();
-            prevFrame = 0;
-            currentFrame = 0;
-            Application.Idle -= new EventHandler(Application_Idle);
-             */ 
+            //ToDo 
         }
         protected virtual void UpdateFrame()
         {
