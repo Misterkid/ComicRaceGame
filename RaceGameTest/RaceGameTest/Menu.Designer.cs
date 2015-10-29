@@ -58,6 +58,8 @@
             this.textBox1.BackColor = System.Drawing.Color.WhiteSmoke;
             resources.ApplyResources(this.textBox1, "textBox1");
             this.textBox1.Name = "textBox1";
+            this.textBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox1_KeyPress);
+            this.textBox1.Leave += new System.EventHandler(this.textBox1_Leave);
             // 
             // label1
             // 
@@ -78,6 +80,7 @@
             this.textBox2.BackColor = System.Drawing.Color.WhiteSmoke;
             resources.ApplyResources(this.textBox2, "textBox2");
             this.textBox2.Name = "textBox2";
+            this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
             // 
             // label2
             // 
