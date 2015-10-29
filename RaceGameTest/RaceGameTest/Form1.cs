@@ -24,10 +24,8 @@ namespace RaceGameTest
         public Form1(Game _game)//I'm lazy to redo all
         {
             InitializeComponent();
-            this.FormBorderStyle = FormBorderStyle.FixedDialog;
-            this.KeyPreview = true;
             // Define the border style of the form to a dialog box.
-            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            this.FormBorderStyle = FormBorderStyle.FixedToolWindow;
             // Set the MaximizeBox to false to remove the maximize box.
             this.MaximizeBox = false;
             // Set the MinimizeBox to false to remove the minimize box.
@@ -35,6 +33,7 @@ namespace RaceGameTest
             // Set the start position of the form to the center of the screen.
             this.StartPosition = FormStartPosition.CenterScreen;
 
+            this.KeyPreview = true;
             graphics = this.CreateGraphics();
             graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
             game = _game;
@@ -46,6 +45,8 @@ namespace RaceGameTest
             game.OnUpdatePosition += game_OnUpdatePosition;
             game.OnUpdateRotation += game_OnUpdateRotation;
             game.OnUpdateUI += game_OnUpdateUI;
+            game.OnGameEnd += game_OnGameEnd;
+            EndGameScreen.Visible = false;
             //Controls.Add(pictureBox);
 
             jSound.AddSound("3", "_Sounds\\3.wav", 1f);
@@ -53,10 +54,9 @@ namespace RaceGameTest
             jSound.AddSound("1", "_Sounds\\1.wav", 1f);
             jSound.AddSound("go", "_Sounds\\go.wav", 1f);
 
-            jSound.AddSound("Bgm", "_Sounds\\The Dictator theme song.wav", 0.3f);
+            jSound.AddSound("Bgm", "_Sounds\\gameBGM.wav", 0.3f);
             jSound.PlaySoundLooping("Bgm");
         }
-
         void game_OnUpdateRotation(GameObject gameObject, float angle)
         {
             gameObject.angle = angle;
@@ -168,11 +168,11 @@ namespace RaceGameTest
             }
             if ((QTime.RunTime - 3) < 0)
             {
-                label2.Text = "Game Time: " + 0;
+                label2.Text = "وقت:" + 0;
             }
             else
             {
-                label2.Text = "Game Time: " + (QTime.RunTime - 3).ToString();
+                label2.Text = "وقت:" + (QTime.RunTime - 3).ToString();
             }
             
         }
@@ -218,6 +218,11 @@ namespace RaceGameTest
 
             label3.Text = player1;
             label4.Text = player2;
+        }
+
+        void game_OnGameEnd()
+        {
+            EndGameScreen.Visible = true;
         }
         private void Exit_Click(object sender, EventArgs e)
         {

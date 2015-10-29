@@ -26,7 +26,7 @@ namespace RaceGameTest
             jSound.AddSound("greet", "_Sounds\\greet.wav",1);
             jSound.PlaySound("greet");
 
-            jSound.AddSound("menuMusic", "_Sounds\\aladeen_mofo.wav", 0.3f);
+            jSound.AddSound("menuMusic", "_Sounds\\menuBGM.wav", 0.3f);
             jSound.PlaySoundLooping("menuMusic");
             timerTextBox1 = new System.Timers.Timer();
             timerTextBox1.Interval = 1000;
@@ -39,7 +39,7 @@ namespace RaceGameTest
         {
             Invoke((MethodInvoker)(() =>
             {
-                // Thread safe here, update control positions or whatever yaaay
+                // Thread safe here, update control stuff
                 textBox1.Text = player1Name;
                 textBox2.Text = player2Name;
             }));

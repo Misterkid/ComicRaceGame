@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.label2 = new System.Windows.Forms.Label();
             this.Exit = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -43,8 +44,10 @@
             this.player1speedText = new System.Windows.Forms.Label();
             this.fuelbarrplayer1 = new System.Windows.Forms.ProgressBar();
             this.CountDownText = new System.Windows.Forms.Label();
+            this.EndGameScreen = new System.Windows.Forms.PictureBox();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.EndGameScreen)).BeginInit();
             this.SuspendLayout();
             // 
             // label2
@@ -216,12 +219,25 @@
             this.CountDownText.Text = "Start!";
             this.CountDownText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // EndGameScreen
+            // 
+            this.EndGameScreen.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("EndGameScreen.BackgroundImage")));
+            this.EndGameScreen.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.EndGameScreen.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.EndGameScreen.Location = new System.Drawing.Point(0, 0);
+            this.EndGameScreen.Name = "EndGameScreen";
+            this.EndGameScreen.Size = new System.Drawing.Size(1008, 729);
+            this.EndGameScreen.TabIndex = 12;
+            this.EndGameScreen.TabStop = false;
+            this.EndGameScreen.Visible = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1008, 729);
             this.Controls.Add(this.Exit);
+            this.Controls.Add(this.EndGameScreen);
             this.Controls.Add(this.CountDownText);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.groupBox2);
@@ -235,6 +251,7 @@
             this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.EndGameScreen)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -256,6 +273,7 @@
         private System.Windows.Forms.Label lapsPlayer2;
         private System.Windows.Forms.Label pitStopPlayer1;
         private System.Windows.Forms.Label lapsPlayer1;
+        private System.Windows.Forms.PictureBox EndGameScreen;
 
 
     }

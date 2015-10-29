@@ -254,8 +254,11 @@ namespace RaceGameTest
                         //car.velocity = 0;
                         if (car.playerName == "Aladeen" || car.playerName == "علاء الدين")
                         {
+                            jSound.StopAllSounds();
+                            jSound.PlaySound("bgmMenu");
                             gameEnd = true;
                             jSound.PlaySound("finish");
+                            OnGameEnd();
                             Console.WriteLine("finished");
                         }
                         else
@@ -339,5 +342,8 @@ namespace RaceGameTest
 
         public delegate void OnUpdateUIHandler(Car carPlayer1, Car carPlayer2);
         public event OnUpdateUIHandler OnUpdateUI;
+
+        public delegate void OnGameEndHandler();
+        public event OnGameEndHandler OnGameEnd;
     }
 }

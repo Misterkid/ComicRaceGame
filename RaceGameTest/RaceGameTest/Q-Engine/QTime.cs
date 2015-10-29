@@ -10,5 +10,6 @@ namespace RaceGameTest.Q_Engine
     {
         public static float DeltaTime = 0;
         public static float RunTime = 0;
+        public static float FramesPerSeconds;
     }
 }

@@ -34,6 +34,8 @@ namespace RaceGameTest.Q_Engine
         private float prevFrame;
         private float currentFrame;
         private Stopwatch stopWatch = new Stopwatch();
+        private int frameCount = 0;
+        private float totalDT = 0;
 
         public void Run(Form form)
         {
@@ -77,6 +79,17 @@ namespace RaceGameTest.Q_Engine
             QTime.DeltaTime = (currentFrame - prevFrame) / 1000;//Make it into seconds.
             QTime.RunTime = stopWatch.ElapsedMilliseconds / 1000;//How long is the game running in seconds?
             prevFrame = currentFrame;
+
+            frameCount++;
+            totalDT += QTime.DeltaTime;
+            if (totalDT > 1.0 / 1)
+            {
+                QTime.FramesPerSeconds = frameCount / totalDT;
+                frameCount = 0;
+                totalDT -= 1.0f / 1;
+                Console.WriteLine(QTime.FramesPerSeconds);
+            }
+
         }
         protected virtual void DrawFrame()
         {
