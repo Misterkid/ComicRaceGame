@@ -35,6 +35,7 @@ namespace RaceGameTest
             timerTextBox1.AutoReset = true;
             Image backgroundImage = Image.FromFile("_Images\\menuBackground.png");
             menuBackgroundPictureBox.Image = backgroundImage;
+            //this.Cursor = new Cursor(GetType(), "_Images\\mousePointer.png");
             //this.FormBorderStyle = FormBorderStyle.FixedDialog;
         }
 

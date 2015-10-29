@@ -54,7 +54,7 @@ namespace RaceGameTest
             gameObjects.Add(map);
             /* Player one Car */
             player1Car = new Car("_Images\\rrcargame.png");
-            player1Car.position = new PointF(500, 700);
+            player1Car.position = new PointF(500, 695);
             player1Car.angle = 270;
             player1Car.DrawCollisionImage("_Images\\JeffersonGTA2Col.bmp");
             player1Car.initSoundNames("break1", "engine1", "bump1");
@@ -63,7 +63,7 @@ namespace RaceGameTest
 
             /* Player Two Car */
             player2Car = new Car("_Images\\rrcargame2.png");
-            player2Car.position = new PointF(500, 675);
+            player2Car.position = new PointF(500, 670);
             player2Car.angle = 270;
             player2Car.DrawCollisionImage("_Images\\JeffersonGTA2Col.bmp");
             player2Car.initSoundNames("break2", "engine2", "bump2");
