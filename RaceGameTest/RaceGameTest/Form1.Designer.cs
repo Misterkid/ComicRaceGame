@@ -242,7 +242,7 @@
             this.Controls.Add(this.groupBox1);
             this.DoubleBuffered = true;
             this.Name = "Form1";
-            this.Text = "الطغاة لعبة سباق";
+            this.Text = "Aladeen Racing";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyUp);
             this.groupBox2.ResumeLayout(false);

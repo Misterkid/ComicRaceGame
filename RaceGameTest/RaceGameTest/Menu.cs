@@ -16,7 +16,7 @@ namespace RaceGameTest
         private Game game;
         private System.Timers.Timer timerTextBox1;
         private string player1Name = "Aladeen";
-        private string player2Name = "علاء الدين";
+        private string player2Name = "Aladeen2";
         private bool useMusic = true;
         private bool useSound = true;
         public Menu(Game _game)

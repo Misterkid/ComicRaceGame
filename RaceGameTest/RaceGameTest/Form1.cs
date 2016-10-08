@@ -167,7 +167,7 @@ namespace RaceGameTest
                         if (game.useSound)
                             jSound.PlaySound("go");
 
-                        CountDownText.Text = "اذهب!";//Go!
+                        CountDownText.Text = "Go!";//Go!
                         game.canPlay = true;//We can drive
                     break;
 
@@ -178,11 +178,11 @@ namespace RaceGameTest
             }
             if ((QTime.RunTime - 3) < 0)//If time -3 is lower then 0 the time is 0;
             {
-                label2.Text = "وقت:" + 0;
+                label2.Text = "Time:" + 0;
             }
             else
             {
-                label2.Text = "وقت:" + (QTime.RunTime - 3).ToString();
+                label2.Text = "Time:" + (QTime.RunTime - 3).ToString();
             }
             
         }
